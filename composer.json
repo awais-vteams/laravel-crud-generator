@@ -1,6 +1,7 @@
 {
     "name": "ibex/crud-generator",
     "description": "Laravel Crud Generator",
+    "license": "MIT",
     "authors": [
         {
             "name": "Awais",
