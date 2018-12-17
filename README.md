@@ -9,6 +9,13 @@ This Generator package provides various generators like CRUD, API, Controller, M
 ```
 composer require ibex/crud-generator --dev
 ```
+
+## Usage
+```
+php artisan make:crud {table_name}
+php artisan make:crud users
+// it will generate Model,Controller and views in your app
+```
 ## Author
 
 email: [Email Me](mailto:asargodha@gmail.com)
