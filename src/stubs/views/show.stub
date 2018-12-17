@@ -1,0 +1,22 @@
+@extends('layouts.app')
+
+@section('template_title')
+    {{ ${{modelNameLowerCase}}->name }}
+@endsection
+
+@section('content')
+    <div class="card">
+        <div class="card-header">
+            <div class="pull-left">
+                <h4 class="card-title">Show {{modelName}}</h4>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-primary" href="{{ route('{{modelNamePluralLowerCase}}.index') }}"> Back</a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            {{viewRows}}
+        </div>
+    </div>
+@endsection

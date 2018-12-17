@@ -1,0 +1,5 @@
+        <div class="form-group  {{ $errors->has('{{column}}') ? "has-error" : ""}}">
+            {{ Form::label('{{column}}') }}
+            {{ Form::text('{{column}}', ${{modelNameLowerCase}}->{{column}}, ['class' => 'form-control', 'placeholder' => '{{title}}']) }}
+            {!! $errors->first('{{column}}', '<p class="help-block">:message</p>') !!}
+        </div>

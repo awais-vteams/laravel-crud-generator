@@ -1,0 +1,30 @@
+@extends('layouts.app')
+
+@section('template_title')
+    Create {{modelName}}
+@endsection
+
+@section('content')
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                @include('partials.errors')
+
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h4 class="card-title">Create {{modelName}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('{{modelNamePluralLowerCase}}.store') }}"  role="form" enctype="multipart/form-data">
+                            @csrf
+
+                            @include('{{modelNameLowerCase}}.form', [${{modelNameLowerCase}}])
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection

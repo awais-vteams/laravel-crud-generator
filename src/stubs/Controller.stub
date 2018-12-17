@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\{{modelName}};
+use Illuminate\Http\Request;
+
+/**
+ * Class {{modelName}}Controller
+ * @package App\Http\Controllers
+ */
+class {{modelName}}Controller extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->paginate(20);
+        return view('{{modelNameLowerCase}}.index', compact('{{modelNamePluralLowerCase}}'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        ${{modelNameLowerCase}} = new {{modelName}}();
+        return view('{{modelNameLowerCase}}.create', compact('{{modelNameLowerCase}}'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        request()->validate({{modelName}}::$rules);
+
+        ${{modelNameLowerCase}} = {{modelName}}::create($request->all());
+
+        return redirect()->route('{{modelNamePluralLowerCase}}.index')
+            ->with('success', '{{modelName}} created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\{{modelName}} ${{modelNameLowerCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{modelName}} ${{modelNameLowerCase}})
+    {
+        return view('{{modelNameLowerCase}}.show', compact('{{modelNameLowerCase}}'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\{{modelName}} ${{modelNameLowerCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function edit({{modelName}} ${{modelNameLowerCase}})
+    {
+        return view('{{modelNameLowerCase}}.edit', compact('{{modelNameLowerCase}}'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\{{modelName}} ${{modelNameLowerCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, {{modelName}} ${{modelNameLowerCase}})
+    {
+        request()->validate({{modelName}}::$rules);
+
+        ${{modelNameLowerCase}}->update($request->all());
+
+        return redirect()->route('{{modelNamePluralLowerCase}}.index')
+            ->with('success', '{{modelName}} updated successfully');
+    }
+
+    /**
+     * @param {{modelName}} ${{modelNameLowerCase}}
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy({{modelName}} ${{modelNameLowerCase}})
+    {
+        ${{modelNameLowerCase}}->delete();
+
+        return redirect()->route('{{modelNamePluralLowerCase}}.index')
+            ->with('success', '{{modelName}} deleted successfully');
+    }
+}
