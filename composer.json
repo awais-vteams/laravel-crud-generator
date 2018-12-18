@@ -8,28 +8,21 @@
             "email": "awais.sds@nxvt.com"
         }
     ],
-    "keywords": [
-        "laravel",
-        "crud",
-        "crud generator",
-        "laravel crud generator",
-        "laravel package"
-    ],
-    "minimum-stability": "dev",
+    "keywords": ["laravel", "crud", "crud generator", "laravel crud generator", "laravel package"],
     "require": {
         "php": "^7.1.3",
-        "laravel/framework": "5.7.*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Ibex\\CrudGenerator\\": "src/"
-        }
+        "laravel/framework": ">=5.6.*"
     },
     "extra": {
         "laravel": {
             "providers": [
                 "Ibex\\CrudGenerator\\CrudServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "0.0.1-dev"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

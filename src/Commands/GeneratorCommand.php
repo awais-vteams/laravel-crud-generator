@@ -281,12 +281,18 @@ abstract class GeneratorCommand extends Command
     {
         $properties = '*';
         $rulesArray = [];
+        $softDeletesNamespace = $softDeletes = '';
 
         foreach ($this->getColumns() as $value) {
             $properties .= "\n * @property $$value->Field";
 
             if ($value->Null == "NO") {
                 $rulesArray[$value->Field] = 'required';
+            }
+
+            if($value->Field == 'deleted_at') {
+                $softDeletesNamespace = "use Illuminate\Database\Eloquent\SoftDeletes;\n";
+                $softDeletes = "use SoftDeletes;\n";
             }
         }
 
@@ -326,6 +332,8 @@ abstract class GeneratorCommand extends Command
             '{{rules}}' => $rules(),
             '{{relations}}' => $relations,
             '{{properties}}' => $properties,
+            '{{softDeletesNamespace}}' => $softDeletesNamespace,
+            '{{softDeletes}}' => $softDeletes,
         ];
     }
 

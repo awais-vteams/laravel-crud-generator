@@ -13,13 +13,13 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h4 class="card-title">Create {{modelName}}</h4>
+                        <span class="card-title">Create {{modelName}}</span>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('{{modelNamePluralLowerCase}}.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('{{modelNameLowerCase}}.form', [${{modelNameLowerCase}}])
+                            @include('{{modelNameLowerCase}}.form')
 
                         </form>
                     </div>

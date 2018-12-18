@@ -13,14 +13,14 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h4 class="card-title">Update {{modelName}}</h4>
+                        <span class="card-title">Update {{modelName}}</span>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('{{modelNamePluralLowerCase}}.update', ${{modelNameLowerCase}}->id) }}"  role="form" enctype="multipart/form-data">
                             {{ method_field('PATCH') }}
                             @csrf
 
-                            @include('{{modelNameLowerCase}}.form',  [${{modelNameLowerCase}}])
+                            @include('{{modelNameLowerCase}}.form')
 
                         </form>
                     </div>

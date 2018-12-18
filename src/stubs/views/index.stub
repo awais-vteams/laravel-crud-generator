@@ -17,7 +17,7 @@
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('{{modelNamePluralLowerCase}}.create') }}" class="btn back-btn btn-light btn-sm float-right"  data-placement="left">
+                                <a href="{{ route('{{modelNamePluralLowerCase}}.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Create New') }}
                                 </a>
                               </div>

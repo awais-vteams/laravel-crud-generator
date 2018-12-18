@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+{{softDeletesNamespace}}
 /**
  * Class {{modelName}}
  {{properties}}
@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class {{modelName}} extends Model
 {
+    {{softDeletes}}
     static $rules = [{{rules}}
     ];
 
