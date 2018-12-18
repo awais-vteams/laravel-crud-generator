@@ -23,6 +23,10 @@ class CrudServiceProvider extends ServiceProvider
                 CrudGenerator::class,
             ]);
         }
+
+        $this->publishes([
+            __DIR__.'/config/crud.php' => config_path('crud.php'),
+        ]);
     }
 
     /**

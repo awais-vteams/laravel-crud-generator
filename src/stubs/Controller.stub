@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace {{controllerNamespace}};
 
-use App\Models\{{modelName}};
+use {{modelNamespace}}\{{modelName}};
 use Illuminate\Http\Request;
 
 /**
@@ -20,7 +20,7 @@ class {{modelName}}Controller extends Controller
     {
         ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->paginate(20);
         return view('{{modelNameLowerCase}}.index', compact('{{modelNamePluralLowerCase}}'))
-            ->with('i', (request()->input('page', 1) - 1) * 10);
+            ->with('i', (request()->input('page', 1) - 1) * 20);
     }
 
     /**
@@ -53,7 +53,7 @@ class {{modelName}}Controller extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\{{modelName}} ${{modelNameLowerCase}}
+     * @param  {{modelName}} ${{modelNameLowerCase}}
      * @return \Illuminate\Http\Response
      */
     public function show({{modelName}} ${{modelNameLowerCase}})
@@ -64,7 +64,7 @@ class {{modelName}}Controller extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\{{modelName}} ${{modelNameLowerCase}}
+     * @param  {{modelName}} ${{modelNameLowerCase}}
      * @return \Illuminate\Http\Response
      */
     public function edit({{modelName}} ${{modelNameLowerCase}})
@@ -76,7 +76,7 @@ class {{modelName}}Controller extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\{{modelName}} ${{modelNameLowerCase}}
+     * @param  {{modelName}} ${{modelNameLowerCase}}
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, {{modelName}} ${{modelNameLowerCase}})

@@ -27,15 +27,7 @@ abstract class GeneratorCommand extends Command
      *
      * @var array
      */
-    protected $unwantedColumns = [
-        'id',
-        'password',
-        'email_verified_at',
-        'remember_token',
-        'created_at',
-        'updated_at',
-        'deleted_at'
-    ];
+    protected $unwantedColumns = [];
 
     /**
      * Table name from argument
@@ -59,6 +51,20 @@ abstract class GeneratorCommand extends Command
     private $tableColumns = null;
 
     /**
+     * Model Namespace
+     *
+     * @var string
+     */
+    protected $modelNamespace = 'App';
+
+    /**
+     * Controller Namespace
+     *
+     * @var string
+     */
+    protected $controllerNamespace = 'App\Http\Controllers';
+
+    /**
      * Create a new controller creator command instance.
      *
      * @param  \Illuminate\Filesystem\Filesystem $files
@@ -69,6 +75,9 @@ abstract class GeneratorCommand extends Command
         parent::__construct();
 
         $this->files = $files;
+        $this->unwantedColumns = config('crud.model.unwantedColumns', $this->unwantedColumns);
+        $this->modelNamespace = config('crud.model.namespace', $this->modelNamespace);
+        $this->controllerNamespace = config('crud.controller.namespace', $this->controllerNamespace);
     }
 
     /**
@@ -108,18 +117,6 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
-     * Get the stub file.
-     *
-     * @param $type
-     * @return string
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function getStub($type)
-    {
-        return $this->files->get(__DIR__ . "/../stubs/{$type}.stub");
-    }
-
-    /**
      * Write the file/Class
      *
      * @param $path
@@ -128,6 +125,22 @@ abstract class GeneratorCommand extends Command
     protected function write($path, $content)
     {
         $this->files->put($path, $content);
+    }
+
+    /**
+     * Get the stub file.
+     *
+     * @param $type
+     * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function getStub($type)
+    {
+        $stub_path = config('crud.stub_path', 'default');
+        if ($stub_path == 'default') {
+            $stub_path = __DIR__ . "/../stubs/";
+        }
+        return $this->files->get(str_finish($stub_path, '/') . "{$type}.stub");
     }
 
     /**
@@ -149,7 +162,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function _getControllerPath($name)
     {
-        return app_path("/Http/Controllers/{$name}Controller.php");
+        return app_path($this->_getNamespacePath($this->controllerNamespace) . "{$name}Controller.php");
     }
 
     /**
@@ -158,7 +171,19 @@ abstract class GeneratorCommand extends Command
      */
     protected function _getModelPath($name)
     {
-        return $this->makeDirectory(app_path("/{$name}.php"));
+        return $this->makeDirectory(app_path($this->_getNamespacePath($this->modelNamespace) . "{$name}.php"));
+    }
+
+    /**
+     * Get the path from namespace
+     *
+     * @param $namespace
+     * @return string
+     */
+    private function _getNamespacePath($namespace)
+    {
+        $str = str_start(str_finish(str_after($namespace, 'App'), '\\'), '\\');
+        return str_replace('\\', '/', $str);
     }
 
     /**
@@ -180,6 +205,8 @@ abstract class GeneratorCommand extends Command
     {
         return [
             '{{modelName}}' => $this->name,
+            '{{modelNamespace}}' => $this->modelNamespace,
+            '{{controllerNamespace}}' => $this->controllerNamespace,
             '{{modelNamePluralLowerCase}}' => strtolower(str_plural($this->name)),
             '{{modelNamePluralUpperCase}}' => ucfirst(str_plural($this->name)),
             '{{modelNameLowerCase}}' => strtolower($this->name)
@@ -290,7 +317,7 @@ abstract class GeneratorCommand extends Command
                 $rulesArray[$value->Field] = 'required';
             }
 
-            if($value->Field == 'deleted_at') {
+            if ($value->Field == 'deleted_at') {
                 $softDeletesNamespace = "use Illuminate\Database\Eloquent\SoftDeletes;\n";
                 $softDeletes = "use SoftDeletes;\n";
             }
@@ -327,7 +354,6 @@ abstract class GeneratorCommand extends Command
         list($relations, $properties) = (new ModelGenerator($this->table, $properties))->getEloquentRelations();
 
         return [
-            '{{modelName}}' => $this->name,
             '{{fillable}}' => $fillable(),
             '{{rules}}' => $rules(),
             '{{relations}}' => $relations,

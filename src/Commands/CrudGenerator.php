@@ -98,7 +98,7 @@ class CrudGenerator extends GeneratorCommand
         $this->info('Creating Model ...');
 
         // Make the models attributes and replacement
-        $replace = $this->modelReplacements();
+        $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         $modelTemplate = str_replace(
             array_keys($replace), array_values($replace), $this->getStub('Model')
@@ -157,16 +157,5 @@ class CrudGenerator extends GeneratorCommand
     private function _buildClassName()
     {
         return ucfirst(camel_case(str_singular($this->table)));
-    }
-
-    /**
-     * Get the Model path to save
-     *
-     * @param $name
-     * @return string
-     */
-    protected function _getModelPath($name)
-    {
-        return $this->makeDirectory(app_path("/Models/{$name}.php"));
     }
 }
