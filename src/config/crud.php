@@ -13,6 +13,17 @@ return [
     |
     | Example: 'stub_path' => resource_path('path/to/views/stubs/')
     | Default: "default"
+    | Files:
+    |       Controller.stub
+    |       Model.stub
+    |       views/
+    |            create.stub
+    |            edit.stub
+    |            form.stub
+    |            form-field.stub
+    |            index.stub
+    |            show.stub
+    |            view-field.stub
     */
 
     'stub_path' => 'default',
