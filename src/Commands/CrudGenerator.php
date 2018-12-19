@@ -3,9 +3,8 @@
 namespace Ibex\CrudGenerator\Commands;
 
 /**
- * Class CrudGenerator
+ * Class CrudGenerator.
  *
- * @package Ibex\CrudGenerator\Commands
  * @author  Awais <asargodha@gmail.com>
  */
 class CrudGenerator extends GeneratorCommand
@@ -28,8 +27,9 @@ class CrudGenerator extends GeneratorCommand
     /**
      * Execute the console command.
      *
-     * @return bool|null
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
+     * @return bool|null
      */
     public function handle()
     {
@@ -40,6 +40,7 @@ class CrudGenerator extends GeneratorCommand
         // If table not exist in DB return
         if (!$this->tableExists()) {
             $this->error("`{$this->table}` table not exist");
+
             return false;
         }
 
@@ -57,10 +58,11 @@ class CrudGenerator extends GeneratorCommand
     }
 
     /**
-     * Build the Controller Class and save in app/Http/Controllers
+     * Build the Controller Class and save in app/Http/Controllers.
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
      * @return $this
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function buildController()
     {
@@ -84,8 +86,9 @@ class CrudGenerator extends GeneratorCommand
     }
 
     /**
-     * @return $this
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
+     * @return $this
      */
     protected function buildModel()
     {
@@ -110,8 +113,9 @@ class CrudGenerator extends GeneratorCommand
     }
 
     /**
-     * @return $this
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
+     * @return $this
      */
     protected function buildViews()
     {
@@ -133,9 +137,9 @@ class CrudGenerator extends GeneratorCommand
 
         $replace = array_merge($this->buildReplacements(), [
             '{{tableHeader}}' => $tableHead,
-            '{{tableBody}}' => $tableBody,
-            '{{viewRows}}' => $viewRows,
-            '{{form}}' => $form
+            '{{tableBody}}'   => $tableBody,
+            '{{viewRows}}'    => $viewRows,
+            '{{form}}'        => $form,
         ]);
 
         foreach (['index', 'create', 'edit', 'form', 'show'] as $view) {

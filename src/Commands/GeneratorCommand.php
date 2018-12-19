@@ -5,13 +5,12 @@ namespace Ibex\CrudGenerator\Commands;
 use Ibex\CrudGenerator\ModelGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * Class GeneratorCommand
- * @package Ibex\CrudGenerator\Commands
+ * Class GeneratorCommand.
  */
 abstract class GeneratorCommand extends Command
 {
@@ -23,42 +22,42 @@ abstract class GeneratorCommand extends Command
     protected $files;
 
     /**
-     * Do not make these columns fillable in Model or views
+     * Do not make these columns fillable in Model or views.
      *
      * @var array
      */
     protected $unwantedColumns = [];
 
     /**
-     * Table name from argument
+     * Table name from argument.
      *
      * @var string
      */
     protected $table = null;
 
     /**
-     * Formatted Class name from Table
+     * Formatted Class name from Table.
      *
      * @var string
      */
     protected $name = null;
 
     /**
-     * Store the DB table columns
+     * Store the DB table columns.
      *
      * @var array
      */
     private $tableColumns = null;
 
     /**
-     * Model Namespace
+     * Model Namespace.
      *
      * @var string
      */
     protected $modelNamespace = 'App';
 
     /**
-     * Controller Namespace
+     * Controller Namespace.
      *
      * @var string
      */
@@ -67,7 +66,8 @@ abstract class GeneratorCommand extends Command
     /**
      * Create a new controller creator command instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem $files
+     * @param \Illuminate\Filesystem\Filesystem $files
+     *
      * @return void
      */
     public function __construct(Filesystem $files)
@@ -104,7 +104,8 @@ abstract class GeneratorCommand extends Command
     /**
      * Build the directory if necessary.
      *
-     * @param  string $path
+     * @param string $path
+     *
      * @return string
      */
     protected function makeDirectory($path)
@@ -117,7 +118,7 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
-     * Write the file/Class
+     * Write the file/Class.
      *
      * @param $path
      * @param $content
@@ -131,68 +132,79 @@ abstract class GeneratorCommand extends Command
      * Get the stub file.
      *
      * @param $type
-     * @return string
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
+     * @return string
      */
     protected function getStub($type)
     {
         $stub_path = config('crud.stub_path', 'default');
         if ($stub_path == 'default') {
-            $stub_path = __DIR__ . "/../stubs/";
+            $stub_path = __DIR__.'/../stubs/';
         }
-        return $this->files->get(str_finish($stub_path, '/') . "{$type}.stub");
+
+        return $this->files->get(str_finish($stub_path, '/')."{$type}.stub");
     }
 
     /**
      * @param $no
+     *
      * @return string
      */
     private function _getSpace($no = 1)
     {
-        $tabs = "";
+        $tabs = '';
         for ($i = 0; $i < $no; $i++) {
             $tabs .= "\t";
         }
+
         return $tabs;
     }
 
     /**
      * @param $name
+     *
      * @return string
      */
     protected function _getControllerPath($name)
     {
-        return app_path($this->_getNamespacePath($this->controllerNamespace) . "{$name}Controller.php");
+        return app_path($this->_getNamespacePath($this->controllerNamespace)."{$name}Controller.php");
     }
 
     /**
      * @param $name
+     *
      * @return string
      */
     protected function _getModelPath($name)
     {
-        return $this->makeDirectory(app_path($this->_getNamespacePath($this->modelNamespace) . "{$name}.php"));
+        return $this->makeDirectory(app_path($this->_getNamespacePath($this->modelNamespace)."{$name}.php"));
     }
 
     /**
-     * Get the path from namespace
+     * Get the path from namespace.
      *
      * @param $namespace
+     *
      * @return string
      */
     private function _getNamespacePath($namespace)
     {
         $str = str_start(str_finish(str_after($namespace, 'App'), '\\'), '\\');
+
         return str_replace('\\', '/', $str);
     }
 
     /**
      * @param $view
+     *
      * @return string
      */
     protected function _getViewPath($view)
     {
         $name = strtolower($this->name);
+
         return $this->makeDirectory(resource_path("/views/{$name}/{$view}.blade.php"));
     }
 
@@ -204,28 +216,30 @@ abstract class GeneratorCommand extends Command
     protected function buildReplacements()
     {
         return [
-            '{{modelName}}' => $this->name,
-            '{{modelNamespace}}' => $this->modelNamespace,
-            '{{controllerNamespace}}' => $this->controllerNamespace,
+            '{{modelName}}'                => $this->name,
+            '{{modelNamespace}}'           => $this->modelNamespace,
+            '{{controllerNamespace}}'      => $this->controllerNamespace,
             '{{modelNamePluralLowerCase}}' => strtolower(str_plural($this->name)),
             '{{modelNamePluralUpperCase}}' => ucfirst(str_plural($this->name)),
-            '{{modelNameLowerCase}}' => strtolower($this->name)
+            '{{modelNameLowerCase}}'       => strtolower($this->name),
         ];
     }
 
     /**
-     * Build the form fields for form
+     * Build the form fields for form.
      *
      * @param $title
      * @param $column
      * @param string $type
-     * @return mixed
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
+     * @return mixed
      */
     protected function getField($title, $column, $type = 'form-field')
     {
         $replace = array_merge($this->buildReplacements(), [
-            '{{title}}' => $title,
+            '{{title}}'  => $title,
             '{{column}}' => $column,
         ]);
 
@@ -236,6 +250,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * @param $title
+     *
      * @return mixed
      */
     protected function getHead($title)
@@ -247,12 +262,13 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(10) . '<th>{{title}}</th>' . "\n"
+            $this->_getSpace(10).'<th>{{title}}</th>'."\n"
         );
     }
 
     /**
      * @param $column
+     *
      * @return mixed
      */
     protected function getBody($column)
@@ -264,19 +280,19 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(11) . '<td>{{ ${{modelNameLowerCase}}->{{column}} }}</td>' . "\n"
+            $this->_getSpace(11).'<td>{{ ${{modelNameLowerCase}}->{{column}} }}</td>'."\n"
         );
     }
 
     /**
-     * Get the DB Table columns
+     * Get the DB Table columns.
      *
      * @return array
      */
     protected function getColumns()
     {
         if (empty($this->tableColumns)) {
-            $this->tableColumns = DB::select('SHOW COLUMNS FROM ' . $this->table);
+            $this->tableColumns = DB::select('SHOW COLUMNS FROM '.$this->table);
         }
 
         return $this->tableColumns;
@@ -313,7 +329,7 @@ abstract class GeneratorCommand extends Command
         foreach ($this->getColumns() as $value) {
             $properties .= "\n * @property $$value->Field";
 
-            if ($value->Null == "NO") {
+            if ($value->null == 'NO') {
                 $rulesArray[$value->Field] = 'required';
             }
 
@@ -342,7 +358,7 @@ abstract class GeneratorCommand extends Command
 
             // Add quotes to the unwanted columns for fillable
             array_walk($filterColumns, function (&$value) {
-                $value = "'" . $value . "'";
+                $value = "'".$value."'";
             });
 
             // CSV format
@@ -354,12 +370,12 @@ abstract class GeneratorCommand extends Command
         list($relations, $properties) = (new ModelGenerator($this->table, $properties))->getEloquentRelations();
 
         return [
-            '{{fillable}}' => $fillable(),
-            '{{rules}}' => $rules(),
-            '{{relations}}' => $relations,
-            '{{properties}}' => $properties,
+            '{{fillable}}'             => $fillable(),
+            '{{rules}}'                => $rules(),
+            '{{relations}}'            => $relations,
+            '{{properties}}'           => $properties,
             '{{softDeletesNamespace}}' => $softDeletesNamespace,
-            '{{softDeletes}}' => $softDeletes,
+            '{{softDeletes}}'          => $softDeletes,
         ];
     }
 
@@ -386,7 +402,7 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
-     * Is Table exist in DB
+     * Is Table exist in DB.
      *
      * @return mixed
      */
