@@ -10,7 +10,6 @@
     ],
     "keywords": ["laravel", "crud", "crud generator", "laravel crud generator", "laravel package"],
     "require": {
-        "php": "^7.1",
         "laravel/framework": "^5.6",
         "laravelcollective/html": "^5.4"
     },
@@ -24,9 +23,6 @@
             "providers": [
                 "Ibex\\CrudGenerator\\CrudServiceProvider"
             ]
-        },
-        "branch-alias": {
-            "dev-master": "0.0.2-dev"
         }
     },
     "minimum-stability": "dev",
