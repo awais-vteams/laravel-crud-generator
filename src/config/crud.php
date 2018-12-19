@@ -31,7 +31,7 @@ return [
     'model' => [
         'namespace' => 'App\Models',
 
-        /**
+        /*
          * Do not make these columns $fillable in Model or views
          */
         'unwantedColumns' => [
@@ -41,12 +41,12 @@ return [
             'remember_token',
             'created_at',
             'updated_at',
-            'deleted_at'
-        ]
+            'deleted_at',
+        ],
     ],
 
     'controller' => [
-        'namespace' => 'App\Http\Controllers'
-    ]
+        'namespace' => 'App\Http\Controllers',
+    ],
 
 ];

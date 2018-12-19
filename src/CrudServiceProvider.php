@@ -6,8 +6,7 @@ use Ibex\CrudGenerator\Commands\CrudGenerator;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class CrudServiceProvider
- * @package Ibex\CrudGenerator
+ * Class CrudServiceProvider.
  */
 class CrudServiceProvider extends ServiceProvider
 {
@@ -25,7 +24,7 @@ class CrudServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__ . '/config/crud.php' => config_path('crud.php'),
+            __DIR__.'/config/crud.php' => config_path('crud.php'),
         ], 'crud');
     }
 
