@@ -16,7 +16,7 @@ composer require ibex/crud-generator --dev
 ```
 2- Publish the default package's config
 ```
-php artisan vendor:publish --provider="Ibex\CrudGenerator\CrudServiceProvider"
+php artisan vendor:publish --tag=crud
 ```
 
 ## Usage
