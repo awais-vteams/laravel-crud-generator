@@ -1,4 +1,9 @@
 # Laravel Crud Generator
+
+![Packagist](https://img.shields.io/badge/Packagist-v0.0.5-green.svg?style=flat-square)
+![Licence](https://img.shields.io/badge/Licence-MIT-green.svg?style=flat-square)
+
+
 This Laravel Generator package provides and generate Controller, Model (with eloquent relations) and Views in Bootstrap for your development of your applications with single command.
 
 - Will create **Model** with Eloquent relations
