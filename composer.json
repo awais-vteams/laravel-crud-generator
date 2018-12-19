@@ -10,7 +10,7 @@
     ],
     "keywords": ["laravel", "crud", "crud generator", "laravel crud generator", "laravel package"],
     "require": {
-        "laravel/framework": "^5.6",
+        "laravel/framework": "^5.5",
         "laravelcollective/html": "^5.4"
     },
     "autoload": {
