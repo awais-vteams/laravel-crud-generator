@@ -23,7 +23,7 @@ php artisan vendor:publish --tag=crud
 ```
 php artisan make:crud {table_name}
 
-php artisan make:crud users
+php artisan make:crud banks
 ```
 ## Example
 
