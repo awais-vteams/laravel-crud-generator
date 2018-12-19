@@ -25,6 +25,20 @@ php artisan make:crud {table_name}
 
 php artisan make:crud users
 ```
+## Example
+
+Model
+![Model](https://i.imgur.com/zTSoYvJ.png)
+
+Controller
+![Controller](https://i.imgur.com/G1ytmcL.png)
+
+Listing
+![Listing](https://i.imgur.com/UH5XGuw.png)
+
+Form
+![Form](https://i.imgur.com/poRiZRO.png)
+
 ## Author
 
 M Awais // [Email Me](mailto:asargodha@gmail.com)
