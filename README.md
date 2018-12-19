@@ -11,7 +11,7 @@ This Laravel Generator package provides and generate Controller, Model (with elo
 - Will create **views** in Bootstrap
 
 ## Requirements
-    Laravel >= 5.6
+    Laravel >= 5.5
     PHP >= 7.1
 
 ## Installation
