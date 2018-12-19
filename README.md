@@ -27,17 +27,21 @@ php artisan make:crud users
 ```
 ## Example
 
-Model
+*Model*
 ![Model](https://i.imgur.com/zTSoYvJ.png)
 
-Controller
+
+*Controller*
 ![Controller](https://i.imgur.com/G1ytmcL.png)
 
-Listing
+
+*Listing*
 ![Listing](https://i.imgur.com/UH5XGuw.png)
 
-Form
+
+*Form*
 ![Form](https://i.imgur.com/poRiZRO.png)
+
 
 ## Author
 
