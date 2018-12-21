@@ -329,7 +329,7 @@ abstract class GeneratorCommand extends Command
         foreach ($this->getColumns() as $value) {
             $properties .= "\n * @property $$value->Field";
 
-            if ($value->null == 'NO') {
+            if ($value->Null == 'NO') {
                 $rulesArray[$value->Field] = 'required';
             }
 
@@ -367,7 +367,7 @@ abstract class GeneratorCommand extends Command
 
         $properties .= "\n *";
 
-        list($relations, $properties) = (new ModelGenerator($this->table, $properties))->getEloquentRelations();
+        list($relations, $properties) = (new ModelGenerator($this->table, $properties, $this->modelNamespace))->getEloquentRelations();
 
         return [
             '{{fillable}}'             => $fillable(),

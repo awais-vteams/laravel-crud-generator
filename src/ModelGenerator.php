@@ -13,17 +13,20 @@ class ModelGenerator
 
     private $table = null;
     private $properties = null;
+    private $modelNamespace = 'App';
 
     /**
      * ModelGenerator constructor.
      *
      * @param string $table
      * @param string $properties
+     * @param string $modelNamespace
      */
-    public function __construct(string $table, string $properties)
+    public function __construct(string $table, string $properties, string $modelNamespace)
     {
         $this->table = $table;
         $this->properties = $properties;
+        $this->modelNamespace = $modelNamespace;
         $this->_init();
     }
 
@@ -103,7 +106,7 @@ class ModelGenerator
      */
     public function '.$relationName.'()
     {
-        return $this->'.$relation.'(\'App\Models\\'.$model.'\', \''.$foreign_key.'\', \''.$local_key.'\');
+        return $this->'.$relation.'(\''.$this->modelNamespace.'\\'.$model.'\', \''.$foreign_key.'\', \''.$local_key.'\');
     }
     ';
     }
