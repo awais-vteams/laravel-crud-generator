@@ -1,6 +1,6 @@
 # Laravel CRUD Generator
 
-![Packagist](https://img.shields.io/badge/Packagist-v0.0.5-green.svg?style=flat-square)
+![Packagist](https://img.shields.io/badge/Packagist-v0.0.7-green.svg?style=flat-square)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green.svg?style=flat-square)
 ![StyleCI](https://img.shields.io/badge/StyleCI-pass-green.svg?style=flat-square)
 
