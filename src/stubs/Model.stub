@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class {{modelName}}
  {{properties}}
  * @package App
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class {{modelName}} extends Model
 {
