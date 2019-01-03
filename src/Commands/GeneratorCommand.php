@@ -26,7 +26,15 @@ abstract class GeneratorCommand extends Command
      *
      * @var array
      */
-    protected $unwantedColumns = [];
+    protected $unwantedColumns = [
+        'id',
+        'password',
+        'email_verified_at',
+        'remember_token',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     /**
      * Table name from argument.
