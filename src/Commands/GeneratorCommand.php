@@ -72,6 +72,13 @@ abstract class GeneratorCommand extends Command
     protected $controllerNamespace = 'App\Http\Controllers';
 
     /**
+     * Application Layout
+     *
+     * @var string
+     */
+    protected $layout = 'layouts.app';
+
+    /**
      * Create a new controller creator command instance.
      *
      * @param \Illuminate\Filesystem\Filesystem $files
@@ -86,6 +93,7 @@ abstract class GeneratorCommand extends Command
         $this->unwantedColumns = config('crud.model.unwantedColumns', $this->unwantedColumns);
         $this->modelNamespace = config('crud.model.namespace', $this->modelNamespace);
         $this->controllerNamespace = config('crud.controller.namespace', $this->controllerNamespace);
+        $this->layout = config('crud.layout', $this->layout);
     }
 
     /**
@@ -139,20 +147,27 @@ abstract class GeneratorCommand extends Command
     /**
      * Get the stub file.
      *
-     * @param $type
+     * @param string $type
+     * @param boolean $content
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
      * @return string
      */
-    protected function getStub($type)
+    protected function getStub($type, $content = true)
     {
         $stub_path = config('crud.stub_path', 'default');
         if ($stub_path == 'default') {
-            $stub_path = __DIR__.'/../stubs/';
+            $stub_path = __DIR__ . '/../stubs/';
         }
 
-        return $this->files->get(str_finish($stub_path, '/')."{$type}.stub");
+        $path = str_finish($stub_path, '/') . "{$type}.stub";
+
+        if (!$content) {
+            return $path;
+        }
+
+        return $this->files->get($path);
     }
 
     /**
@@ -205,6 +220,16 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
+     * Get the default layout path.
+     *
+     * @return string
+     */
+    private function _getLayoutPath()
+    {
+        return $this->makeDirectory(resource_path("/views/layouts/app.blade.php"));
+    }
+
+    /**
      * @param $view
      *
      * @return string
@@ -224,6 +249,7 @@ abstract class GeneratorCommand extends Command
     protected function buildReplacements()
     {
         return [
+            '{{layout}}'                   => $this->layout,
             '{{modelName}}'                => $this->name,
             '{{modelNamespace}}'           => $this->modelNamespace,
             '{{controllerNamespace}}'      => $this->controllerNamespace,
@@ -290,6 +316,25 @@ abstract class GeneratorCommand extends Command
             array_values($replace),
             $this->_getSpace(11).'<td>{{ ${{modelNameLowerCase}}->{{column}} }}</td>'."\n"
         );
+    }
+
+    /**
+     * Make layout if not exists.
+     *
+     * @throws \Exception
+     */
+    protected function buildLayout(): void
+    {
+        if (!(view()->exists($this->layout))) {
+
+            $this->info('Creating Layout ...');
+
+            if ($this->layout == 'layouts.app') {
+                $this->files->copy($this->getStub('layouts/app', false), $this->_getLayoutPath());
+            } else {
+                throw new \Exception("{$this->layout} layout not found!");
+            }
+        }
     }
 
     /**

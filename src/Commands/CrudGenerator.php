@@ -116,6 +116,7 @@ class CrudGenerator extends GeneratorCommand
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
      * @return $this
+     * @throws \Exception
      */
     protected function buildViews()
     {
@@ -141,6 +142,8 @@ class CrudGenerator extends GeneratorCommand
             '{{viewRows}}'    => $viewRows,
             '{{form}}'        => $form,
         ]);
+
+        $this->buildLayout();
 
         foreach (['index', 'create', 'edit', 'form', 'show'] as $view) {
             $viewTemplate = str_replace(
