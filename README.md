@@ -31,6 +31,12 @@ php artisan make:crud {table_name}
 
 php artisan make:crud banks
 ```
+
+Add a route.
+```
+Route::resource('banks', 'BankController');
+```
+
 ## Example
 
 *Model*
