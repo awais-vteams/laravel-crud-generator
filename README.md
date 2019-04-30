@@ -1,6 +1,6 @@
 # Laravel CRUD Generator
 
-![Packagist](https://img.shields.io/badge/Packagist-v0.1.1-green.svg?style=flat-square)
+![Packagist](https://img.shields.io/badge/Packagist-v1.0.2-green.svg?style=flat-square)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green.svg?style=flat-square)
 ![StyleCI](https://img.shields.io/badge/StyleCI-pass-green.svg?style=flat-square)
 
@@ -32,10 +32,11 @@ php artisan make:crud {table_name}
 php artisan make:crud banks
 ```
 
-Add a route.
+Add a route in `web.php`
 ```
 Route::resource('banks', 'BankController');
 ```
+Route name in plural slug case.
 
 ## Example
 
