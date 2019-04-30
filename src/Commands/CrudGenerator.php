@@ -2,6 +2,8 @@
 
 namespace Ibex\CrudGenerator\Commands;
 
+use Illuminate\Support\Str;
+
 /**
  * Class CrudGenerator.
  *
@@ -128,7 +130,7 @@ class CrudGenerator extends GeneratorCommand
         $form = "\n";
 
         foreach ($this->getFilteredColumns() as $column) {
-            $title = title_case(str_replace('_', ' ', $column));
+            $title = Str::title(str_replace('_', ' ', $column));
 
             $tableHead .= $this->getHead($title);
             $tableBody .= $this->getBody($column);
@@ -163,6 +165,6 @@ class CrudGenerator extends GeneratorCommand
      */
     private function _buildClassName()
     {
-        return ucfirst(camel_case(str_singular($this->table)));
+        return Str::studly(Str::singular($this->table));
     }
 }

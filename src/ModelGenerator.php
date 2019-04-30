@@ -3,6 +3,7 @@
 namespace Ibex\CrudGenerator;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * Class ModelGenerator.
@@ -121,15 +122,15 @@ class ModelGenerator
      */
     private function _getModelName($name, $relation)
     {
-        $class = ucfirst(camel_case(str_singular($name)));
+        $class = Str::studly(Str::singular($name));
         $relationName = '';
 
         switch ($relation) {
             case 'hasOne':
-                $relationName = camel_case(str_singular($name));
+                $relationName = Str::camel(Str::singular($name));
                 break;
             case 'hasMany':
-                $relationName = camel_case(str_plural($name));
+                $relationName = Str::camel(Str::plural($name));
                 break;
         }
 

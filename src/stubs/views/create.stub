@@ -1,7 +1,7 @@
 @extends('{{layout}}')
 
 @section('template_title')
-    Create {{modelName}}
+    Create {{modelTitle}}
 @endsection
 
 @section('content')
@@ -13,13 +13,13 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Create {{modelName}}</span>
+                        <span class="card-title">Create {{modelTitle}}</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('{{modelNamePluralLowerCase}}.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('{{modelRoute}}.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('{{modelNameLowerCase}}.form')
+                            @include('{{modelView}}.form')
 
                         </form>
                     </div>

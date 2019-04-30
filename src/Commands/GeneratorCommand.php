@@ -5,8 +5,10 @@ namespace Ibex\CrudGenerator\Commands;
 use Ibex\CrudGenerator\ModelGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -161,7 +163,7 @@ abstract class GeneratorCommand extends Command
             $stub_path = __DIR__ . '/../stubs/';
         }
 
-        $path = str_finish($stub_path, '/') . "{$type}.stub";
+        $path = Str::finish($stub_path, '/') . "{$type}.stub";
 
         if (!$content) {
             return $path;
@@ -214,7 +216,7 @@ abstract class GeneratorCommand extends Command
      */
     private function _getNamespacePath($namespace)
     {
-        $str = str_start(str_finish(str_after($namespace, 'App'), '\\'), '\\');
+        $str = Str::start(Str::finish(Str::after($namespace, 'App'), '\\'), '\\');
 
         return str_replace('\\', '/', $str);
     }
@@ -236,7 +238,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function _getViewPath($view)
     {
-        $name = strtolower($this->name);
+        $name = Str::kebab($this->name);
 
         return $this->makeDirectory(resource_path("/views/{$name}/{$view}.blade.php"));
     }
@@ -251,11 +253,14 @@ abstract class GeneratorCommand extends Command
         return [
             '{{layout}}'                   => $this->layout,
             '{{modelName}}'                => $this->name,
+            '{{modelTitle}}'               => Str::title(Str::snake($this->name, ' ')),
             '{{modelNamespace}}'           => $this->modelNamespace,
             '{{controllerNamespace}}'      => $this->controllerNamespace,
-            '{{modelNamePluralLowerCase}}' => strtolower(str_plural($this->name)),
-            '{{modelNamePluralUpperCase}}' => ucfirst(str_plural($this->name)),
-            '{{modelNameLowerCase}}'       => strtolower($this->name),
+            '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->name)),
+            '{{modelNamePluralUpperCase}}' => ucfirst(Str::plural($this->name)),
+            '{{modelNameLowerCase}}'       => Str::camel($this->name),
+            '{{modelRoute}}'               => Str::kebab(Str::plural($this->name)),
+            '{{modelView}}'                => Str::kebab($this->name),
         ];
     }
 
@@ -395,7 +400,7 @@ abstract class GeneratorCommand extends Command
         $rules = function () use ($rulesArray) {
             $rules = '';
             // Exclude the unwanted rulesArray
-            $rulesArray = array_except($rulesArray, $this->unwantedColumns);
+            $rulesArray = Arr::except($rulesArray, $this->unwantedColumns);
             // Make rulesArray
             foreach ($rulesArray as $col => $rule) {
                 $rules .= "\n\t\t'{$col}' => '{$rule}',";

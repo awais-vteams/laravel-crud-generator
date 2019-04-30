@@ -19,7 +19,7 @@ class {{modelName}}Controller extends Controller
     public function index()
     {
         ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->paginate(20);
-        return view('{{modelNameLowerCase}}.index', compact('{{modelNamePluralLowerCase}}'))
+        return view('{{modelView}}.index', compact('{{modelNamePluralLowerCase}}'))
             ->with('i', (request()->input('page', 1) - 1) * 20);
     }
 
@@ -31,7 +31,7 @@ class {{modelName}}Controller extends Controller
     public function create()
     {
         ${{modelNameLowerCase}} = new {{modelName}}();
-        return view('{{modelNameLowerCase}}.create', compact('{{modelNameLowerCase}}'));
+        return view('{{modelView}}.create', compact('{{modelNameLowerCase}}'));
     }
 
     /**
@@ -46,7 +46,7 @@ class {{modelName}}Controller extends Controller
 
         ${{modelNameLowerCase}} = {{modelName}}::create($request->all());
 
-        return redirect()->route('{{modelNamePluralLowerCase}}.index')
+        return redirect()->route('{{modelRoute}}.index')
             ->with('success', '{{modelName}} created successfully.');
     }
 
@@ -58,7 +58,7 @@ class {{modelName}}Controller extends Controller
      */
     public function show({{modelName}} ${{modelNameLowerCase}})
     {
-        return view('{{modelNameLowerCase}}.show', compact('{{modelNameLowerCase}}'));
+        return view('{{modelView}}.show', compact('{{modelNameLowerCase}}'));
     }
 
     /**
@@ -69,7 +69,7 @@ class {{modelName}}Controller extends Controller
      */
     public function edit({{modelName}} ${{modelNameLowerCase}})
     {
-        return view('{{modelNameLowerCase}}.edit', compact('{{modelNameLowerCase}}'));
+        return view('{{modelView}}.edit', compact('{{modelNameLowerCase}}'));
     }
 
     /**
@@ -85,7 +85,7 @@ class {{modelName}}Controller extends Controller
 
         ${{modelNameLowerCase}}->update($request->all());
 
-        return redirect()->route('{{modelNamePluralLowerCase}}.index')
+        return redirect()->route('{{modelRoute}}.index')
             ->with('success', '{{modelName}} updated successfully');
     }
 
@@ -98,7 +98,7 @@ class {{modelName}}Controller extends Controller
     {
         ${{modelNameLowerCase}}->delete();
 
-        return redirect()->route('{{modelNamePluralLowerCase}}.index')
+        return redirect()->route('{{modelRoute}}.index')
             ->with('success', '{{modelName}} deleted successfully');
     }
 }

@@ -1,7 +1,7 @@
 @extends('{{layout}}')
 
 @section('template_title')
-    {{ ${{modelNameLowerCase}}->name }}
+    {{ ${{modelNameLowerCase}}->name ?? 'Show {{modelTitle}}' }}
 @endsection
 
 @section('content')
@@ -11,10 +11,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-left">
-                            <span class="card-title">Show {{modelName}}</span>
+                            <span class="card-title">Show {{modelTitle}}</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('{{modelNamePluralLowerCase}}.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('{{modelRoute}}.index') }}"> Back</a>
                         </div>
                     </div>
 
