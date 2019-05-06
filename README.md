@@ -38,6 +38,12 @@ Route::resource('banks', 'BankController');
 ```
 Route name in plural slug case.
 
+#### Options
+ - Custom Route
+```
+php artisan make:crud {table_name} --route={route_name}
+```
+
 ## Example
 
 *Model*
