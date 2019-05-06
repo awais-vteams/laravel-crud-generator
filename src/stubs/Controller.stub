@@ -18,9 +18,10 @@ class {{modelName}}Controller extends Controller
      */
     public function index()
     {
-        ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->paginate(20);
+        ${{modelNamePluralLowerCase}} = {{modelName}}::paginate();
+
         return view('{{modelView}}.index', compact('{{modelNamePluralLowerCase}}'))
-            ->with('i', (request()->input('page', 1) - 1) * 20);
+            ->with('i', (request()->input('page', 1) - 1) * ${{modelNamePluralLowerCase}}->perPage());
     }
 
     /**
@@ -53,22 +54,26 @@ class {{modelName}}Controller extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  {{modelName}} ${{modelNameLowerCase}}
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show({{modelName}} ${{modelNameLowerCase}})
+    public function show($id)
     {
+        ${{modelNameLowerCase}} = {{modelName}}::find($id);
+
         return view('{{modelView}}.show', compact('{{modelNameLowerCase}}'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  {{modelName}} ${{modelNameLowerCase}}
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit({{modelName}} ${{modelNameLowerCase}})
+    public function edit($id)
     {
+        ${{modelNameLowerCase}} = {{modelName}}::find($id);
+
         return view('{{modelView}}.edit', compact('{{modelNameLowerCase}}'));
     }
 
@@ -90,13 +95,13 @@ class {{modelName}}Controller extends Controller
     }
 
     /**
-     * @param {{modelName}} ${{modelNameLowerCase}}
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy({{modelName}} ${{modelNameLowerCase}})
+    public function destroy($id)
     {
-        ${{modelNameLowerCase}}->delete();
+        ${{modelNameLowerCase}} = {{modelName}}::find($id)->delete();
 
         return redirect()->route('{{modelRoute}}.index')
             ->with('success', '{{modelName}} deleted successfully');

@@ -16,6 +16,8 @@ class {{modelName}} extends Model
     static $rules = [{{rules}}
     ];
 
+    protected $perPage = 20;
+
     /**
      * Attributes that should be mass-assignable.
      *

@@ -17,7 +17,8 @@ class CrudGenerator extends GeneratorCommand
      * @var string
      */
     protected $signature = 'make:crud
-                            {name : Table name}';
+                            {name : Table name}
+                            {--route= : Custom route name}';
 
     /**
      * The console command description.
@@ -29,9 +30,9 @@ class CrudGenerator extends GeneratorCommand
     /**
      * Execute the console command.
      *
+     * @return bool|null
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
-     * @return bool|null
      */
     public function handle()
     {
@@ -50,7 +51,8 @@ class CrudGenerator extends GeneratorCommand
         $this->name = $this->_buildClassName();
 
         // Generate the crud
-        $this->buildController()
+        $this->buildOptions()
+            ->buildController()
             ->buildModel()
             ->buildViews();
 
@@ -62,9 +64,9 @@ class CrudGenerator extends GeneratorCommand
     /**
      * Build the Controller Class and save in app/Http/Controllers.
      *
+     * @return $this
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
-     * @return $this
      */
     protected function buildController()
     {
@@ -88,9 +90,9 @@ class CrudGenerator extends GeneratorCommand
     }
 
     /**
+     * @return $this
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
-     * @return $this
      */
     protected function buildModel()
     {
@@ -115,9 +117,9 @@ class CrudGenerator extends GeneratorCommand
     }
 
     /**
+     * @return $this
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
-     * @return $this
      * @throws \Exception
      */
     protected function buildViews()
@@ -140,9 +142,9 @@ class CrudGenerator extends GeneratorCommand
 
         $replace = array_merge($this->buildReplacements(), [
             '{{tableHeader}}' => $tableHead,
-            '{{tableBody}}'   => $tableBody,
-            '{{viewRows}}'    => $viewRows,
-            '{{form}}'        => $form,
+            '{{tableBody}}' => $tableBody,
+            '{{viewRows}}' => $viewRows,
+            '{{form}}' => $form,
         ]);
 
         $this->buildLayout();
