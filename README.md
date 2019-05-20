@@ -1,6 +1,6 @@
 # Laravel CRUD Generator
 
-![Packagist](https://img.shields.io/badge/Packagist-v1.0.2-green.svg?style=flat-square)
+![Packagist](https://img.shields.io/badge/Packagist-v1.1.2-green.svg?style=flat-square)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green.svg?style=flat-square)
 ![StyleCI](https://img.shields.io/badge/StyleCI-pass-green.svg?style=flat-square)
 
@@ -65,3 +65,7 @@ php artisan make:crud {table_name} --route={route_name}
 ## Author
 
 M Awais // [Email Me](mailto:asargodha@gmail.com)
+
+[Buy me a Coffee](https://ko-fi.com/C0C8VT1M)
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C8VT1M)
