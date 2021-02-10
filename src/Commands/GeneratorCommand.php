@@ -1,8 +1,8 @@
 <?php
 
-namespace Ibex\CrudGenerator\Commands;
+namespace Dscheff\CrudGenerator\Commands;
 
-use Ibex\CrudGenerator\ModelGenerator;
+use Dscheff\CrudGenerator\ModelGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
