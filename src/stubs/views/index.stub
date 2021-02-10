@@ -17,8 +17,10 @@
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('{{modelRoute}}.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                 <a href="#" data-view="{{modelView}}" id="clear-filters" class="btn btn-success btn-sm mr-1">
+                                     <i class="fas fa-eraser"></i> Clear Filters</a>
+                                 <a href="{{ route('{{modelView}}.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                     <i class="fas fa-plus-circle"></i> {{ __('New {{modelTitle}}') }}
                                 </a>
                               </div>
                         </div>
@@ -34,20 +36,26 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
-                                        <th>No</th>
+                                        <th>#</th>
                                         {{tableHeader}}
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <input type="hidden" name="page" id="page" value="{{modelView}}">
+                                    <tr id="filters">
+                                        <td></td>
+                                        {{tableColumnFilters}}
+                                        <td></td>
+                                    </tr>
                                     @foreach (${{modelNamePluralLowerCase}} as ${{modelNameLowerCase}})
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             {{tableBody}}
                                             <td>
-                                                <form action="{{ route('{{modelRoute}}.destroy',${{modelNameLowerCase}}->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('{{modelRoute}}.show',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('{{modelRoute}}.edit',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                <form action="{{ route('{{modelView}}.destroy',${{modelNameLowerCase}}->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('{{modelView}}.show',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('{{modelView}}.edit',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
@@ -60,8 +68,11 @@
                         </div>
                     </div>
                 </div>
-                {!! ${{modelNamePluralLowerCase}}->links() !!}
+                {!! $links !!}
             </div>
         </div>
     </div>
 @endsection
+@push('scripts-body')
+    <script src="{{ asset('js/filters.js') }}"></script>
+@endpush

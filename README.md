@@ -1,16 +1,24 @@
-![Laravel Crud Generator](https://banners.beyondco.de/Laravel%20CRUD.png?theme=dark&packageManager=composer+require&packageName=ibex%2Fcrud-generator&pattern=architect&style=style_1&description=Laravel+CRUD+Generator&md=1&showWatermark=0&fontSize=100px&images=gift)
-
+![Laravel Crud Generator with Column Filters](https://banners.beyondco.de/Laravel%20Crud%20Generator%20with%20Column%20Filters!.png?theme=light&packageManager=composer+require&packageName=dscheff%2Fcrud-generator&pattern=graphPaper&style=style_1&description=Column+Filters+in+your+Index+View+&md=1&showWatermark=0&fontSize=75px&images=filter)
 
 ![Packagist](https://img.shields.io/badge/Packagist-v1.1.2-green.svg?style=flat-square)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green.svg?style=flat-square)
 ![StyleCI](https://img.shields.io/badge/StyleCI-pass-green.svg?style=flat-square)
 
+This package is a fork of https://packagist.org/packages/ibex/crud-generator, and adds column filters to the index view,
+as well as a handful of other tweaks.
 
-This Laravel Generator package provides and generate Controller, Model (with eloquent relations) and Views in **Bootstrap** for your development of your applications with single command.
+This Laravel Generator package provides and generates
+Controller, Model (with eloquent relations) and Views 
+in **Bootstrap** for your development of your applications with single command.
+
+@todo - Add related models to the filtering
+@todo - Adding subview generation for views that integrate mutiple models, with 
+Ajax/modal/inline forms
 
 - Will create **Model** with Eloquent relations
 - Will create **Controller** with all resources
 - Will create **views** in Bootstrap
+- Will add **Column Filters** to your index action/view 
 
 ## Requirements
     Laravel >= 5.5
@@ -19,7 +27,7 @@ This Laravel Generator package provides and generate Controller, Model (with elo
 ## Installation
 1 - Install
 ```
-composer require ibex/crud-generator --dev
+composer require dscheff/crud-generator --dev
 ```
 2- Publish the default package's config
 ```
@@ -65,8 +73,4 @@ php artisan make:crud {table_name} --route={route_name}
 
 ## Author
 
-M Awais // [Email Me](mailto:asargodha@gmail.com)
-
-[Buy me a Coffee](https://ko-fi.com/C0C8VT1M)
-
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C8VT1M)
+Daniel Scheff, on the back of the great work of M Awais (https://packagist.org/packages/ibex/crud-generator)
