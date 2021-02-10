@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span id="card_title">
+                                {{ __('{{modelTitle}}') }}
+                            </span>
+
+                             <div class="float-right">
+                              <a
+                                 data-toggle="modal"
+                                 data-reloadBlock="#{{}}-table"
+                                 data-title="New Phone Number"
+                                 data-model="Customer"
+                                 data-modelId="{{ $customer->customer_number }}"
+                                 data-route="{{ route(''{{modelRoute}}.create') }}"
+                                 class="modalOpener btn btn-primary btn-sm float-right"
+                                 data-placement="left">
+                                 <i class="fas fa-plus-circle"></i> {{ __('Create {{modelTitle}}') }}</a>
+                                </a>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-success d-none" id="phone-table-message">
+                        <div class="message"></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="thead">
+                                    <tr>
+                                        <th>No</th>
+                                        {{tableHeader}}
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (${{modelNamePluralLowerCase}} as ${{modelNameLowerCase}})
+                                        <tr>
+                                            <td>{{ ++$i }}</td>
+                                            {{tableBody}}
+                                            <td>
+                                                <form action="{{ route('{{modelRoute}}.destroy',${{modelNameLowerCase}}->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('{{modelRoute}}.show',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('{{modelRoute}}.edit',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {!! ${{modelNamePluralLowerCase}}->links() !!}
+            </div>
+        </div>
+    </div>
+@endsection
