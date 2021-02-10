@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class {{modelName}} extends Model
 {
+    protected $table = '{{table}}';
+
     {{softDeletes}}
     static $rules = [{{rules}}
     ];
@@ -26,5 +28,4 @@ class {{modelName}} extends Model
     protected $fillable = [{{fillable}}];
 
 {{relations}}
-
 }

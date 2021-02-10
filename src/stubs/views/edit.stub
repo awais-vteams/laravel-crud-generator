@@ -16,7 +16,7 @@
                         <span class="card-title">Update {{modelTitle}}</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('{{modelRoute}}.update', ${{modelNameLowerCase}}->id) }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('{{modelView}}.update', ${{modelNameLowerCase}}->id) }}"  role="form" enctype="multipart/form-data">
                             {{ method_field('PATCH') }}
                             @csrf
 

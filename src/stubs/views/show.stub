@@ -14,7 +14,8 @@
                             <span class="card-title">Show {{modelTitle}}</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('{{modelRoute}}.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('{{modelView}}.index') }}">
+                             <i class="fas fa-arrow-alt-circle-left"></i> Back</a>
                         </div>
                     </div>
 

@@ -11,17 +11,30 @@ use Illuminate\Http\Request;
  */
 class {{modelName}}Controller extends Controller
 {
+    private $modelName = {{modelName}}::class;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        ${{modelNamePluralLowerCase}} = {{modelName}}::paginate();
+        $get = $request->query();
+        ${{modelNamePluralLowerCase}} = (new {{modelName}})->paginate();
+        $perPage = ${{modelNamePluralLowerCase}}->perPage();
+        $links = ${{modelNamePluralLowerCase}}->links();
 
-        return view('{{modelView}}.index', compact('{{modelNamePluralLowerCase}}'))
-            ->with('i', (request()->input('page', 1) - 1) * ${{modelNamePluralLowerCase}}->perPage());
+        if (!empty($get)) {
+            $models = $this
+                ->applyFilters($this->modelName)
+                ->paginate($perPage);
+            return view('{{modelView}}.index', ['{{modelNamePluralLowerCase}}' => $models, 'links' => $links, 'get' => $get])
+                ->with('i', (request()->input('page', 1) - 1) * $perPage);
+        }
+
+        return view('{{modelView}}.index', compact('{{modelNamePluralLowerCase}}', 'links', 'get'))
+            ->with('i', (request()->input('page', 1) - 1) * $perPage);
     }
 
     /**
@@ -45,9 +58,9 @@ class {{modelName}}Controller extends Controller
     {
         request()->validate({{modelName}}::$rules);
 
-        ${{modelNameLowerCase}} = {{modelName}}::create($request->all());
+        ${{modelNameLowerCase}} = (new {{modelName}})->create($request->all());
 
-        return redirect()->route('{{modelRoute}}.index')
+        return redirect()->route('{{modelView}}.index')
             ->with('success', '{{modelName}} created successfully.');
     }
 
@@ -59,7 +72,7 @@ class {{modelName}}Controller extends Controller
      */
     public function show($id)
     {
-        ${{modelNameLowerCase}} = {{modelName}}::find($id);
+        ${{modelNameLowerCase}} = (new {{modelName}})->find($id);
 
         return view('{{modelView}}.show', compact('{{modelNameLowerCase}}'));
     }
@@ -72,7 +85,7 @@ class {{modelName}}Controller extends Controller
      */
     public function edit($id)
     {
-        ${{modelNameLowerCase}} = {{modelName}}::find($id);
+        ${{modelNameLowerCase}} = (new {{modelName}})->find($id);
 
         return view('{{modelView}}.edit', compact('{{modelNameLowerCase}}'));
     }
@@ -90,7 +103,7 @@ class {{modelName}}Controller extends Controller
 
         ${{modelNameLowerCase}}->update($request->all());
 
-        return redirect()->route('{{modelRoute}}.index')
+        return redirect()->route('{{modelView}}.index')
             ->with('success', '{{modelName}} updated successfully');
     }
 
@@ -101,9 +114,9 @@ class {{modelName}}Controller extends Controller
      */
     public function destroy($id)
     {
-        ${{modelNameLowerCase}} = {{modelName}}::find($id)->delete();
+        ${{modelNameLowerCase}} = (new {{modelName}})->find($id)->delete();
 
-        return redirect()->route('{{modelRoute}}.index')
+        return redirect()->route('{{modelView}}.index')
             ->with('success', '{{modelName}} deleted successfully');
     }
 }

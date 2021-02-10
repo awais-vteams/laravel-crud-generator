@@ -28,6 +28,14 @@ class CrudGenerator extends GeneratorCommand
     protected $description = 'Create bootstrap CRUD operations';
 
     /**
+     * The stubs to be generated
+     *
+     * @var array
+     */
+//    protected $stubs = ['index', 'create', 'edit', 'form', 'show', '_index', '_create', '_edit'];
+    protected $stubs = ['index', 'create', 'edit', 'form', 'show'];
+
+    /**
      * Execute the console command.
      *
      * @return bool|null
@@ -128,6 +136,7 @@ class CrudGenerator extends GeneratorCommand
 
         $tableHead = "\n";
         $tableBody = "\n";
+        $tableColumnFilters = "\n";
         $viewRows = "\n";
         $form = "\n";
 
@@ -136,6 +145,7 @@ class CrudGenerator extends GeneratorCommand
 
             $tableHead .= $this->getHead($title);
             $tableBody .= $this->getBody($column);
+            $tableColumnFilters .= $this->getTableColumnFilters($column);
             $viewRows .= $this->getField($title, $column, 'view-field');
             $form .= $this->getField($title, $column, 'form-field');
         }
@@ -143,13 +153,14 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), [
             '{{tableHeader}}' => $tableHead,
             '{{tableBody}}' => $tableBody,
+            '{{tableColumnFilters}}' => $tableColumnFilters,
             '{{viewRows}}' => $viewRows,
             '{{form}}' => $form,
         ]);
 
         $this->buildLayout();
 
-        foreach (['index', 'create', 'edit', 'form', 'show'] as $view) {
+        foreach ($this->stubs as $view) {
             $viewTemplate = str_replace(
                 array_keys($replace), array_values($replace), $this->getStub("views/{$view}")
             );
