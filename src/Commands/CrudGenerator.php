@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 /**
  * Class CrudGenerator.
  *
+ * @author Daniel Scheff <scheff-code@gmail.com>
  * @author  Awais <asargodha@gmail.com>
  */
 class CrudGenerator extends GeneratorCommand

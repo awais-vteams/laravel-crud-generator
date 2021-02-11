@@ -1,14 +1,18 @@
 {
     "name": "dscheff/crud-generator",
-    "description": "Laravel Crud Generator with Filters",
+    "description": "Laravel Crud Generator with Column Filters",
     "license": "MIT",
     "authors": [
         {
             "name": "Daniel Scheff",
             "email": "scheff-code@gmail.com"
+        },
+        {
+            "name": "M Awais",
+            "email": "asargodha@gmail.com"
         }
     ],
-    "keywords": ["laravel", "filters", "crud", "crud generator", "laravel crud generator", "laravel package"],
+    "keywords": ["laravel", "column filters", "crud", "crud generator", "laravel crud generator", "laravel package"],
     "require": {
         "laravel/framework": "^5.5|^6.20.12|^7.0|^8.0",
         "laravelcollective/html": "^5.4|^6.0|^7.0|^8.0"
