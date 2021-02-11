@@ -259,6 +259,7 @@ abstract class GeneratorCommand extends Command
     {
         return [
             '{{layout}}' => $this->layout,
+            '{{table}}' => $this->table,
             '{{modelName}}' => $this->name,
             '{{modelTitle}}' => Str::title(Str::snake($this->name, ' ')),
             '{{modelNamespace}}' => $this->modelNamespace,
@@ -480,6 +481,22 @@ abstract class GeneratorCommand extends Command
         return [
             ['name', InputArgument::REQUIRED, 'The name of the table'],
         ];
+    }
+
+    protected function getTableColumnFilters($column)
+    {
+        $replace = array_merge($this->buildReplacements(), [
+            '{{column}}' => $column,
+        ]);
+
+        return str_replace(
+            array_keys($replace),
+            array_values($replace),
+            $this->_getSpace(11) . '
+                <td><input class="form-control form-control-sm" type="text" name="filter[\'{{column}}\']"
+                           data-field="{{column}}"
+                           value="{{ isset($get[\'{{column}}\']) ? $get[\'{{column}}\'] : \'\' }}"></td>' . "\n"
+        );
     }
 
     /**
