@@ -36,6 +36,13 @@ php artisan vendor:publish --tag=crud
 php artisan vendor:publish --tag=public --force
 ```
 
+Note that you will need to add the following to your app layout, just before your closing body tag:
+
+```
+@stack('scripts-body')
+```
+
+
 ## Usage
 ```
 php artisan make:crud {table_name}
