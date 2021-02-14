@@ -466,14 +466,14 @@ abstract class GeneratorCommand extends Command
     protected function buildOptions()
     {
         $route = $this->option('route');
-        $display = $this->option('display');
+        $title = $this->option('title');
 
         if (!empty($route)) {
             $this->options['route'] = $route;
         }
 
-        if (!empty($display)) {
-            $this->options['display'] = $display;
+        if (!empty($title)) {
+            $this->options['title'] = $title;
         }
 
         return $this;
