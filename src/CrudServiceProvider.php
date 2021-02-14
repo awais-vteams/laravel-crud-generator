@@ -36,7 +36,7 @@ class CrudServiceProvider extends ServiceProvider
     private function publishPublic()
     {
         $this->publishes([
-            __DIR__.'../public' => public_path('vendor/dscheff/crud'),
+            __DIR__.'/public/filters.js' => public_path('vendor/crud/js/filters.js'),
         ], 'public');
     }
 
