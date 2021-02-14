@@ -74,14 +74,14 @@ abstract class GeneratorCommand extends Command
     protected $controllerNamespace = 'App\Http\Controllers';
 
     /**
-     * Application Layout
+     * Application Layout.
      *
      * @var string
      */
     protected $layout = 'layouts.app';
 
     /**
-     * Custom Options name
+     * Custom Options name.
      *
      * @var array
      */
@@ -157,20 +157,20 @@ abstract class GeneratorCommand extends Command
      * Get the stub file.
      *
      * @param string $type
-     * @param boolean $content
+     * @param bool   $content
      *
-     * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
+     * @return string
      */
     protected function getStub($type, $content = true)
     {
         $stub_path = config('crud.stub_path', 'default');
         if ($stub_path == 'default') {
-            $stub_path = __DIR__ . '/../stubs/';
+            $stub_path = __DIR__.'/../stubs/';
         }
 
-        $path = Str::finish($stub_path, '/') . "{$type}.stub";
+        $path = Str::finish($stub_path, '/')."{$type}.stub";
 
         if (!$content) {
             return $path;
@@ -201,7 +201,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function _getControllerPath($name)
     {
-        return app_path($this->_getNamespacePath($this->controllerNamespace) . "{$name}Controller.php");
+        return app_path($this->_getNamespacePath($this->controllerNamespace)."{$name}Controller.php");
     }
 
     /**
@@ -211,7 +211,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function _getModelPath($name)
     {
-        return $this->makeDirectory(app_path($this->_getNamespacePath($this->modelNamespace) . "{$name}.php"));
+        return $this->makeDirectory(app_path($this->_getNamespacePath($this->modelNamespace)."{$name}.php"));
     }
 
     /**
@@ -235,7 +235,7 @@ abstract class GeneratorCommand extends Command
      */
     private function _getLayoutPath()
     {
-        return $this->makeDirectory(resource_path("/views/layouts/app.blade.php"));
+        return $this->makeDirectory(resource_path('/views/layouts/app.blade.php'));
     }
 
     /**
@@ -258,17 +258,17 @@ abstract class GeneratorCommand extends Command
     protected function buildReplacements()
     {
         return [
-            '{{layout}}' => $this->layout,
-            '{{table}}' => $this->table,
-            '{{modelName}}' => $this->name,
-            '{{modelTitle}}' => $this->options['title'] ?? Str::title(Str::snake($this->name, ' ')),
-            '{{modelNamespace}}' => $this->modelNamespace,
-            '{{controllerNamespace}}' => $this->controllerNamespace,
+            '{{layout}}'                   => $this->layout,
+            '{{table}}'                    => $this->table,
+            '{{modelName}}'                => $this->name,
+            '{{modelTitle}}'               => Str::title(Str::snake($this->name, ' ')),
+            '{{modelNamespace}}'           => $this->modelNamespace,
+            '{{controllerNamespace}}'      => $this->controllerNamespace,
             '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->name)),
             '{{modelNamePluralUpperCase}}' => ucfirst(Str::plural($this->name)),
-            '{{modelNameLowerCase}}' => Str::camel($this->name),
-            '{{modelRoute}}' => $this->options['route'] ?? Str::kebab(Str::plural($this->name)),
-            '{{modelView}}' => Str::kebab($this->name),
+            '{{modelNameLowerCase}}'       => Str::camel($this->name),
+            '{{modelRoute}}'               => $this->options['route'] ?? Str::kebab(Str::plural($this->name)),
+            '{{modelView}}'                => Str::kebab($this->name),
         ];
     }
 
@@ -279,19 +279,21 @@ abstract class GeneratorCommand extends Command
      * @param $column
      * @param string $type
      *
-     * @return mixed
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
+     * @return mixed
      */
     protected function getField($title, $column, $type = 'form-field')
     {
         $replace = array_merge($this->buildReplacements(), [
-            '{{title}}' => $title,
+            '{{title}}'  => $title,
             '{{column}}' => $column,
         ]);
 
         return str_replace(
-            array_keys($replace), array_values($replace), $this->getStub("views/{$type}")
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub("views/{$type}")
         );
     }
 
@@ -309,7 +311,7 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(10) . '<th>{{title}}</th>' . "\n"
+            $this->_getSpace(10).'<th>{{title}}</th>'."\n"
         );
     }
 
@@ -327,7 +329,7 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(11) . '<td>{{ ${{modelNameLowerCase}}->{{column}} }}</td>' . "\n"
+            $this->_getSpace(11).'<td>{{ ${{modelNameLowerCase}}->{{column}} }}</td>'."\n"
         );
     }
 
@@ -339,7 +341,6 @@ abstract class GeneratorCommand extends Command
     protected function buildLayout(): void
     {
         if (!(view()->exists($this->layout))) {
-
             $this->info('Creating Layout ...');
 
             if ($this->layout == 'layouts.app') {
@@ -358,7 +359,7 @@ abstract class GeneratorCommand extends Command
     protected function getColumns()
     {
         if (empty($this->tableColumns)) {
-            $this->tableColumns = DB::select('SHOW COLUMNS FROM ' . $this->table);
+            $this->tableColumns = DB::select('SHOW COLUMNS FROM '.$this->table);
         }
 
         return $this->tableColumns;
@@ -424,7 +425,7 @@ abstract class GeneratorCommand extends Command
 
             // Add quotes to the unwanted columns for fillable
             array_walk($filterColumns, function (&$value) {
-                $value = "'" . $value . "'";
+                $value = "'".$value."'";
             });
 
             // CSV format
@@ -437,12 +438,12 @@ abstract class GeneratorCommand extends Command
             ->getEloquentRelations();
 
         return [
-            '{{fillable}}' => $fillable(),
-            '{{rules}}' => $rules(),
-            '{{relations}}' => $relations,
-            '{{properties}}' => $properties,
+            '{{fillable}}'             => $fillable(),
+            '{{rules}}'                => $rules(),
+            '{{relations}}'            => $relations,
+            '{{properties}}'           => $properties,
             '{{softDeletesNamespace}}' => $softDeletesNamespace,
-            '{{softDeletes}}' => $softDeletes,
+            '{{softDeletes}}'          => $softDeletes,
         ];
     }
 
@@ -457,7 +458,7 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
-     * Build the options
+     * Build the options.
      *
      * @return $this|array
      */
@@ -498,10 +499,10 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(11) . '
+            $this->_getSpace(11).'
                 <td><input class="form-control form-control-sm" type="text" name="filter[\'{{column}}\']"
                            data-field="{{column}}"
-                           value="{{ isset($get[\'{{column}}\']) ? $get[\'{{column}}\'] : \'\' }}"></td>' . "\n"
+                           value="{{ isset($get[\'{{column}}\']) ? $get[\'{{column}}\'] : \'\' }}"></td>'."\n"
         );
     }
 
