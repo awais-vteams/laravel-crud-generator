@@ -92,7 +92,7 @@ class CrudGenerator extends GeneratorCommand
 
         $replace = $this->buildReplacements();
 
-        $controllerTemplate = str_replace(
+        $template = str_replace(
             array_keys($replace),
             array_values($replace),
             $this->getStub('Controller')
@@ -121,7 +121,7 @@ class CrudGenerator extends GeneratorCommand
         // Make the models attributes and replacement
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
-        $modelTemplate = str_replace(
+        $template = str_replace(
             array_keys($replace),
             array_values($replace),
             $this->getStub('Model')
