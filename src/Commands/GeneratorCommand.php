@@ -261,7 +261,7 @@ abstract class GeneratorCommand extends Command
             '{{layout}}' => $this->layout,
             '{{table}}' => $this->table,
             '{{modelName}}' => $this->name,
-            '{{modelTitle}}' => Str::title(Str::snake($this->name, ' ')),
+            '{{modelTitle}}' => $this->options['title'] ?? Str::title(Str::snake($this->name, ' ')),
             '{{modelNamespace}}' => $this->modelNamespace,
             '{{controllerNamespace}}' => $this->controllerNamespace,
             '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->name)),
@@ -433,7 +433,8 @@ abstract class GeneratorCommand extends Command
 
         $properties .= "\n *";
 
-        list($relations, $properties) = (new ModelGenerator($this->table, $properties, $this->modelNamespace))->getEloquentRelations();
+        list($relations, $properties) = (new ModelGenerator($this->table, $properties, $this->modelNamespace))
+            ->getEloquentRelations();
 
         return [
             '{{fillable}}' => $fillable(),
@@ -463,9 +464,14 @@ abstract class GeneratorCommand extends Command
     protected function buildOptions()
     {
         $route = $this->option('route');
+        $display = $this->option('display');
 
         if (!empty($route)) {
             $this->options['route'] = $route;
+        }
+
+        if (!empty($display)) {
+            $this->options['display'] = $display;
         }
 
         return $this;

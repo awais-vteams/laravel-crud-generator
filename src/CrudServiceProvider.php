@@ -22,10 +22,22 @@ class CrudServiceProvider extends ServiceProvider
                 CrudGenerator::class,
             ]);
         }
+        $this->publishConfig();
+        $this->publishPublic();
+    }
 
+    private function publishConfig()
+    {
         $this->publishes([
             __DIR__.'/config/crud.php' => config_path('crud.php'),
         ], 'crud');
+    }
+
+    private function publishPublic()
+    {
+        $this->publishes([
+            __DIR__.'../public' => public_path('vendor/dscheff/crud'),
+        ], 'public');
     }
 
     /**

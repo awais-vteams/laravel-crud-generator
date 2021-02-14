@@ -1,6 +1,6 @@
-![Laravel Crud Generator with Column Filters](https://banners.beyondco.de/Laravel%20Crud%20Generator%20with%20Column%20Filters!.png?theme=light&packageManager=composer+require&packageName=dscheff%2Fcrud-generator&pattern=graphPaper&style=style_1&description=Column+Filters+in+your+Index+View+&md=1&showWatermark=0&fontSize=75px&images=filter)
+![Laravel Crud Generator with Column Filters](https://banners.beyondco.de/Laravel%20Crud%20Generator%20with%20Column%20Filters!.png?theme=dark&packageManager=composer+require&packageName=dscheff%2Fcrud-generator&pattern=graphPaper&style=style_1&description=Column+Filters+in+your+Index+View+&md=1&showWatermark=0&fontSize=75px&images=filter)
 
-![Packagist](https://img.shields.io/badge/Packagist-v1.1.2-green.svg?style=flat-square)
+![Packagist](https://img.shields.io/badge/Packagist-v1.3.2-green.svg?style=flat-square)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green.svg?style=flat-square)
 ![StyleCI](https://img.shields.io/badge/StyleCI-pass-green.svg?style=flat-square)
 
@@ -12,12 +12,13 @@ Controller, Model (with eloquent relations) and Views
 in **Bootstrap** for your development of your applications with single command.
 
 @todo - Add related models to the filtering
+
 @todo - Adding subview generation for views that integrate mutiple models, with 
 Ajax/modal/inline forms
 
 - Will create **Model** with Eloquent relations
 - Will create **Controller** with all resources
-- Will create **views** in Bootstrap
+- Will create **views** in Bootstrap 4
 - Will add **Column Filters** to your index action/view 
 
 ## Requirements
@@ -32,6 +33,7 @@ composer require dscheff/crud-generator --dev
 2- Publish the default package's config
 ```
 php artisan vendor:publish --tag=crud
+php artisan vendor:publish --tag=public --force
 ```
 
 ## Usage
@@ -48,9 +50,14 @@ Route::resource('banks', 'BankController');
 Route name in plural slug case.
 
 #### Options
- - Custom Route
+- Custom Route
 ```
-php artisan make:crud {table_name} --route={route_name}
+php artisan make:crud {table_name} --route={route_name} 
+```
+
+- Custom Display Name for Views
+```
+php artisan make:crud {table_name} --title={displayed_model_name}
 ```
 
 ## Example

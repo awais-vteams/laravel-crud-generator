@@ -48,14 +48,14 @@
                                         {{tableColumnFilters}}
                                         <td></td>
                                     </tr>
-                                    @foreach (${{modelNamePluralLowerCase}} as ${{modelNameLowerCase}})
+                                    @foreach ($models as $model)
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             {{tableBody}}
-                                            <td>
-                                                <form action="{{ route('{{modelView}}.destroy',${{modelNameLowerCase}}->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('{{modelView}}.show',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('{{modelView}}.edit',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                            <td class="text-nowrap">
+                                                <form action="{{ route('{{modelView}}.destroy',$model->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('{{modelView}}.show',$model->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('{{modelView}}.edit',$model->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
@@ -74,5 +74,5 @@
     </div>
 @endsection
 @push('scripts-body')
-    <script src="{{ asset('js/filters.js') }}"></script>
+    <script src="{{ asset('vendor/dscheff/crud/filters.js') }}"></script>
 @endpush

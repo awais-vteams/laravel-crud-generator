@@ -19,7 +19,10 @@ class CrudGenerator extends GeneratorCommand
      */
     protected $signature = 'make:crud
                             {name : Table name}
-                            {--route= : Custom route name}';
+                            {--route= : Custom route name}
+                            {--title= : Visible model name}';
+
+    // {--model-name= : Model name if not studly table name}
 
     /**
      * The console command description.
@@ -79,21 +82,19 @@ class CrudGenerator extends GeneratorCommand
      */
     protected function buildController()
     {
-        $controllerPath = $this->_getControllerPath($this->name);
+        $path = $this->_getControllerPath($this->name);
 
-        if ($this->files->exists($controllerPath) && $this->ask('Already exist Controller. Do you want overwrite (y/n)?', 'y') == 'n') {
+        if ($this->files->exists($path) && $this->ask('Controller exists. Overwrite (y/n)?', 'y') == 'n') {
             return $this;
         }
 
-        $this->info('Creating Controller ...');
+        $this->info('Creating Controller...');
 
         $replace = $this->buildReplacements();
 
-        $controllerTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Controller')
-        );
+        $template = str_replace(array_keys($replace), array_values($replace), $this->getStub('Controller'));
 
-        $this->write($controllerPath, $controllerTemplate);
+        $this->write($path, $template);
 
         return $this;
     }
@@ -105,22 +106,20 @@ class CrudGenerator extends GeneratorCommand
      */
     protected function buildModel()
     {
-        $modelPath = $this->_getModelPath($this->name);
+        $path = $this->_getModelPath($this->name);
 
-        if ($this->files->exists($modelPath) && $this->ask('Already exist Model. Do you want overwrite (y/n)?', 'y') == 'n') {
+        if ($this->files->exists($path) && $this->ask('Model exists. Overwrite (y/n)?', 'y') == 'n') {
             return $this;
         }
 
-        $this->info('Creating Model ...');
+        $this->info('Creating Model...');
 
         // Make the models attributes and replacement
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
-        $modelTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Model')
-        );
+        $template = str_replace(array_keys($replace), array_values($replace), $this->getStub('Model'));
 
-        $this->write($modelPath, $modelTemplate);
+        $this->write($path, $template);
 
         return $this;
     }
