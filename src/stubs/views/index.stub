@@ -74,5 +74,5 @@
     </div>
 @endsection
 @push('scripts-body')
-    <script src="{{ asset('vendor/dscheff/crud/filters.js') }}"></script>
+    <script src="{{ asset('vendor/crud/js/filters.js') }}"></script>
 @endpush
