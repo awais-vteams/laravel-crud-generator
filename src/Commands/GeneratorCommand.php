@@ -253,22 +253,23 @@ abstract class GeneratorCommand extends Command
     /**
      * Build the replacement.
      *
+     * 
      * @return array
      */
     protected function buildReplacements()
     {
         return [
-            '{{layout}}' => $this->layout,
-            '{{table}}' => $this->table,
-            '{{modelName}}' => $this->name,
-            '{{modelTitle}}' => $this->options['title'] ?? Str::title(Str::snake($this->name, ' ')),
-            '{{modelNamespace}}' => $this->modelNamespace,
-            '{{controllerNamespace}}' => $this->controllerNamespace,
+            '{{layout}}'                   => $this->layout,
+            '{{table}}'                    => $this->table,
+            '{{modelName}}'                => $this->name,
+            '{{modelTitle}}'               => $this->options['title'] ?? Str::title(Str::snake($this->name, ' ')),
+            '{{modelNamespace}}'           => $this->modelNamespace,
+            '{{controllerNamespace}}'      => $this->controllerNamespace,
             '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->name)),
             '{{modelNamePluralUpperCase}}' => ucfirst(Str::plural($this->name)),
-            '{{modelNameLowerCase}}' => Str::camel($this->name),
-            '{{modelRoute}}' => $this->options['route'] ?? Str::kebab(Str::plural($this->name)),
-            '{{modelView}}' => Str::kebab($this->name),
+            '{{modelNameLowerCase}}'       => Str::camel($this->name),
+            '{{modelRoute}}'               => $this->options['route'] ?? Str::kebab(Str::plural($this->name)),
+            '{{modelView}}'                => Str::kebab($this->name),
         ];
     }
 
