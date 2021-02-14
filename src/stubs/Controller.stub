@@ -34,7 +34,7 @@ class {{modelName}}Controller extends Controller
         $links = $models->links();
 
         return view('{{modelView}}.index', compact('models', 'links'))
-            ->with('i', (request()->input('page', 1) - 1) * $perPage);
+            ->with('i', (request()->input('page', 1) - 1) * $models->perPage());
     }
 
     /**
