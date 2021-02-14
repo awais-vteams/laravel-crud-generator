@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
  */
 class {{modelName}}Controller extends Controller
 {
-    private $modelName = {{modelName}}::class;
-
     /**
      * Display a listing of the resource.
      *
@@ -21,19 +19,21 @@ class {{modelName}}Controller extends Controller
     public function index(Request $request)
     {
         $get = $request->query();
-        ${{modelNamePluralLowerCase}} = (new {{modelName}})->paginate();
-        $perPage = ${{modelNamePluralLowerCase}}->perPage();
-        $links = ${{modelNamePluralLowerCase}}->links();
 
         if (!empty($get)) {
-            $models = $this
-                ->applyFilters($this->modelName)
-                ->paginate($perPage);
-            return view('{{modelView}}.index', ['{{modelNamePluralLowerCase}}' => $models, 'links' => $links, 'get' => $get])
-                ->with('i', (request()->input('page', 1) - 1) * $perPage);
+            $models = $this->applyFilters({{modelName}}::class)->paginate();
+
+            return view('{{modelView}}.index', [
+                'models' => $models,
+                'links' => $models->links(),
+                'get' => $get,
+            ])->with('i', (request()->input('page', 1) - 1) * $models->perPage());
         }
 
-        return view('{{modelView}}.index', compact('{{modelNamePluralLowerCase}}', 'links', 'get'))
+        $models = (new {{modelName}})->paginate();
+        $links = $models->links();
+
+        return view('{{modelView}}.index', compact('models', 'links'))
             ->with('i', (request()->input('page', 1) - 1) * $perPage);
     }
 
@@ -44,8 +44,8 @@ class {{modelName}}Controller extends Controller
      */
     public function create()
     {
-        ${{modelNameLowerCase}} = new {{modelName}}();
-        return view('{{modelView}}.create', compact('{{modelNameLowerCase}}'));
+        $model = new {{modelName}}();
+        return view('{{modelView}}.create', compact('model'));
     }
 
     /**
@@ -58,10 +58,10 @@ class {{modelName}}Controller extends Controller
     {
         request()->validate({{modelName}}::$rules);
 
-        ${{modelNameLowerCase}} = (new {{modelName}})->create($request->all());
+        $model = (new {{modelName}})->create($request->all());
 
         return redirect()->route('{{modelView}}.index')
-            ->with('success', '{{modelName}} created successfully.');
+            ->with('success', 'Record created');
     }
 
     /**
@@ -72,9 +72,9 @@ class {{modelName}}Controller extends Controller
      */
     public function show($id)
     {
-        ${{modelNameLowerCase}} = (new {{modelName}})->find($id);
+        $model = (new {{modelName}})->find($id);
 
-        return view('{{modelView}}.show', compact('{{modelNameLowerCase}}'));
+        return view('{{modelView}}.show', compact('model'));
     }
 
     /**
@@ -85,9 +85,9 @@ class {{modelName}}Controller extends Controller
      */
     public function edit($id)
     {
-        ${{modelNameLowerCase}} = (new {{modelName}})->find($id);
+        $model = (new {{modelName}})->find($id);
 
-        return view('{{modelView}}.edit', compact('{{modelNameLowerCase}}'));
+        return view('{{modelView}}.edit', compact('model'));
     }
 
     /**
@@ -97,14 +97,14 @@ class {{modelName}}Controller extends Controller
      * @param  {{modelName}} ${{modelNameLowerCase}}
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, {{modelName}} ${{modelNameLowerCase}})
+    public function update(Request $request, {{modelName}} $model)
     {
         request()->validate({{modelName}}::$rules);
 
-        ${{modelNameLowerCase}}->update($request->all());
+        $model->update($request->all());
 
         return redirect()->route('{{modelView}}.index')
-            ->with('success', '{{modelName}} updated successfully');
+            ->with('success', 'Record updated');
     }
 
     /**
@@ -114,9 +114,9 @@ class {{modelName}}Controller extends Controller
      */
     public function destroy($id)
     {
-        ${{modelNameLowerCase}} = (new {{modelName}})->find($id)->delete();
+        $model = (new {{modelName}})->find($id)->delete();
 
         return redirect()->route('{{modelView}}.index')
-            ->with('success', '{{modelName}} deleted successfully');
+            ->with('success', 'Record deleted');
     }
 }

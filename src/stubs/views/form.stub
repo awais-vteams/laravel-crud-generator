@@ -1,8 +1,12 @@
-<div class="box box-info padding-1">
-    <div class="box-body">
-        {{form}}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {{form}}
+        </div>
     </div>
-    <div class="box-footer mt20">
-        <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="row mt-2">
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </div>
 </div>

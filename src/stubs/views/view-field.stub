@@ -1,4 +1,4 @@
                         <div class="form-group">
                             <strong>{{title}}:</strong>
-                            {{ ${{modelNameLowerCase}}->{{column}} }}
+                            {{ $model->{{column}} }}
                         </div>
