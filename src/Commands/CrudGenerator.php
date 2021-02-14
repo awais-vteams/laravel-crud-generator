@@ -29,7 +29,7 @@ class CrudGenerator extends GeneratorCommand
     protected $description = 'Create bootstrap CRUD operations';
 
     /**
-     * The stubs to be generated
+     * The stubs to be generated.
      *
      * @var array
      */
@@ -39,9 +39,9 @@ class CrudGenerator extends GeneratorCommand
     /**
      * Execute the console command.
      *
-     * @return bool|null
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
+     * @return bool|null
      */
     public function handle()
     {
@@ -73,9 +73,9 @@ class CrudGenerator extends GeneratorCommand
     /**
      * Build the Controller Class and save in app/Http/Controllers.
      *
-     * @return $this
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
+     * @return $this
      */
     protected function buildController()
     {
@@ -90,7 +90,9 @@ class CrudGenerator extends GeneratorCommand
         $replace = $this->buildReplacements();
 
         $controllerTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Controller')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('Controller')
         );
 
         $this->write($controllerPath, $controllerTemplate);
@@ -99,9 +101,9 @@ class CrudGenerator extends GeneratorCommand
     }
 
     /**
-     * @return $this
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
+     * @return $this
      */
     protected function buildModel()
     {
@@ -117,7 +119,9 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         $modelTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Model')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('Model')
         );
 
         $this->write($modelPath, $modelTemplate);
@@ -126,10 +130,10 @@ class CrudGenerator extends GeneratorCommand
     }
 
     /**
-     * @return $this
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     protected function buildViews()
     {
@@ -152,18 +156,20 @@ class CrudGenerator extends GeneratorCommand
         }
 
         $replace = array_merge($this->buildReplacements(), [
-            '{{tableHeader}}' => $tableHead,
-            '{{tableBody}}' => $tableBody,
+            '{{tableHeader}}'        => $tableHead,
+            '{{tableBody}}'          => $tableBody,
             '{{tableColumnFilters}}' => $tableColumnFilters,
-            '{{viewRows}}' => $viewRows,
-            '{{form}}' => $form,
+            '{{viewRows}}'           => $viewRows,
+            '{{form}}'               => $form,
         ]);
 
         $this->buildLayout();
 
         foreach ($this->stubs as $view) {
             $viewTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub("views/{$view}")
+                array_keys($replace),
+                array_values($replace),
+                $this->getStub("views/{$view}")
             );
 
             $this->write($this->_getViewPath($view), $viewTemplate);
