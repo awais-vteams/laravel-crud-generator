@@ -1,14 +1,33 @@
-$(function (){
-    $('#clear-filters').on('click', function() {
+$(function () {
+    $(document).on('click', '#clear-filters', function() {
         window.location.href = '/' + $(this).attr('data-view')
     });
-    $('#filters input').on('change', function() {
-        let query_string = '?';
-        $('#filters input').each(function() {
-            if($(this).val() != '') {
-                query_string += $(this).attr('data-field') + '=' + $(this).val() + '&';
-            }
-        });
-        window.location.href = '/' + $('#page').val() + query_string;
+    $(document).on('click', '.column-sorter', function () {
+        updateView($(this).attr('data-sort'));
+    });
+    $(document).on('change', '#filters input', function() {
+        updateView('');
     });
 });
+function updateView(sort)
+{
+    let query_string = '?';
+    $('#filters input').each(function() {
+        if($(this).val() != '') {
+            query_string += $(this).attr('data-field') + '=' + $(this).val() + '&';
+        }
+    });
+
+    query_string += 'sort=' + sort + '&sort_order=' + sortOrder();
+
+    window.location.href = '/' + $('#page').val() + query_string;
+}
+
+function sortOrder()
+{
+    let sort_icon =  $('#sort_icon').val();
+    if (sort_icon !== '') {
+        return sort_icon == 'up' ? 'asc' : 'desc';
+    }
+    return 'asc';
+}

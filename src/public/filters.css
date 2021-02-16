@@ -1,0 +1,12 @@
+.card-body .table thead th, .card-body .table tbody td {
+    border: 1px solid #dee2e6;
+}
+.card-body .table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f4f4f4;
+    font-weight: normal !important;
+}
+.c-pointer {
+    cursor: pointer;
+}

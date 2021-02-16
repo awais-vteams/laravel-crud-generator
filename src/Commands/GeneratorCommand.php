@@ -253,7 +253,7 @@ abstract class GeneratorCommand extends Command
     /**
      * Build the replacement.
      *
-     * 
+     *
      * @return array
      */
     protected function buildReplacements()
@@ -312,7 +312,10 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(10).'<th>{{title}}</th>'."\n"
+            $this->_getSpace(10).'<th data-sort="sales_rep_name" class="column-sorter c-pointer">
+                {{title}}<span class="fas float-right ' . "\n" .
+                    '{{ isset($sort) && $sort === \'sales_rep_name\' ? \'fa-sort-\' . $sort_icon : \'\' }}
+                                            "></span></th>'."\n"
         );
     }
 
@@ -330,7 +333,7 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(11).'<td>{{ ${{modelNameLowerCase}}->{{column}} }}</td>'."\n"
+            $this->_getSpace(11).'<td>{{ $model->{{column}} }}</td>'."\n"
         );
     }
 
@@ -488,6 +491,7 @@ abstract class GeneratorCommand extends Command
     {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the table'],
+            ['title', InputArgument::OPTIONAL, 'The colloquial name of the model'],
         ];
     }
 

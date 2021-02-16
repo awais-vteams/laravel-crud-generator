@@ -38,6 +38,10 @@ class CrudServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/public/filters.js' => public_path('vendor/crud/js/filters.js'),
         ], 'public');
+
+        $this->publishes([
+            __DIR__.'/public/filters.css' => public_path('vendor/crud/css/filters.css'),
+        ], 'public');
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace {{controllerNamespace}};
 
+use Dscheff\CrudGenerator\GridView\Controllers\GridViewController;
 use {{modelNamespace}}\{{modelName}};
 use Illuminate\Http\Request;
 
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
  * Class {{modelName}}Controller
  * @package App\Http\Controllers
  */
-class {{modelName}}Controller extends Controller
+class {{modelName}}Controller extends GridViewController
 {
     /**
      * Display a listing of the resource.
@@ -27,14 +28,20 @@ class {{modelName}}Controller extends Controller
                 'models' => $models,
                 'links' => $models->links(),
                 'get' => $get,
+                'sort' => isset($get['sort']) && $get['sort'] ? $get['sort'] : '',
+                'sort_icon' => self::sortIcon($get),
             ])->with('i', (request()->input('page', 1) - 1) * $models->perPage());
         }
 
         $models = (new {{modelName}})->paginate();
         $links = $models->links();
 
-        return view('{{modelView}}.index', compact('models', 'links'))
-            ->with('i', (request()->input('page', 1) - 1) * $models->perPage());
+        return view('{{modelView}}.index',  [
+           'models' => $models,
+           'links' => $links,
+           'sort' => $this->sort,
+           'sort_icon' => $this->sort_icon,
+        ])->with('i', (request()->input('page', 1) - 1) * $models->perPage());
     }
 
     /**

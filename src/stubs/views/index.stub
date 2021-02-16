@@ -5,6 +5,9 @@
 @endsection
 
 @section('content')
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('vendor/crud/css/filters.css') }}">
+    @endpush
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -43,6 +46,7 @@
                                 </thead>
                                 <tbody>
                                     <input type="hidden" name="page" id="page" value="{{modelView}}">
+                                    <input type="hidden" name="sort_icon" id="sort_icon" value="{{ $sort_icon }}">
                                     <tr id="filters">
                                         <td></td>
                                         {{tableColumnFilters}}
