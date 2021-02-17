@@ -303,18 +303,19 @@ abstract class GeneratorCommand extends Command
      *
      * @return mixed
      */
-    protected function getHead($title)
+    protected function getHead($title, $column)
     {
         $replace = array_merge($this->buildReplacements(), [
             '{{title}}' => $title,
+            '{{column}}' => $column,
         ]);
 
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(10).'<th data-sort="sales_rep_name" class="column-sorter c-pointer">
+            $this->_getSpace(10).'<th data-sort="{{column}}" class="column-sorter c-pointer">
                 {{title}}<span class="fas float-right ' . "\n" .
-                    '{{ isset($sort) && $sort === \'sales_rep_name\' ? \'fa-sort-\' . $sort_icon : \'\' }}
+                    '{{ isset($sort) && $sort === \'{{column}}\' ? \'fa-sort-\' . $sort_icon : \'\' }}
                                             "></span></th>'."\n"
         );
     }
