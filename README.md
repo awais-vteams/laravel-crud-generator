@@ -1,4 +1,4 @@
-![Laravel Crud Generator with Column Filters](https://banners.beyondco.de/Laravel%20Crud%20Generator%20with%20Column%20Filters%20and%20Sorting.png?theme=dark&packageManager=composer+require&packageName=dscheff%2Fcrud-generator&pattern=graphPaper&style=style_1&description=Column+Filtering+and+Sorting+&md=1&showWatermark=0&fontSize=70px&images=filter)
+![Laravel Crud Generator with Column Filters](https://banners.beyondco.de/Laravel%20Crud%20Generator%20with%20Column%20Filters%20and%20Sorting.png?theme=dark&packageManager=composer+require&packageName=dscheff%2Fcrud-generator&pattern=graphPaper&style=style_1&description=Column+Filtering+and+Sorting+&md=1&showWatermark=0&fontSize=70px&images=filter&images=arrow-narrow-down)
 
 ![Packagist](https://img.shields.io/badge/Packagist-v1.3.10-green.svg?style=flat-square)
 ![Licence](https://img.shields.io/badge/Licence-MIT-green.svg?style=flat-square)
