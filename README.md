@@ -7,7 +7,7 @@ This package is a fork of https://packagist.org/packages/ibex/crud-generator, an
 filtering to the index view, as well as a handful of other tweaks.
 
 This Laravel Generator package generates your MVC code (with eloquent relations) in **Bootstrap** for your app 
-development, with single command.
+development, with a single command.
 
 @todo - Add related models to the sorting and filtering
 
