@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 
 class GridViewController extends Controller
 {
-
     protected $sort = '';
     protected $sort_icon = '';
 
@@ -14,14 +13,14 @@ class GridViewController extends Controller
     {
         $pairs = \request()->query();
 
-        $models = (new $model)->where([
+        $models = (new $model())->where([
             [function ($query) use ($pairs) {
                 foreach ($pairs as $column => $val) {
                     if ($val != '' && $column !== 'sort' && $column !== 'sort_order') {
-                        $query->where($column, 'LIKE', '%' . $val . '%')->get();
+                        $query->where($column, 'LIKE', '%'.$val.'%')->get();
                     }
                 }
-            }]
+            }],
         ]);
 
         if (isset($pairs['sort'])) {
@@ -42,8 +41,10 @@ class GridViewController extends Controller
             if ($get['sort_order'] === 'asc') {
                 return 'down';
             }
+
             return 'up';
         }
+
         return '';
     }
 }
