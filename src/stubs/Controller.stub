@@ -104,11 +104,11 @@ class {{modelName}}Controller extends GridViewController
      * @param  {{modelName}} ${{modelNameLowerCase}}
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, {{modelName}} $model)
+    public function update(Request $request, {{modelName}} ${{modelNameLowerCase}})
     {
         request()->validate({{modelName}}::$rules);
 
-        $model->update($request->all());
+        ${{modelNameLowerCase}}->update($request->all());
 
         return redirect()->route('{{modelView}}.index')
             ->with('success', 'Record updated');
