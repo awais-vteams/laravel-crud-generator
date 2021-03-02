@@ -8,6 +8,7 @@ class GridViewController extends Controller
 {
     protected $sort = '';
     protected $sort_icon = '';
+    protected static $skip_columns = ['sort', 'sort_order', 'page'];
 
     protected function applyFilters($model)
     {
@@ -16,7 +17,7 @@ class GridViewController extends Controller
         $models = (new $model())->where([
             [function ($query) use ($pairs) {
                 foreach ($pairs as $column => $val) {
-                    if ($val != '' && $column !== 'sort' && $column !== 'sort_order') {
+                    if ($val != '' && !in_array($column, self::$skip_columns)) {
                         $query->where($column, 'LIKE', '%'.$val.'%')->get();
                     }
                 }
