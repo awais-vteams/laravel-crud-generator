@@ -5,14 +5,14 @@ $(function () {
     $(document).on('click', '.column-sorter', function () {
         updateView($(this).attr('data-sort'));
     });
-    $(document).on('change', '#filters input', function() {
+    $(document).on('change', '#filters input, #filters select', function() {
         updateView('');
     });
 });
 function updateView(sort)
 {
     let query_string = '?';
-    $('#filters input').each(function() {
+    $('#filters input, #filters select').each(function() {
         if($(this).val() != '') {
             query_string += $(this).attr('data-field') + '=' + $(this).val() + '&';
         }
