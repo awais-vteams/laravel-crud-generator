@@ -4,5 +4,5 @@
                 'class' => 'form-control' . ($errors->has('{{column}}') ? ' is-invalid' : ''),
                 'placeholder' => '{{title}}'
                ]) }}
-            {!! $errors->first('{{column}}', '<div class="invalid-feedback">:message</p>') !!}
+            {!! $errors->first('{{column}}', '<p class="invalid-feedback">:message</p>') !!}
         </div>
