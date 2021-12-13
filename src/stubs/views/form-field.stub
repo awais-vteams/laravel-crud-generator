@@ -1,5 +1,5 @@
         <div class="form-group">
             {{ Form::label('{{column}}') }}
             {{ Form::text('{{column}}', ${{modelNameLowerCase}}->{{column}}, ['class' => 'form-control' . ($errors->has('{{column}}') ? ' is-invalid' : ''), 'placeholder' => '{{title}}']) }}
-            {!! $errors->first('{{column}}', '<div class="invalid-feedback">:message</p>') !!}
+            {!! $errors->first('{{column}}', '<div class="invalid-feedback">:message</div>') !!}
         </div>
