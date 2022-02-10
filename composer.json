@@ -10,7 +10,7 @@
     ],
     "keywords": ["laravel", "crud", "crud generator", "laravel crud generator", "laravel package"],
     "require": {
-        "laravel/framework": "^5.5|^6.20.12|^7.0|^8.0|^9.0",
+        "laravel/framework": "^5.5|^6.20.42|^7.0|^8.0|^9.0",
         "laravelcollective/html": "^5.4|^6.0|^7.0|^8.0"
     },
     "autoload": {
