@@ -357,7 +357,7 @@ abstract class GeneratorCommand extends Command
     protected function getColumns()
     {
         if (empty($this->tableColumns)) {
-            $this->tableColumns = Schema::getColumnListing($this->table);
+            $this->tableColumns = DB::select('SHOW COLUMNS FROM ' . $this->table);
         }
 
         return $this->tableColumns;
