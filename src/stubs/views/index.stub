@@ -46,11 +46,11 @@
                                             {{tableBody}}
                                             <td>
                                                 <form action="{{ route('{{modelRoute}}.destroy',${{modelNameLowerCase}}->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('{{modelRoute}}.show',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('{{modelRoute}}.edit',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('{{modelRoute}}.show',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('{{modelRoute}}.edit',${{modelNameLowerCase}}->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
                                                 </form>
                                             </td>
                                         </tr>
