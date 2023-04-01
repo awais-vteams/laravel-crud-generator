@@ -1,7 +1,7 @@
 @extends('{{layout}}')
 
 @section('template_title')
-    {{ ${{modelNameLowerCase}}->name ?? "{{ __('Show') {{modelTitle}}" }}
+    {{ ${{modelNameLowerCase}}->name ?? __('Show') . " " . __('{{modelTitle}}') }}
 @endsection
 
 @section('content')
