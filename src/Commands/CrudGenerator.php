@@ -18,7 +18,10 @@ class CrudGenerator extends GeneratorCommand
      */
     protected $signature = 'make:crud
                             {name : Table name}
-                            {--route= : Custom route name}';
+                            {--route= : Custom route name}
+                            {--prefix= : Custom route name}
+                            
+                            ';
 
     /**
      * The console command description.
@@ -49,6 +52,7 @@ class CrudGenerator extends GeneratorCommand
 
         // Build the class name from table name
         $this->name = $this->_buildClassName();
+        $this->cleanName = $this->name;
 
         // Generate the crud
         $this->buildOptions()
@@ -70,7 +74,7 @@ class CrudGenerator extends GeneratorCommand
      */
     protected function buildController()
     {
-        $controllerPath = $this->_getControllerPath($this->name);
+        $controllerPath = $this->_getControllerPath($this->cleanName);
 
         if ($this->files->exists($controllerPath) && $this->ask('Already exist Controller. Do you want overwrite (y/n)?', 'y') == 'n') {
             return $this;
@@ -81,7 +85,9 @@ class CrudGenerator extends GeneratorCommand
         $replace = $this->buildReplacements();
 
         $controllerTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Controller')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('Controller')
         );
 
         $this->write($controllerPath, $controllerTemplate);
@@ -96,7 +102,7 @@ class CrudGenerator extends GeneratorCommand
      */
     protected function buildModel()
     {
-        $modelPath = $this->_getModelPath($this->name);
+        $modelPath = $this->_getModelPath($this->cleanName);
 
         if ($this->files->exists($modelPath) && $this->ask('Already exist Model. Do you want overwrite (y/n)?', 'y') == 'n') {
             return $this;
@@ -108,7 +114,9 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         $modelTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Model')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('Model')
         );
 
         $this->write($modelPath, $modelTemplate);
@@ -151,7 +159,9 @@ class CrudGenerator extends GeneratorCommand
 
         foreach (['index', 'create', 'edit', 'form', 'show'] as $view) {
             $viewTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub("views/{$view}")
+                array_keys($replace),
+                array_values($replace),
+                $this->getStub("views/{$view}")
             );
 
             $this->write($this->_getViewPath($view), $viewTemplate);

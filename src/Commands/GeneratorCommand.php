@@ -53,6 +53,13 @@ abstract class GeneratorCommand extends Command
     protected $name = null;
 
     /**
+     * Formatted Class claan name without prefix from Table.
+     *
+     * @var string
+     */
+    protected $cleaNname = null;
+
+    /**
      * Store the DB table columns.
      *
      * @var array
@@ -245,7 +252,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function _getViewPath($view)
     {
-        $name = Str::kebab($this->name);
+        $name = Str::kebab($this->cleanName);
 
         return $this->makeDirectory(resource_path("/views/{$name}/{$view}.blade.php"));
     }
@@ -257,17 +264,18 @@ abstract class GeneratorCommand extends Command
      */
     protected function buildReplacements()
     {
+
         return [
             '{{layout}}' => $this->layout,
-            '{{modelName}}' => $this->name,
-            '{{modelTitle}}' => Str::title(Str::snake($this->name, ' ')),
+            '{{modelName}}' => $this->cleanName,
+            '{{modelTitle}}' => Str::title(Str::snake($this->cleanName, ' ')),
             '{{modelNamespace}}' => $this->modelNamespace,
             '{{controllerNamespace}}' => $this->controllerNamespace,
-            '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->name)),
-            '{{modelNamePluralUpperCase}}' => ucfirst(Str::plural($this->name)),
-            '{{modelNameLowerCase}}' => Str::camel($this->name),
-            '{{modelRoute}}' => $this->options['route'] ?? Str::kebab(Str::plural($this->name)),
-            '{{modelView}}' => Str::kebab($this->name),
+            '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->cleanName)),
+            '{{modelNamePluralUpperCase}}' => ucfirst(Str::plural($this->cleanName)),
+            '{{modelNameLowerCase}}' => Str::camel($this->cleanName),
+            '{{modelRoute}}' => $this->options['route'] ?? Str::kebab(Str::plural($this->cleanName)),
+            '{{modelView}}' => Str::kebab($this->cleanName),
         ];
     }
 
@@ -290,7 +298,9 @@ abstract class GeneratorCommand extends Command
         ]);
 
         return str_replace(
-            array_keys($replace), array_values($replace), $this->getStub("views/{$type}")
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub("views/{$type}")
         );
     }
 
@@ -441,6 +451,7 @@ abstract class GeneratorCommand extends Command
             '{{properties}}' => $properties,
             '{{softDeletesNamespace}}' => $softDeletesNamespace,
             '{{softDeletes}}' => $softDeletes,
+            '{{tableName}}' => $this->table,
         ];
     }
 
@@ -462,9 +473,18 @@ abstract class GeneratorCommand extends Command
     protected function buildOptions()
     {
         $route = $this->option('route');
+        $prefix = $this->option('prefix');
 
         if (!empty($route)) {
             $this->options['route'] = $route;
+        }
+
+        if (!empty($prefix)) {
+            // $this->table = str_replace($prefix, "", $this->taxble);
+            $cName = str_replace($prefix, "", $this->table);
+            $this->cleanName = Str::studly(Str::singular($cName));
+
+            $this->options['prefix'] = $prefix;
         }
 
         return $this;
@@ -491,4 +511,6 @@ abstract class GeneratorCommand extends Command
     {
         return Schema::hasTable($this->table);
     }
+
+    
 }

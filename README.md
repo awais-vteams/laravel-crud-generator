@@ -45,6 +45,14 @@ Route name in plural slug case.
 php artisan make:crud {table_name} --route={route_name}
 ```
 
+- Removing prefix from 
+
+```
+php artisan make:crud {table_name} --prefix={prefix_to_remove}
+```
+**Example**
+In a table named **az_banks** the prefix would be **az_**, if you added this option the model name will be **Bank** and the controller name will be **BankController**
+
 ## Example
 
 *Model*
