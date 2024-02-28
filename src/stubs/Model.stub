@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class {{modelName}} extends Model
 {
+    protected $table = '{{tableName}}';
+    
     {{softDeletes}}
     static $rules = [{{rules}}
     ];
