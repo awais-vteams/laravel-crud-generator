@@ -1,5 +1,5 @@
-        <div class="form-group">
-            {{ Form::label('{{column}}') }}
-            {{ Form::text('{{column}}', ${{modelNameLowerCase}}->{{column}}, ['class' => 'form-control' . ($errors->has('{{column}}') ? ' is-invalid' : ''), 'placeholder' => '{{title}}']) }}
-            {!! $errors->first('{{column}}', '<div class="invalid-feedback">:message</div>') !!}
+        <div class="form-group mb-2 mb20">
+            <label for="{{column_snake}}" class="form-label">{{ __('{{title}}') }}</label>
+            <input type="text" name="{{column}}" class="form-control @error('{{column}}') is-invalid @enderror" value="{{ old('{{column}}', ${{modelNameLowerCase}}?->{{column}}) }}" id="{{column_snake}}" placeholder="{{title}}">
+            {!! $errors->first('{{column}}', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
         </div>

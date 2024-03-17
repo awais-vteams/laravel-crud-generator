@@ -1,8 +1,8 @@
-<div class="box box-info padding-1">
-    <div class="box-body">
+<div class="row padding-1 p-1">
+    <div class="col-md-12">
         {{form}}
     </div>
-    <div class="box-footer mt20">
+    <div class="col-md-12 mt20 mt-2">
         <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
     </div>
 </div>

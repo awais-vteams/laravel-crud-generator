@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 class {{modelName}} extends Model
 {
     {{softDeletes}}
-    static $rules = [{{rules}}
-    ];
 
     protected $perPage = 20;
 

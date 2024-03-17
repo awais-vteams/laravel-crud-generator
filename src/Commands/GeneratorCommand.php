@@ -29,6 +29,8 @@ abstract class GeneratorCommand extends Command
      */
     protected $unwantedColumns = [
         'id',
+        'uuid',
+        'ulid',
         'password',
         'email_verified_at',
         'remember_token',
@@ -71,6 +73,13 @@ abstract class GeneratorCommand extends Command
      * @var string
      */
     protected $controllerNamespace = 'App\Http\Controllers';
+
+    /**
+     * Request Namespace.
+     *
+     * @var string
+     */
+    protected $requestNamespace = 'App\Http\Requests';
 
     /**
      * Application Layout
@@ -149,6 +158,12 @@ abstract class GeneratorCommand extends Command
      */
     protected function write($path, $content)
     {
+        $directory = $this->files->dirname($path);
+
+        if (! $this->files->isDirectory($directory)) {
+            $this->files->makeDirectory($directory, 0755, true);
+        }
+
         $this->files->put($path, $content);
     }
 
@@ -201,6 +216,16 @@ abstract class GeneratorCommand extends Command
     protected function _getControllerPath($name)
     {
         return app_path($this->_getNamespacePath($this->controllerNamespace)."{$name}Controller.php");
+    }
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
+    protected function _getRequestPath($name)
+    {
+        return app_path($this->_getNamespacePath($this->requestNamespace)."{$name}Request.php");
     }
 
     /**
@@ -262,12 +287,18 @@ abstract class GeneratorCommand extends Command
             '{{modelTitle}}' => Str::title(Str::snake($this->name, ' ')),
             '{{modelNamespace}}' => $this->modelNamespace,
             '{{controllerNamespace}}' => $this->controllerNamespace,
+            '{{requestNamespace}}' => $this->requestNamespace,
             '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->name)),
             '{{modelNamePluralUpperCase}}' => ucfirst(Str::plural($this->name)),
             '{{modelNameLowerCase}}' => Str::camel($this->name),
-            '{{modelRoute}}' => $this->options['route'] ?? Str::kebab(Str::plural($this->name)),
+            '{{modelRoute}}' => $this->_getRoute(),
             '{{modelView}}' => Str::kebab($this->name),
         ];
+    }
+
+    protected function _getRoute()
+    {
+        return $this->options['route'] ?? Str::kebab(Str::plural($this->name));
     }
 
     /**
@@ -286,6 +317,7 @@ abstract class GeneratorCommand extends Command
         $replace = array_merge($this->buildReplacements(), [
             '{{title}}' => $title,
             '{{column}}' => $column,
+            '{{column_snake}}' => Str::snake($column),
         ]);
 
         return str_replace(
@@ -421,7 +453,7 @@ abstract class GeneratorCommand extends Command
             $rulesArray = Arr::except($rulesArray, $this->unwantedColumns);
             // Make rulesArray
             foreach ($rulesArray as $col => $rule) {
-                $rules .= "\n\t\t'{$col}' => '".implode('|', $rule)."',";
+                $rules .= "\n\t\t\t'{$col}' => '".implode('|', $rule)."',";
             }
 
             return $rules;
@@ -438,7 +470,7 @@ abstract class GeneratorCommand extends Command
             });
 
             // CSV format
-            return implode(',', $filterColumns);
+            return implode(', ', $filterColumns);
         };
 
         $properties .= "\n *";
