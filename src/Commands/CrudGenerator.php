@@ -2,6 +2,8 @@
 
 namespace Ibex\CrudGenerator\Commands;
 
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 
 /**
@@ -18,21 +20,20 @@ class CrudGenerator extends GeneratorCommand
      */
     protected $signature = 'make:crud
                             {name : Table name}
-                            {--route= : Custom route name}';
+                            {--route= : Custom route name}
+                            {--stack= : The development stack that should be installed (blade,tailwind,livewire,livewire-functional,react,vue)';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create bootstrap Laravel CRUD operations';
+    protected $description = 'Create Laravel CRUD operations';
 
     /**
      * Execute the console command.
      *
-     * @return bool|null
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
+     * @throws FileNotFoundException
      */
     public function handle()
     {
@@ -42,7 +43,7 @@ class CrudGenerator extends GeneratorCommand
 
         // If table not exist in DB return
         if (!$this->tableExists()) {
-            $this->error("`{$this->table}` table not exist");
+            $this->error("`$this->table` table not exist");
 
             return false;
         }
@@ -70,10 +71,10 @@ class CrudGenerator extends GeneratorCommand
      * Build the Controller Class and save in app/Http/Controllers.
      *
      * @return $this
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      *
      */
-    protected function buildController()
+    protected function buildController(): static
     {
         $controllerPath = $this->_getControllerPath($this->name);
 
@@ -96,10 +97,10 @@ class CrudGenerator extends GeneratorCommand
 
     /**
      * @return $this
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      *
      */
-    protected function buildModel()
+    protected function buildModel(): static
     {
         $modelPath = $this->_getModelPath($this->name);
 
@@ -134,11 +135,11 @@ class CrudGenerator extends GeneratorCommand
 
     /**
      * @return $this
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function buildViews()
+    protected function buildViews(): static
     {
         $this->info('Creating Views ...');
 
@@ -153,7 +154,7 @@ class CrudGenerator extends GeneratorCommand
             $tableHead .= $this->getHead($title);
             $tableBody .= $this->getBody($column);
             $viewRows .= $this->getField($title, $column, 'view-field');
-            $form .= $this->getField($title, $column, 'form-field');
+            $form .= $this->getField($title, $column);
         }
 
         $replace = array_merge($this->buildReplacements(), [
@@ -167,7 +168,7 @@ class CrudGenerator extends GeneratorCommand
 
         foreach (['index', 'create', 'edit', 'form', 'show'] as $view) {
             $viewTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub("views/{$view}")
+                array_keys($replace), array_values($replace), $this->getStub("views/{$this->options['stack']}/$view")
             );
 
             $this->write($this->_getViewPath($view), $viewTemplate);
@@ -181,7 +182,7 @@ class CrudGenerator extends GeneratorCommand
      *
      * @return string
      */
-    private function _buildClassName()
+    private function _buildClassName(): string
     {
         return Str::studly(Str::singular($this->table));
     }

@@ -13,16 +13,14 @@ use Illuminate\Database\Eloquent\Model;
 class {{modelName}} extends Model
 {
     {{softDeletes}}
-
     protected $perPage = 20;
 
     /**
-     * Attributes that should be mass-assignable.
+     * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [{{fillable}}];
 
 {{relations}}
-
 }
