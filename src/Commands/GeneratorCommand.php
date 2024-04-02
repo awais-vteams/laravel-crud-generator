@@ -485,6 +485,9 @@ abstract class GeneratorCommand extends Command
         $this->options['route'] = null;
         $this->options['stack'] = match ($this->option('stack')) {
             'tailwind' => 'tailwind',
+            'livewire' => 'livewire',
+            'react' => 'react',
+            'vue' => 'vue',
             default => 'bootstrap',
         };
 

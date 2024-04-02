@@ -21,7 +21,7 @@ class CrudGenerator extends GeneratorCommand
     protected $signature = 'make:crud
                             {name : Table name}
                             {--route= : Custom route name}
-                            {--stack= : The development stack that should be installed (blade,tailwind,livewire,livewire-functional,react,vue)';
+                            {--stack= : The development stack that should be installed (blade,tailwind,livewire,livewire-functional,react,vue)}';
 
     /**
      * The console command description.
