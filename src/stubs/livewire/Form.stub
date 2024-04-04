@@ -16,7 +16,7 @@ class {{modelName}}Form extends Form
         ];
     }
 
-    public function setFlightModel({{modelName}} ${{modelNameLowerCase}}Model): void
+    public function set{{modelName}}Model({{modelName}} ${{modelNameLowerCase}}Model): void
     {
         $this->{{modelNameLowerCase}}Model = ${{modelNameLowerCase}}Model;
         {{livewireFormSetValues}}
