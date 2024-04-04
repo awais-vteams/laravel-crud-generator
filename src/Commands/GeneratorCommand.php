@@ -416,10 +416,14 @@ abstract class GeneratorCommand extends Command
         $rulesArray = [];
         $softDeletesNamespace = $softDeletes = '';
         $modelName = Str::camel($this->name);
-        $filterColumns = $this->getFilteredColumns();
 
         foreach ($this->getColumns() as $column) {
             $properties .= "\n * @property \${$column['name']}";
+
+            if (! in_array($column['name'], $this->unwantedColumns)) {
+                $livewireFormProperties .= "\n    public \${$column['name']} = '';";
+                $livewireFormSetValues .= "\n        \$this->{$column['name']} = \$this->{$modelName}Model->{$column['name']};";
+            }
 
             if (! $column['nullable']) {
                 $rulesArray[$column['name']] = ['required'];
@@ -455,7 +459,9 @@ abstract class GeneratorCommand extends Command
             return $rules;
         };
 
-        $fillable = function () use ($filterColumns) {
+        $fillable = function () {
+
+            $filterColumns = $this->getFilteredColumns();
 
             // Add quotes to the unwanted columns for fillable
             array_walk($filterColumns, function (&$value) {
@@ -469,11 +475,6 @@ abstract class GeneratorCommand extends Command
         $properties .= "\n *";
 
         [$relations, $properties] = (new ModelGenerator($this->table, $properties, $this->modelNamespace))->getEloquentRelations();
-
-        foreach ($filterColumns as $column) {
-            $livewireFormProperties .= "\n    public \${$column['name']} = '';";
-            $livewireFormSetValues .= "\n        \$this->{$column['name']} = \$this->{$modelName}Model->{$column['name']};";
-        }
 
         return [
             '{{fillable}}' => $fillable(),
