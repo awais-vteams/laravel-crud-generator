@@ -1,6 +1,6 @@
 <?php
 
-namespace {{livewireComponentNamespace}}\Forms;
+namespace {{livewireNamespace}}\Forms;
 
 use {{modelNamespace}}\{{modelName}};
 use Livewire\Form;

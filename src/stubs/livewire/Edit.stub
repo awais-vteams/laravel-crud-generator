@@ -1,6 +1,6 @@
 <?php
 
-namespace {{livewireComponentNamespace}}\{{modelNamePluralUpperCase}};
+namespace {{livewireNamespace}}\{{modelNamePluralUpperCase}};
 
 use {{livewireNamespace}}\Forms\{{modelName}}Form;
 use {{modelNamespace}}\{{modelName}};

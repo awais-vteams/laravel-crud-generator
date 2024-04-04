@@ -105,7 +105,6 @@ class CrudGenerator extends GeneratorCommand
         $this->info('Creating Livewire Component ...');
 
         $folder = ucfirst(Str::plural($this->name));
-        $model = Str::camel($this->name);
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         foreach (['Index', 'Show', 'Edit', 'Create'] as $component) {
@@ -119,7 +118,7 @@ class CrudGenerator extends GeneratorCommand
         }
 
         // Form
-        $formPath = $this->_getLivewirePath('Forms/'.$model.'Form');
+        $formPath = $this->_getLivewirePath('Forms/'.$this->name.'Form');
 
         $componentTemplate = str_replace(
             array_keys($replace), array_values($replace), $this->getStub('livewire/Form')

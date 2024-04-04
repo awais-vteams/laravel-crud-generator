@@ -313,7 +313,7 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(10).'<th '.$attr.'>{{title}}</th>'."\n"
+            $this->_getSpace(9).'<th '.$attr.'>{{title}}</th>'."\n"
         );
     }
 
@@ -336,7 +336,7 @@ abstract class GeneratorCommand extends Command
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(11).'<td '.$attr.'>{{ ${{modelNameLowerCase}}->{{column}} }}</td>'."\n"
+            $this->_getSpace(10).'<td '.$attr.'>{{ ${{modelNameLowerCase}}->{{column}} }}</td>'."\n"
         );
     }
 
@@ -416,11 +416,10 @@ abstract class GeneratorCommand extends Command
         $rulesArray = [];
         $softDeletesNamespace = $softDeletes = '';
         $modelName = Str::camel($this->name);
+        $filterColumns = $this->getFilteredColumns();
 
         foreach ($this->getColumns() as $column) {
             $properties .= "\n * @property \${$column['name']}";
-            $livewireFormProperties .= "\n    public \${$column['name']} = '';";
-            $livewireFormSetValues .= "\n        \$this->{$column['name']} = \$this->{$modelName}Model->{$column['name']};";
 
             if (! $column['nullable']) {
                 $rulesArray[$column['name']] = ['required'];
@@ -456,9 +455,7 @@ abstract class GeneratorCommand extends Command
             return $rules;
         };
 
-        $fillable = function () {
-
-            $filterColumns = $this->getFilteredColumns();
+        $fillable = function () use ($filterColumns) {
 
             // Add quotes to the unwanted columns for fillable
             array_walk($filterColumns, function (&$value) {
@@ -472,6 +469,11 @@ abstract class GeneratorCommand extends Command
         $properties .= "\n *";
 
         [$relations, $properties] = (new ModelGenerator($this->table, $properties, $this->modelNamespace))->getEloquentRelations();
+
+        foreach ($filterColumns as $column) {
+            $livewireFormProperties .= "\n    public \${$column['name']} = '';";
+            $livewireFormSetValues .= "\n        \$this->{$column['name']} = \$this->{$modelName}Model->{$column['name']};";
+        }
 
         return [
             '{{fillable}}' => $fillable(),
