@@ -5,7 +5,7 @@ namespace {{livewireNamespace}}\Forms;
 use {{modelNamespace}}\{{modelName}};
 use Livewire\Form;
 
-class Form extends Form
+class {{modelName}}Form extends Form
 {
     public ?{{modelName}} ${{modelNameLowerCase}}Model;
     {{livewireFormProperties}}
