@@ -26,6 +26,6 @@ class Create extends Component
     #[Layout('{{layout}}')]
     public function render()
     {
-        return view('livewire.{{modelNamePluralLowerCase}}.create');
+        return view('livewire.{{modelNameLowerCase}}.create');
     }
 }

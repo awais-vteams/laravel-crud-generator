@@ -237,8 +237,12 @@ abstract class GeneratorCommand extends Command
     protected function _getViewPath($view): string
     {
         $name = Str::kebab($this->name);
+        $path = match ($this->options['stack']) {
+            'livewire' => "/views/livewire/$name/$view.blade.php",
+            default => "/views/$name/$view.blade.php"
+        };
 
-        return $this->makeDirectory(resource_path("/views/$name/$view.blade.php"));
+        return $this->makeDirectory(resource_path($path));
     }
 
     /**

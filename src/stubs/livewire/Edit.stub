@@ -26,6 +26,6 @@ class Edit extends Component
     #[Layout('{{layout}}')]
     public function render()
     {
-        return view('livewire.{{modelNamePluralLowerCase}}.edit');
+        return view('livewire.{{modelNameLowerCase}}.edit');
     }
 }
