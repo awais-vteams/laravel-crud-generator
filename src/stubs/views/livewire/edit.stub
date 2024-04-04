@@ -24,7 +24,7 @@
                             <form method="POST" wire:submit="save" role="form" enctype="multipart/form-data">
                                 {{ method_field('PATCH') }}
                                 @csrf
-                                @include('{{modelView}}.form')
+                                @include('livewire.{{modelView}}.form')
                             </form>
                         </div>
                     </div>

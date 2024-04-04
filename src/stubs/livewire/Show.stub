@@ -16,7 +16,7 @@ class Show extends Component
         $this->form->set{{modelName}}Model(${{modelNameLowerCase}});
     }
 
-    #[Layout('{{layouts}}')]
+    #[Layout('{{layout}}')]
     public function render()
     {
         return view('livewire.{{modelNameLowerCase}}.show', ['{{modelNameLowerCase}}' => $this->form->{{modelNameLowerCase}}Model]);
