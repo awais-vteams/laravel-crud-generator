@@ -1,0 +1,38 @@
+<?php
+
+namespace {{livewireComponentNamespace}}\Forms;
+
+use {{modelNamespace}}\{{modelName}};
+use Livewire\Form;
+
+class Form extends Form
+{
+    public ?{{modelName}} ${{modelNameLowerCase}}Model;
+    {{livewireFormProperties}}
+
+    public function rules(): array
+    {
+        return [{{rules}}
+        ];
+    }
+
+    public function setFlightModel({{modelName}} ${{modelNameLowerCase}}Model): void
+    {
+        $this->{{modelNameLowerCase}}Model = ${{modelNameLowerCase}}Model;
+        {{livewireFormSetValues}}
+    }
+
+    public function store(): void
+    {
+        $this->{{modelNameLowerCase}}Model->create($this->validate());
+
+        $this->reset();
+    }
+
+    public function update(): void
+    {
+        $this->{{modelNameLowerCase}}Model->update($this->validate());
+
+        $this->reset();
+    }
+}

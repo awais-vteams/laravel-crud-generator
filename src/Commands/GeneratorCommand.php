@@ -53,6 +53,8 @@ abstract class GeneratorCommand extends Command
 
     protected string $controllerNamespace = 'App\Http\Controllers';
 
+    protected string $livewireNamespace = 'App\Livewire';
+
     protected string $requestNamespace = 'App\Http\Requests';
 
     protected string $layout = 'layouts.app';
@@ -178,6 +180,16 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
+    protected function _getLivewirePath($name): string
+    {
+        return app_path($this->_getNamespacePath($this->livewireNamespace)."{$name}.php");
+    }
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
     protected function _getRequestPath($name): string
     {
         return app_path($this->_getNamespacePath($this->requestNamespace)."{$name}Request.php");
@@ -244,6 +256,7 @@ abstract class GeneratorCommand extends Command
             '{{modelNamespace}}' => $this->modelNamespace,
             '{{controllerNamespace}}' => $this->controllerNamespace,
             '{{requestNamespace}}' => $this->requestNamespace,
+            '{{livewireNamespace}}' => $this->livewireNamespace,
             '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->name)),
             '{{modelNamePluralUpperCase}}' => ucfirst(Str::plural($this->name)),
             '{{modelNameLowerCase}}' => Str::camel($this->name),
@@ -293,7 +306,7 @@ abstract class GeneratorCommand extends Command
         ]);
 
         $attr = match ($this->options['stack']) {
-            'tailwind' => 'scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"',
+            'tailwind', 'livewire' => 'scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"',
             default => ''
         };
 
@@ -316,7 +329,7 @@ abstract class GeneratorCommand extends Command
         ]);
 
         $attr = match ($this->options['stack']) {
-            'tailwind' => 'class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"',
+            'tailwind', 'livewire' => 'class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"',
             default => ''
         };
 
@@ -398,11 +411,16 @@ abstract class GeneratorCommand extends Command
     protected function modelReplacements(): array
     {
         $properties = '*';
+        $livewireFormProperties = '';
+        $livewireFormSetValues = '';
         $rulesArray = [];
         $softDeletesNamespace = $softDeletes = '';
+        $modelName = Str::camel($this->name);
 
         foreach ($this->getColumns() as $column) {
             $properties .= "\n * @property \${$column['name']}";
+            $livewireFormProperties .= "\n    public \${$column['name']} = '';";
+            $livewireFormSetValues .= "\n        \$this->{$column['name']} = \$this->{$modelName}Model->{$column['name']};";
 
             if (! $column['nullable']) {
                 $rulesArray[$column['name']] = ['required'];
@@ -462,6 +480,8 @@ abstract class GeneratorCommand extends Command
             '{{properties}}' => $properties,
             '{{softDeletesNamespace}}' => $softDeletesNamespace,
             '{{softDeletes}}' => $softDeletes,
+            '{{livewireFormProperties}}' => $livewireFormProperties,
+            '{{livewireFormSetValues}}' => $livewireFormSetValues,
         ];
     }
 

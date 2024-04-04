@@ -21,7 +21,7 @@ class CrudGenerator extends GeneratorCommand
     protected $signature = 'make:crud
                             {name : Table name}
                             {--route= : Custom route name}
-                            {--stack= : The development stack that should be installed (blade,tailwind,livewire,livewire-functional,react,vue)}';
+                            {--stack= : The development stack that should be installed (blade,tailwind,livewire,react,vue)}';
 
     /**
      * The console command description.
@@ -42,7 +42,7 @@ class CrudGenerator extends GeneratorCommand
         $this->table = $this->getNameInput();
 
         // If table not exist in DB return
-        if (!$this->tableExists()) {
+        if (! $this->tableExists()) {
             $this->error("`$this->table` table not exist");
 
             return false;
@@ -72,10 +72,15 @@ class CrudGenerator extends GeneratorCommand
      *
      * @return $this
      * @throws FileNotFoundException
-     *
      */
     protected function buildController(): static
     {
+        if ($this->options['stack'] == 'livewire') {
+            $this->buildLivewire();
+
+            return $this;
+        }
+
         $controllerPath = $this->_getControllerPath($this->name);
 
         if ($this->files->exists($controllerPath) && $this->ask('Already exist Controller. Do you want overwrite (y/n)?', 'y') == 'n') {
@@ -93,6 +98,34 @@ class CrudGenerator extends GeneratorCommand
         $this->write($controllerPath, $controllerTemplate);
 
         return $this;
+    }
+
+    protected function buildLivewire(): void
+    {
+        $this->info('Creating Livewire Component ...');
+
+        $folder = ucfirst(Str::plural($this->name));
+        $model = Str::camel($this->name);
+        $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
+
+        foreach (['Index', 'Show', 'Edit', 'Create'] as $component) {
+            $componentPath = $this->_getLivewirePath($folder.'/'.$component);
+
+            $componentTemplate = str_replace(
+                array_keys($replace), array_values($replace), $this->getStub('livewire/'.$component)
+            );
+
+            $this->write($componentPath, $componentTemplate);
+        }
+
+        // Form
+        $formPath = $this->_getLivewirePath('Forms/'.$model.'Form');
+
+        $componentTemplate = str_replace(
+            array_keys($replace), array_values($replace), $this->getStub('livewire/Form')
+        );
+
+        $this->write($formPath, $componentTemplate);
     }
 
     /**
