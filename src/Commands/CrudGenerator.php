@@ -67,16 +67,16 @@ class CrudGenerator extends GeneratorCommand
     {
         $replacements = $this->buildReplacements();
 
-        $this->info('Please add route below:');
+        $this->info('Please add route below: i:e; web.php');
 
         $this->info('');
 
         $lines = match ($this->options['stack']) {
             'livewire' => [
-                "Route::get('/{$this->_getRoute()}', \{$this->livewireNamespace}\\{$replacements['{{modelNamePluralUpperCase}}']}\Index::class)->name('{$this->_getRoute()}.index');",
-                "Route::get('/{$this->_getRoute()}/create', \{$this->livewireNamespace}\\{$replacements['{{modelNamePluralUpperCase}}']}\Create::class)->name('{$this->_getRoute()}.create');",
-                "Route::get('/{$this->_getRoute()}/show/\\{$replacements['{{modelNameLowerCase}}']}', \{$this->livewireNamespace}\\{$replacements['{{modelNamePluralUpperCase}}']}\Show::class)->name('{$this->_getRoute()}.show');",
-                "Route::get('/{$this->_getRoute()}/update/\\{{$replacements['{{modelNameLowerCase}}']}', \{$this->livewireNamespace}\\{$replacements['{{modelNamePluralUpperCase}}']}\Edit::class)->name('{$this->_getRoute()}.edit');",
+                "Route::get('/{$this->_getRoute()}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Index::class)->name('{$this->_getRoute()}.index');",
+                "Route::get('/{$this->_getRoute()}/create', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Create::class)->name('{$this->_getRoute()}.create');",
+                "Route::get('/{$this->_getRoute()}/show/{{$replacements['{{modelNameLowerCase}}']}}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Show::class)->name('{$this->_getRoute()}.show');",
+                "Route::get('/{$this->_getRoute()}/update/{{$replacements['{{modelNameLowerCase}}']}}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Edit::class)->name('{$this->_getRoute()}.edit');",
             ],
             default => [
                 "Route::resource('".$this->_getRoute()."', {$this->name}Controller::class);",
@@ -84,7 +84,7 @@ class CrudGenerator extends GeneratorCommand
         };
 
         foreach ($lines as $line) {
-            $this->info('<bg=red;fg=yellow>'.$line.'</>');
+            $this->info('<bg=blue;fg=white>'.$line.'</>');
         }
 
         $this->info('');
