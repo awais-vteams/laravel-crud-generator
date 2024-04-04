@@ -17,7 +17,7 @@ class Index extends Component
     {
         ${{modelNamePluralLowerCase}} = {{modelName}}::paginate();
 
-        return view('livewire.{{modelNameLowerCase}}.index', compact('{{modelNamePluralLowerCase}}'))
+        return view('livewire.{{modelView}}.index', compact('{{modelNamePluralLowerCase}}'))
             ->with('i', $this->getPage() * ${{modelNamePluralLowerCase}}->perPage());
     }
 
@@ -25,6 +25,6 @@ class Index extends Component
     {
         ${{modelNameLowerCase}}->delete();
 
-        return $this->redirectRoute('{{modelNamePluralLowerCase}}.index', navigate: true);
+        return $this->redirectRoute('{{modelRoute}}.index', navigate: true);
     }
 }

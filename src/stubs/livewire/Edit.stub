@@ -20,12 +20,12 @@ class Edit extends Component
     {
         $this->form->update();
 
-        return $this->redirectRoute('{{modelNamePluralLowerCase}}.index', navigate: true);
+        return $this->redirectRoute('{{modelRoute}}.index', navigate: true);
     }
 
     #[Layout('{{layout}}')]
     public function render()
     {
-        return view('livewire.{{modelNameLowerCase}}.edit');
+        return view('livewire.{{modelView}}.edit');
     }
 }
