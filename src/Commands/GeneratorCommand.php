@@ -53,6 +53,8 @@ abstract class GeneratorCommand extends Command
 
     protected string $controllerNamespace = 'App\Http\Controllers';
 
+    protected string $resourceNamespace = 'App\Http\Resources';
+
     protected string $livewireNamespace = 'App\Livewire';
 
     protected string $requestNamespace = 'App\Http\Requests';
@@ -180,6 +182,16 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
+    protected function _getResourcePath($name): string
+    {
+        return app_path($this->_getNamespacePath($this->resourceNamespace)."{$name}Resource.php");
+    }
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
     protected function _getLivewirePath($name): string
     {
         return app_path($this->_getNamespacePath($this->livewireNamespace)."{$name}.php");
@@ -259,6 +271,7 @@ abstract class GeneratorCommand extends Command
             '{{modelTitlePlural}}' => Str::title(Str::snake(Str::plural($this->name), ' ')),
             '{{modelNamespace}}' => $this->modelNamespace,
             '{{controllerNamespace}}' => $this->controllerNamespace,
+            '{{resourceNamespace}}' => $this->resourceNamespace,
             '{{requestNamespace}}' => $this->requestNamespace,
             '{{livewireNamespace}}' => $this->livewireNamespace,
             '{{modelNamePluralLowerCase}}' => Str::camel(Str::plural($this->name)),
@@ -581,5 +594,10 @@ abstract class GeneratorCommand extends Command
         $process->run(function ($type, $line) {
             $this->output->write('    '.$line);
         });
+    }
+
+    protected function setControllerNamespace(string $controllerNamespace): void
+    {
+        $this->controllerNamespace = $controllerNamespace;
     }
 }

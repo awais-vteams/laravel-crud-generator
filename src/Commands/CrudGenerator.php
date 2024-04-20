@@ -5,6 +5,7 @@ namespace Ibex\CrudGenerator\Commands;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
+use function Laravel\Prompts\select;
 
 /**
  * Class CrudGenerator.
@@ -21,7 +22,7 @@ class CrudGenerator extends GeneratorCommand
     protected $signature = 'make:crud
                             {name : Table name}
                             {--route= : Custom route name}
-                            {--stack= : The development stack that should be installed (blade,tailwind,livewire,react,vue)}';
+                            {--stack= : The development stack that should be installed (blade,tailwind,livewire,api)}';
 
     /**
      * The console command description.
@@ -61,6 +62,22 @@ class CrudGenerator extends GeneratorCommand
         $this->info('Created Successfully.');
 
         return true;
+    }
+
+    protected function promptForMissingArguments(): array
+    {
+        return [
+            'stack' => fn() => select(
+                label: 'Which stack would you like to install?',
+                options: [
+                    'blade' => 'Blade with Bootstrap css',
+                    'tailwind' => 'Blade with Tailwind css',
+                    'livewire' => 'Livewire with Tailwind css',
+                    'api' => 'API only',
+                ],
+                scroll: 4,
+            ),
+        ];
     }
 
     protected function writeRoute(): static
@@ -104,6 +121,8 @@ class CrudGenerator extends GeneratorCommand
             $this->buildLivewire();
 
             return $this;
+        } elseif ($this->options['stack'] == 'api') {
+            $this->setControllerNamespace('App\Http\Controllers\Api');
         }
 
         $controllerPath = $this->_getControllerPath($this->name);
@@ -116,11 +135,26 @@ class CrudGenerator extends GeneratorCommand
 
         $replace = $this->buildReplacements();
 
+        $stubFolder = match ($this->options['stack']) {
+            'api' => 'api/',
+            default => ''
+        };
+
         $controllerTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Controller')
+            array_keys($replace), array_values($replace), $this->getStub($stubFolder.'Controller')
         );
 
         $this->write($controllerPath, $controllerTemplate);
+
+        if ($this->options['stack'] == 'api') {
+            $resourcePath = $this->_getResourcePath($this->name);
+
+            $resourceTemplate = str_replace(
+                array_keys($replace), array_values($replace), $this->getStub($stubFolder.'Resource')
+            );
+
+            $this->write($resourcePath, $resourceTemplate);
+        }
 
         return $this;
     }
@@ -198,6 +232,10 @@ class CrudGenerator extends GeneratorCommand
      */
     protected function buildViews(): static
     {
+        if ($this->options['stack'] == 'api') {
+            return $this;
+        }
+
         $this->info('Creating Views ...');
 
         $tableHead = "\n";
