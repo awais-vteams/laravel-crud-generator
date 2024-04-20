@@ -6,6 +6,8 @@ use {{modelNamespace}}\{{modelName}};
 use Illuminate\Http\Request;
 use {{requestNamespace}}\{{modelName}}Request;
 use Illuminate\Http\Response;
+use {{controllerNamespace}}\Controller;
+use {{resourceNamespace}}\{{modelName}}Resource;
 
 class {{modelName}}Controller extends Controller
 {

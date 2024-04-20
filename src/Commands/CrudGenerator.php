@@ -97,7 +97,7 @@ class CrudGenerator extends GeneratorCommand
     {
         $replacements = $this->buildReplacements();
 
-        $this->info('Please add route below: i:e; web.php');
+        $this->info('Please add route below: i:e; web.php or api.php');
 
         $this->info('');
 
@@ -107,6 +107,9 @@ class CrudGenerator extends GeneratorCommand
                 "Route::get('/{$this->_getRoute()}/create', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Create::class)->name('{$this->_getRoute()}.create');",
                 "Route::get('/{$this->_getRoute()}/show/{{$replacements['{{modelNameLowerCase}}']}}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Show::class)->name('{$this->_getRoute()}.show');",
                 "Route::get('/{$this->_getRoute()}/update/{{$replacements['{{modelNameLowerCase}}']}}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Edit::class)->name('{$this->_getRoute()}.edit');",
+            ],
+            'api' => [
+                "Route::apiResource('".$this->_getRoute()."', {$this->name}Controller::class);",
             ],
             default => [
                 "Route::resource('".$this->_getRoute()."', {$this->name}Controller::class);",

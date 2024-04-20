@@ -524,6 +524,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     protected function buildOptions(): static
     {
         $this->options['route'] = null;
+        $this->options['stack'] = $this->argument('stack');
 
         return $this;
     }
