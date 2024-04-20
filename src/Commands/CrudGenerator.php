@@ -64,7 +64,7 @@ class CrudGenerator extends GeneratorCommand
         return true;
     }
 
-    protected function promptForMissingArguments(): array
+    protected function promptForMissingArgumentsUsing(): array
     {
         return [
             'stack' => fn() => select(
