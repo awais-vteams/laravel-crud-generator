@@ -54,6 +54,8 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
     protected string $controllerNamespace = 'App\Http\Controllers';
 
+    protected string $apiControllerNamespace = 'App\Http\Controllers\Api';
+
     protected string $resourceNamespace = 'App\Http\Resources';
 
     protected string $livewireNamespace = 'App\Livewire';
@@ -183,6 +185,16 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      *
      * @return string
      */
+    protected function _getApiControllerPath($name): string
+    {
+        return app_path($this->_getNamespacePath($this->apiControllerNamespace)."{$name}Controller.php");
+    }
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
     protected function _getResourcePath($name): string
     {
         return app_path($this->_getNamespacePath($this->resourceNamespace)."{$name}Resource.php");
@@ -272,6 +284,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             '{{modelTitlePlural}}' => Str::title(Str::snake(Str::plural($this->name), ' ')),
             '{{modelNamespace}}' => $this->modelNamespace,
             '{{controllerNamespace}}' => $this->controllerNamespace,
+            '{{apiControllerNamespace}}' => $this->apiControllerNamespace,
             '{{resourceNamespace}}' => $this->resourceNamespace,
             '{{requestNamespace}}' => $this->requestNamespace,
             '{{livewireNamespace}}' => $this->livewireNamespace,
@@ -589,10 +602,5 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         $process->run(function ($type, $line) {
             $this->output->write('    '.$line);
         });
-    }
-
-    protected function setControllerNamespace(string $controllerNamespace): void
-    {
-        $this->controllerNamespace = $controllerNamespace;
     }
 }

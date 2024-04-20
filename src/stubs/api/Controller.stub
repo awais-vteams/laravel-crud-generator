@@ -1,6 +1,6 @@
 <?php
 
-namespace {{controllerNamespace}};
+namespace {{apiControllerNamespace}};
 
 use {{modelNamespace}}\{{modelName}};
 use Illuminate\Http\Request;

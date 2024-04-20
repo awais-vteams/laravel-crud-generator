@@ -137,11 +137,11 @@ class CrudGenerator extends GeneratorCommand
             $this->buildLivewire();
 
             return $this;
-        } elseif ($this->options['stack'] == 'api') {
-            $this->setControllerNamespace('App\Http\Controllers\Api');
         }
 
-        $controllerPath = $this->_getControllerPath($this->name);
+        $controllerPath = $this->options['stack'] == 'api'
+            ? $this->_getApiControllerPath($this->name)
+            : $this->_getControllerPath($this->name);
 
         if ($this->files->exists($controllerPath) && $this->ask('Already exist Controller. Do you want overwrite (y/n)?', 'y') == 'n') {
             return $this;
