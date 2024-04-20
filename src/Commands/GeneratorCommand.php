@@ -524,13 +524,6 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     protected function buildOptions(): static
     {
         $this->options['route'] = null;
-        $this->options['stack'] = match ($this->argument('stack')) {
-            'tailwind' => 'tailwind',
-            'livewire' => 'livewire',
-            'react' => 'react',
-            'vue' => 'vue',
-            default => 'bootstrap',
-        };
 
         return $this;
     }

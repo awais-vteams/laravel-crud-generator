@@ -5,6 +5,8 @@ namespace Ibex\CrudGenerator\Commands;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use function Laravel\Prompts\select;
 
 /**
@@ -78,6 +80,17 @@ class CrudGenerator extends GeneratorCommand
                 scroll: 4,
             ),
         ];
+    }
+
+    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output): void
+    {
+        $this->options['stack'] = match ($input->getArgument('stack')) {
+            'tailwind' => 'tailwind',
+            'livewire' => 'livewire',
+            'react' => 'react',
+            'vue' => 'vue',
+            default => 'bootstrap',
+        };
     }
 
     protected function writeRoute(): static
