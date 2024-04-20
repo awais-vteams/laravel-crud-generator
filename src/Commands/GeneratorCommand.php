@@ -5,6 +5,7 @@ namespace Ibex\CrudGenerator\Commands;
 use Exception;
 use Ibex\CrudGenerator\ModelGenerator;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
@@ -17,7 +18,7 @@ use Symfony\Component\Process\Process;
 /**
  * Class GeneratorCommand.
  */
-abstract class GeneratorCommand extends Command
+abstract class GeneratorCommand extends Command implements PromptsForMissingInput
 {
     protected Filesystem $files;
 
