@@ -6,7 +6,7 @@
 ![StyleCI](https://img.shields.io/badge/StyleCI-pass-green.svg?style=flat-square)
 
 
-This Laravel CRUD Generator v2.x package provides and generates Controller, Model (with eloquent relations), and Views in **Bootstrap**/**Tailwind CSS** for the development of your applications with a single command. This new `v2.x` will have `--stack` options like `bootstrap`, `tailwind`, `livewire`(Livewire views will be generated in **Tailwind** CSS), and `API` only.
+This Laravel CRUD Generator v2.x package provides and generates Controller, Model (with eloquent relations), and Views in **Bootstrap**/**Tailwind CSS** for the development of your applications with a single command. This new `v2.x` will have stack options like `bootstrap`, `tailwind`, `livewire`(Livewire views will be generated in **Tailwind** CSS), and `API` only.
 
 - Will create **Model** with Eloquent relations
 - Will create **Controller** with all resources
@@ -68,12 +68,12 @@ Route name in plural slug case.
 
   <img width="535" alt="image" src="https://github.com/awais-vteams/laravel-crud-generator/assets/10154558/c1e2e2a6-7fcd-4c4a-a393-56d8fe6eb231">
 ```
-php artisan make:crud {table_name} --stack={bootstrap,tailwind,livewire,api}
+php artisan make:crud {table_name} {bootstrap,tailwind,livewire,api}
 
-php artisan make:crud banks --stack=bootstrap  //This will create views in Bootstrap 5 using Blade
-php artisan make:crud banks --stack=tailwind   //This will create views in Tailwind css using Blade
-php artisan make:crud banks --stack=livewire   //This will create views in Tailwind css with Livewire components
-php artisan make:crud banks --stack=api        //This will create API only controllers
+php artisan make:crud banks bootstrap  //This will create views in Bootstrap 5 using Blade
+php artisan make:crud banks tailwind   //This will create views in Tailwind css using Blade
+php artisan make:crud banks livewire   //This will create views in Tailwind css with Livewire components
+php artisan make:crud banks api        //This will create API only controllers
 ```
  - Custom Route
 ```
