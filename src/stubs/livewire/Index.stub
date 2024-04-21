@@ -1,0 +1,30 @@
+<?php
+
+namespace {{livewireNamespace}}\{{modelNamePluralUpperCase}};
+
+use {{modelNamespace}}\{{modelName}};
+use Illuminate\View\View;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+use Livewire\WithPagination;
+
+class Index extends Component
+{
+    use WithPagination;
+
+    #[Layout('{{layout}}')]
+    public function render(): View
+    {
+        ${{modelNamePluralLowerCase}} = {{modelName}}::paginate();
+
+        return view('livewire.{{modelView}}.index', compact('{{modelNamePluralLowerCase}}'))
+            ->with('i', $this->getPage() * ${{modelNamePluralLowerCase}}->perPage());
+    }
+
+    public function delete({{modelName}} ${{modelNameLowerCase}})
+    {
+        ${{modelNameLowerCase}}->delete();
+
+        return $this->redirectRoute('{{modelRoute}}.index', navigate: true);
+    }
+}

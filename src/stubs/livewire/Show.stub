@@ -1,0 +1,24 @@
+<?php
+
+namespace {{livewireNamespace}}\{{modelNamePluralUpperCase}};
+
+use {{livewireNamespace}}\Forms\{{modelName}}Form;
+use {{modelNamespace}}\{{modelName}};
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+
+class Show extends Component
+{
+    public {{modelName}}Form $form;
+
+    public function mount({{modelName}} ${{modelNameLowerCase}})
+    {
+        $this->form->set{{modelName}}Model(${{modelNameLowerCase}});
+    }
+
+    #[Layout('{{layout}}')]
+    public function render()
+    {
+        return view('livewire.{{modelView}}.show', ['{{modelNameLowerCase}}' => $this->form->{{modelNameLowerCase}}Model]);
+    }
+}
