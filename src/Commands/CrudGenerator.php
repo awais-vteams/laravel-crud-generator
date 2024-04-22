@@ -23,7 +23,7 @@ class CrudGenerator extends GeneratorCommand
      */
     protected $signature = 'make:crud
                             {name : Table name}
-                            {stack : The development stack that should be installed (blade,tailwind,livewire,api)}
+                            {stack : The development stack that should be installed (bootstrap,tailwind,livewire,api)}
                             {--route= : Custom route name}';
 
     /**
@@ -72,7 +72,7 @@ class CrudGenerator extends GeneratorCommand
             'stack' => fn() => select(
                 label: 'Which stack would you like to install?',
                 options: [
-                    'blade' => 'Blade with Bootstrap css',
+                    'bootstrap' => 'Blade with Bootstrap css',
                     'tailwind' => 'Blade with Tailwind css',
                     'livewire' => 'Livewire with Tailwind css',
                     'api' => 'API only',
