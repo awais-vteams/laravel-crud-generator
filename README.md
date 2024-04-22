@@ -6,10 +6,11 @@
 ![StyleCI](https://img.shields.io/badge/StyleCI-pass-green.svg?style=flat-square)
 
 
-This Laravel CRUD Generator v2.x package provides and generates Controller, Model (with eloquent relations), and Views in **Bootstrap**/**Tailwind CSS** for the development of your applications with a single command. This new `v2.x` will have `--stack` options like `bootstrap`, `tailwind`, and `livewire`. (Livewire views will be generated in **Tailwind** css)
+This Laravel CRUD Generator v2.x package provides and generates Controller, Model (with eloquent relations), and Views in **Bootstrap**/**Tailwind CSS** for the development of your applications with a single command. This new `v2.x` will have stack options like `bootstrap`, `tailwind`, `livewire`(Livewire views will be generated in **Tailwind** CSS), and `API` only.
 
 - Will create **Model** with Eloquent relations
 - Will create **Controller** with all resources
+- Will create **API Controllers** with all requests
 - Will create **Component** with all resources for Livewire
 - Will create **views** in Bootstrap/Tailwind
 
@@ -54,21 +55,31 @@ Route::get('/banks/create', \App\Livewire\Banks\Create::class)->name('banks.crea
 Route::get('/banks/show/{bank}', \App\Livewire\Banks\Show::class)->name('banks.show');
 Route::get('/banks/update/{bank}', \App\Livewire\Banks\Edit::class)->name('banks.edit');
 ```
+
+For `api` add routes below
+```
+Route::apiResource('banks', BankController::class);
+```
+
 Route name in plural slug case.
 
 #### Options
 - Tech Stack
-```
-php artisan make:crud {table_name} --stack={bootstrap,tailwind,livewire}
 
-php artisan make:crud banks --stack=bootstrap  //This will create views in Bootstrap 5 using Blade
-php artisan make:crud banks --stack=tailwind   //This will create views in Tailwind css using Blade
-php artisan make:crud banks --stack=livewire   //This will create views in Tailwind css with Livewire components
+  <img width="535" alt="image" src="https://github.com/awais-vteams/laravel-crud-generator/assets/10154558/c1e2e2a6-7fcd-4c4a-a393-56d8fe6eb231">
+```
+php artisan make:crud {table_name} {bootstrap,tailwind,livewire,api}
+
+php artisan make:crud banks bootstrap  //This will create views in Bootstrap 5 using Blade
+php artisan make:crud banks tailwind   //This will create views in Tailwind css using Blade
+php artisan make:crud banks livewire   //This will create views in Tailwind css with Livewire components
+php artisan make:crud banks api        //This will create API only controllers
 ```
  - Custom Route
 ```
 php artisan make:crud {table_name} --route={route_name}
 ```
+
 
 ## Examples
 
@@ -81,6 +92,10 @@ php artisan make:crud {table_name} --route={route_name}
 
 *Livewire component*
 <img width="100%" alt="image" src="https://github.com/awais-vteams/laravel-crud-generator/assets/10154558/e4c3bca5-f27a-41a8-a5bd-00c51b156235">
+
+*API only controller*
+
+<img width="500" alt="image" src="https://github.com/awais-vteams/laravel-crud-generator/assets/10154558/a42329a8-58e7-49ef-8e21-b6227555542b">
 
 
 *Tailwind CSS*
