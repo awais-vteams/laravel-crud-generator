@@ -118,6 +118,8 @@ php artisan make:crud {table_name} --route={route_name}
 
 M Awais // [Email Me](mailto:asargodha@gmail.com)
 
+Hire Me [LinkedIn](https://www.linkedin.com/in/asargodha/)
+
 [Buy me a Coffee](https://ko-fi.com/C0C8VT1M)
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C8VT1M)
