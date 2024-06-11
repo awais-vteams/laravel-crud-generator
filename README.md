@@ -114,6 +114,22 @@ php artisan make:crud {table_name} --route={route_name}
 ![Form](https://i.imgur.com/poRiZRO.png)
 
 
+## Personalize  
+You have the possibility of 100% customizing the generated views, this is achieved in the following way:    
+
+- Run this command `php artisan vendor:publish --tag=crud` this will create the `crud.php` file in your config/ folder.
+- Update the variable `stub_path`, to your own stub folder like `'stub_path' => resource_path('stubs/'),`  
+- Copy the stubs files from package
+```
+php artisan vendor:publish --tag=stubs-crud
+```
+- Update your changes in your stub files. (you can delete extra files/folders if you are not using them).  
+- Run the command for crud generation and you'll get the updated views.  
+
+
+
+
+
 ## Author
 
 M Awais // [Email Me](mailto:asargodha@gmail.com)
