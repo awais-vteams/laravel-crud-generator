@@ -11,19 +11,21 @@ return [
     | stubs paths here, allowing you to customize the own stubs of the
     | model,controller or view. Or, you may simply stick with the CrudGenerator defaults!
     |
-    | Example: 'stub_path' => resource_path('path/to/views/stubs/')
+    | Example: 'stub_path' => resource_path('stubs/')
     | Default: "default"
     | Files:
     |       Controller.stub
     |       Model.stub
+    |       Request.stub
     |       views/
-    |            create.stub
-    |            edit.stub
-    |            form.stub
-    |            form-field.stub
-    |            index.stub
-    |            show.stub
-    |            view-field.stub
+    |           bootstrap/
+    |               create.stub
+    |               edit.stub
+    |               form.stub
+    |               form-field.stub
+    |               index.stub
+    |               show.stub
+    |               view-field.stub
     */
 
     'stub_path' => 'default',
@@ -48,6 +50,8 @@ return [
          */
         'unwantedColumns' => [
             'id',
+            'uuid',
+            'ulid',
             'password',
             'email_verified_at',
             'remember_token',
@@ -59,6 +63,18 @@ return [
 
     'controller' => [
         'namespace' => 'App\Http\Controllers',
+        'apiNamespace' => 'App\Http\Controllers\Api',
     ],
 
+    'resources' => [
+        'namespace' => 'App\Http\Resources',
+    ],
+
+    'livewire' => [
+        'namespace' => 'App\Livewire',
+    ],
+
+    'request' => [
+        'namespace' => 'App\Http\Requests',
+    ],
 ];

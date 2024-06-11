@@ -81,6 +81,10 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         $this->unwantedColumns = config('crud.model.unwantedColumns', $this->unwantedColumns);
         $this->modelNamespace = config('crud.model.namespace', $this->modelNamespace);
         $this->controllerNamespace = config('crud.controller.namespace', $this->controllerNamespace);
+        $this->apiControllerNamespace = config('crud.controller.apiNamespace', $this->apiControllerNamespace);
+        $this->resourceNamespace = config('crud.resources.namespace', $this->resourceNamespace);
+        $this->livewireNamespace = config('crud.livewire.namespace', $this->livewireNamespace);
+        $this->requestNamespace = config('crud.request.namespace', $this->requestNamespace);
         $this->layout = config('crud.layout', $this->layout);
     }
 
@@ -147,7 +151,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     {
         $stub_path = config('crud.stub_path', 'default');
 
-        if ($stub_path == 'default') {
+        if (blank($stub_path) || $stub_path == 'default') {
             $stub_path = __DIR__.'/../stubs/';
         }
 
