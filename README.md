@@ -115,12 +115,16 @@ php artisan make:crud {table_name} --route={route_name}
 
 
 ## Personalize  
-You have the possibility of 100% customizing the generated views, this is achieved in the following way:     
-1. - Run this command `php artisan vendor:publish --tag=crud` this will create the `crud.php` file in your config/ folder.  
-2. - Update the variable `stub_path`, to your own stub folder like `'stub_path' => resource_path('stubs/'),`  
-3. - Copy the files from my package stubs folder to your own folder from [Here](https://github.com/awais-vteams/laravel-crud-generator/tree/master/src/stubs)   
-4. - Update your changes. You can delete extra files/folders like api or livewire folder if you are not using it.  
-5. - Run the command for crud `php artisan make:crud NameCrud` generation and you'll get the updated views.  
+You have the possibility of 100% customizing the generated views, this is achieved in the following way:    
+
+- Run this command `php artisan vendor:publish --tag=crud` this will create the `crud.php` file in your config/ folder.
+- Update the variable `stub_path`, to your own stub folder like `'stub_path' => resource_path('stubs/'),`  
+- Copy the stubs files from package
+```
+php artisan vendor:publish --tag=stubs-crud
+```
+- Update your changes in your stub files. (you can delete extra files/folders if you are not using them).  
+- Run the command for crud generation and you'll get the updated views.  
 
 
 
