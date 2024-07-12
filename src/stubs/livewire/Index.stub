@@ -18,7 +18,7 @@ class Index extends Component
         ${{modelNamePluralLowerCase}} = {{modelName}}::paginate();
 
         return view('livewire.{{modelView}}.index', compact('{{modelNamePluralLowerCase}}'))
-            ->with('i', $this->getPage() * ${{modelNamePluralLowerCase}}->perPage());
+            ->with('i', ($this->getPage() * ${{modelNamePluralLowerCase}}->perPage()) - ${{modelNamePluralLowerCase}}->perPage());
     }
 
     public function delete({{modelName}} ${{modelNameLowerCase}})
