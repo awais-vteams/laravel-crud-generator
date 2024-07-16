@@ -7,7 +7,7 @@ use {{modelNamespace}}\{{modelName}};
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class Create extends Component
+class {{modelName}}Create extends Component
 {
     public {{modelName}}Form $form;
 

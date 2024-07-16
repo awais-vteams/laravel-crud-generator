@@ -99,14 +99,14 @@ class CrudGenerator extends GeneratorCommand
 
         $this->info('Please add route below: i:e; web.php or api.php');
 
-        $this->info('Import every class');
+        $this->info('');
 
         $lines = match ($this->options['stack']) {
             'livewire' => [
-                "Route::get('/{$this->_getRoute()}', {$this->name} Index::class)->name('{$this->_getRoute()}.index');",
-                "Route::get('/{$this->_getRoute()}/create', {$this->name} Create::class)->name('{$this->_getRoute()}.create');",
-                "Route::get('/{$this->_getRoute()}/show/{{$replacements['{{modelNameLowerCase}}']}}', {$this->name} Show::class)->name('{$this->_getRoute()}.show');",
-                "Route::get('/{$this->_getRoute()}/update/{{$replacements['{{modelNameLowerCase}}']}}', {$this->name} Edit::class)->name('{$this->_getRoute()}.edit');",
+                "Route::get('/{$this->_getRoute()}', {$this->name}Index::class)->name('{$this->_getRoute()}.index');",
+                "Route::get('/{$this->_getRoute()}/create', {$this->name}Create::class)->name('{$this->_getRoute()}.create');",
+                "Route::get('/{$this->_getRoute()}/show/{{$replacements['{{modelNameLowerCase}}']}}', {$this->name}Show::class)->name('{$this->_getRoute()}.show');",
+                "Route::get('/{$this->_getRoute()}/update/{{$replacements['{{modelNameLowerCase}}']}}', {$this->name}Edit::class)->name('{$this->_getRoute()}.edit');",
             ],
             'api' => [
                 "Route::apiResource('" . $this->_getRoute() . "', {$this->name}Controller::class);",
@@ -115,6 +115,20 @@ class CrudGenerator extends GeneratorCommand
                 "Route::resource('" . $this->_getRoute() . "', {$this->name}Controller::class);",
             ]
         };
+
+        if ($this->options['stack'] == 'livewire') {
+
+            $files_to_import = [
+                "use $this->livewireNamespace{$replacements['{{modelNamePluralUpperCase}}']}\{$this->name}Index",
+                "use $this->livewireNamespace{$replacements['{{modelNamePluralUpperCase}}']}\{$this->name}Show",
+                "use $this->livewireNamespace{$replacements['{{modelNamePluralUpperCase}}']}\{$this->name}Create",
+                "use $this->livewireNamespace{$replacements['{{modelNamePluralUpperCase}}']}\{$this->name}Edit",
+            ];
+
+            foreach ($files_to_import as $file) {
+                $this->info('<bg=blue;fg=white>' . $file . '</>');
+            }
+        }
 
         foreach ($lines as $line) {
             $this->info('<bg=blue;fg=white>' . $line . '</>');

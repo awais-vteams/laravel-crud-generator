@@ -7,7 +7,7 @@ use {{modelNamespace}}\{{modelName}};
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class Edit extends Component
+class {{modelName}}Edit extends Component
 {
     public {{modelName}}Form $form;
 
