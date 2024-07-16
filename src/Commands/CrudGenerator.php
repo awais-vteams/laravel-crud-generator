@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibex\CrudGenerator\Commands;
+namespace EduardR10\CrudGenerator\Commands;
 
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -45,7 +45,7 @@ class CrudGenerator extends GeneratorCommand
         $this->table = $this->getNameInput();
 
         // If table not exist in DB return
-        if (! $this->tableExists()) {
+        if (!$this->tableExists()) {
             $this->error("`$this->table` table not exist");
 
             return false;
@@ -69,7 +69,7 @@ class CrudGenerator extends GeneratorCommand
     protected function promptForMissingArgumentsUsing(): array
     {
         return [
-            'stack' => fn() => select(
+            'stack' => fn () => select(
                 label: 'Which stack would you like to install?',
                 options: [
                     'bootstrap' => 'Blade with Bootstrap css',
@@ -109,15 +109,15 @@ class CrudGenerator extends GeneratorCommand
                 "Route::get('/{$this->_getRoute()}/update/{{$replacements['{{modelNameLowerCase}}']}}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Edit::class)->name('{$this->_getRoute()}.edit');",
             ],
             'api' => [
-                "Route::apiResource('".$this->_getRoute()."', {$this->name}Controller::class);",
+                "Route::apiResource('" . $this->_getRoute() . "', {$this->name}Controller::class);",
             ],
             default => [
-                "Route::resource('".$this->_getRoute()."', {$this->name}Controller::class);",
+                "Route::resource('" . $this->_getRoute() . "', {$this->name}Controller::class);",
             ]
         };
 
         foreach ($lines as $line) {
-            $this->info('<bg=blue;fg=white>'.$line.'</>');
+            $this->info('<bg=blue;fg=white>' . $line . '</>');
         }
 
         $this->info('');
@@ -157,7 +157,9 @@ class CrudGenerator extends GeneratorCommand
         };
 
         $controllerTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub($stubFolder.'Controller')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub($stubFolder . 'Controller')
         );
 
         $this->write($controllerPath, $controllerTemplate);
@@ -166,7 +168,9 @@ class CrudGenerator extends GeneratorCommand
             $resourcePath = $this->_getResourcePath($this->name);
 
             $resourceTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub($stubFolder.'Resource')
+                array_keys($replace),
+                array_values($replace),
+                $this->getStub($stubFolder . 'Resource')
             );
 
             $this->write($resourcePath, $resourceTemplate);
@@ -183,20 +187,24 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         foreach (['Index', 'Show', 'Edit', 'Create'] as $component) {
-            $componentPath = $this->_getLivewirePath($folder.'/'.$component);
+            $componentPath = $this->_getLivewirePath($folder . '/' . $component);
 
             $componentTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub('livewire/'.$component)
+                array_keys($replace),
+                array_values($replace),
+                $this->getStub('livewire/' . $component)
             );
 
             $this->write($componentPath, $componentTemplate);
         }
 
         // Form
-        $formPath = $this->_getLivewirePath('Forms/'.$this->name.'Form');
+        $formPath = $this->_getLivewirePath('Forms/' . $this->name . 'Form');
 
         $componentTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('livewire/Form')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('livewire/Form')
         );
 
         $this->write($formPath, $componentTemplate);
@@ -221,7 +229,9 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         $modelTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Model')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('Model')
         );
 
         $this->write($modelPath, $modelTemplate);
@@ -232,7 +242,9 @@ class CrudGenerator extends GeneratorCommand
         $this->info('Creating Request Class ...');
 
         $requestTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Request')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('Request')
         );
 
         $this->write($requestPath, $requestTemplate);
@@ -279,7 +291,9 @@ class CrudGenerator extends GeneratorCommand
 
         foreach (['index', 'create', 'edit', 'form', 'show'] as $view) {
             $viewTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub("views/{$this->options['stack']}/$view")
+                array_keys($replace),
+                array_values($replace),
+                $this->getStub("views/{$this->options['stack']}/$view")
             );
 
             $this->write($this->_getViewPath($view), $viewTemplate);

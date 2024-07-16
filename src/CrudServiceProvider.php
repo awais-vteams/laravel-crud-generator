@@ -1,8 +1,8 @@
 <?php
 
-namespace Ibex\CrudGenerator;
+namespace EduardR10\CrudGenerator;
 
-use Ibex\CrudGenerator\Commands\CrudGenerator;
+use EduardR10\CrudGenerator\Commands\CrudGenerator;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -24,11 +24,11 @@ class CrudServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/config/crud.php' => config_path('crud.php'),
+            __DIR__ . '/config/crud.php' => config_path('crud.php'),
         ], 'crud');
 
         $this->publishes([
-            __DIR__.'/../src/stubs' => resource_path('stubs/crud/'),
+            __DIR__ . '/../src/stubs' => resource_path('stubs/crud/'),
         ], 'stubs-crud');
     }
 

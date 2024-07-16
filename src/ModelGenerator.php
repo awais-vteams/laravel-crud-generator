@@ -1,6 +1,6 @@
 <?php
 
-namespace Ibex\CrudGenerator;
+namespace EduardR10\CrudGenerator;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -56,17 +56,17 @@ class ModelGenerator
                 $this->properties .= "\n * @property {$relation['class']} \${$relation['relation_name']}";
                 break;
             case 'hasMany':
-                $this->properties .= "\n * @property ".$relation['class']."[] \${$relation['relation_name']}";
+                $this->properties .= "\n * @property " . $relation['class'] . "[] \${$relation['relation_name']}";
                 break;
         }
 
         return '
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\\'.ucfirst($relation['name']).'
+     * @return \Illuminate\Database\Eloquent\Relations\\' . ucfirst($relation['name']) . '
      */
-    public function '.$relation['relation_name'].'()
+    public function ' . $relation['relation_name'] . '()
     {
-        return $this->'.$relation['name'].'(\\'.$this->modelNamespace.'\\'.$relation['class'].'::class, \''.$relation['foreign_key'].'\', \''.$relation['owner_key'].'\');
+        return $this->' . $relation['name'] . '(\\' . $this->modelNamespace . '\\' . $relation['class'] . '::class, \'' . $relation['foreign_key'] . '\', \'' . $relation['owner_key'] . '\');
     }
     ';
     }
