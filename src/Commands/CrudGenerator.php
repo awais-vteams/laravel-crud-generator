@@ -187,7 +187,7 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         foreach (['Index', 'Show', 'Edit', 'Create'] as $component) {
-            $componentPath = $this->_getLivewirePath($folder . '/' . $component);
+            $componentPath = $this->_getLivewirePath($folder . '/' . $component . $this->name);
 
             $componentTemplate = str_replace(
                 array_keys($replace),
