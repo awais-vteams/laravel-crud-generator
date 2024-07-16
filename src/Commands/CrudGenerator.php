@@ -99,14 +99,14 @@ class CrudGenerator extends GeneratorCommand
 
         $this->info('Please add route below: i:e; web.php or api.php');
 
-        $this->info('');
+        $this->info('Import every class');
 
         $lines = match ($this->options['stack']) {
             'livewire' => [
-                "Route::get('/{$this->_getRoute()}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Index::class)->name('{$this->_getRoute()}.index');",
-                "Route::get('/{$this->_getRoute()}/create', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Create::class)->name('{$this->_getRoute()}.create');",
-                "Route::get('/{$this->_getRoute()}/show/{{$replacements['{{modelNameLowerCase}}']}}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Show::class)->name('{$this->_getRoute()}.show');",
-                "Route::get('/{$this->_getRoute()}/update/{{$replacements['{{modelNameLowerCase}}']}}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Edit::class)->name('{$this->_getRoute()}.edit');",
+                "Route::get('/{$this->_getRoute()}', {$this->name} Index::class)->name('{$this->_getRoute()}.index');",
+                "Route::get('/{$this->_getRoute()}/create', {$this->name} Create::class)->name('{$this->_getRoute()}.create');",
+                "Route::get('/{$this->_getRoute()}/show/{{$replacements['{{modelNameLowerCase}}']}}', {$this->name} Show::class)->name('{$this->_getRoute()}.show');",
+                "Route::get('/{$this->_getRoute()}/update/{{$replacements['{{modelNameLowerCase}}']}}', {$this->name} Edit::class)->name('{$this->_getRoute()}.edit');",
             ],
             'api' => [
                 "Route::apiResource('" . $this->_getRoute() . "', {$this->name}Controller::class);",
@@ -187,7 +187,7 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         foreach (['Index', 'Show', 'Edit', 'Create'] as $component) {
-            $componentPath = $this->_getLivewirePath($folder . '/' . $component . $this->name);
+            $componentPath = $this->_getLivewirePath($folder . '/' . $this->name . $component);
 
             $componentTemplate = str_replace(
                 array_keys($replace),
