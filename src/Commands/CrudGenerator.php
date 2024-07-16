@@ -117,15 +117,14 @@ class CrudGenerator extends GeneratorCommand
         };
 
         if ($this->options['stack'] == 'livewire') {
-
-            $files_to_import = [
-                "use $this->livewireNamespace{$replacements['{{modelNamePluralUpperCase}}']}\{$this->name}Index",
-                "use $this->livewireNamespace{$replacements['{{modelNamePluralUpperCase}}']}\{$this->name}Show",
-                "use $this->livewireNamespace{$replacements['{{modelNamePluralUpperCase}}']}\{$this->name}Create",
-                "use $this->livewireNamespace{$replacements['{{modelNamePluralUpperCase}}']}\{$this->name}Edit",
+            $filesToImport = [
+                "use {$this->livewireNamespace}{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Index;",
+                "use {$this->livewireNamespace}{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Show;",
+                "use {$this->livewireNamespace}{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Create;",
+                "use {$this->livewireNamespace}{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Edit;",
             ];
 
-            foreach ($files_to_import as $file) {
+            foreach ($filesToImport as $file) {
                 $this->info('<bg=blue;fg=white>' . $file . '</>');
             }
         }
