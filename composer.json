@@ -1,27 +1,36 @@
 {
-    "name": "ibex/crud-generator",
-    "description": "Laravel CRUD Generator",
+    "name": "eduardr10/laravel-crud-generator",
+    "description": "Laravel CRUD Generator personal version with compatibilities for laravel TabLar package",
     "license": "MIT",
     "authors": [
         {
-            "name": "M Awais",
-            "email": "asargodha@gmail.com"
+            "name": "Eduard Espinoza",
+            "email": "EduardEspinozaProjects@gmail.com"
         }
     ],
-    "keywords": ["laravel", "crud", "crud generator", "laravel crud generator", "laravel package", "bootstrap css", "tailwind css", "alpine js"],
+    "keywords": [
+        "laravel",
+        "crud",
+        "crud generator",
+        "laravel crud generator",
+        "laravel package",
+        "bootstrap css",
+        "tailwind css",
+        "alpine js"
+    ],
     "require": {
         "php": "^8.2",
         "laravel/framework": "^10.30|^11.0"
     },
     "autoload": {
         "psr-4": {
-            "Ibex\\CrudGenerator\\": "src/"
+            "EduardR10\\CrudGenerator\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Ibex\\CrudGenerator\\CrudServiceProvider"
+                "EduardR10\\CrudGenerator\\CrudServiceProvider"
             ]
         }
     },

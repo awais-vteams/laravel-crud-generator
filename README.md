@@ -1,3 +1,5 @@
+Main project package URL: [awais-vteams/laravel-crud-generator](https://github.com/awais-vteams/laravel-crud-generator)
+
 ![Laravel Crud Generator](https://banners.beyondco.de/Laravel%20CRUD.png?theme=dark&packageManager=composer+require&packageName=ibex%2Fcrud-generator&pattern=architect&style=style_1&description=Laravel+CRUD+Generator&md=1&showWatermark=0&fontSize=100px&images=gift)
 
 
@@ -23,7 +25,7 @@ This is the best crud generator for a blank Laravel project installation too. Th
 ## Installation
 1 - Install
 ```
-composer require ibex/crud-generator --dev
+composer require eduardr10/crud-generator --dev
 ```
 2- Publish the default package's config (optional)
 ```
@@ -33,7 +35,7 @@ php artisan vendor:publish --tag=crud
 
 **For older Laravel(<10.x) versions please use [v1.x](https://github.com/awais-vteams/laravel-crud-generator/tree/v1.6)**
 ```
-composer require ibex/crud-generator:1.6 --dev
+composer require eduardr10/crud-generator:1.6 --dev
 ```
 
 ## Usage
