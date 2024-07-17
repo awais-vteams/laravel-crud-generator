@@ -118,10 +118,10 @@ class CrudGenerator extends GeneratorCommand
 
         if ($this->options['stack'] == 'livewire') {
             $filesToImport = [
-                "use {$this->livewireNamespace}{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Index;",
-                "use {$this->livewireNamespace}{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Show;",
-                "use {$this->livewireNamespace}{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Create;",
-                "use {$this->livewireNamespace}{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Edit;",
+                "use {$this->livewireNamespace}\\{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Index;",
+                "use {$this->livewireNamespace}\\{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Show;",
+                "use {$this->livewireNamespace}\\{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Create;",
+                "use {$this->livewireNamespace}\\{$replacements['{{modelNamePluralUpperCase}}']}\\{$this->name}Edit;",
             ];
 
             foreach ($filesToImport as $file) {
