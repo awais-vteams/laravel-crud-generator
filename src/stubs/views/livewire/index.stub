@@ -3,7 +3,7 @@
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <div class="w-full">
                 <div class="flow-root">
-                    <div class="mt-8 overflow-x-auto">
+                    <div class="overflow-x-auto">
                         <div class="inline-block min-w-full py-2 align-middle">
                             <table class="w-full divide-y divide-gray-300">
                                 <thead>
@@ -16,9 +16,9 @@
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                 @foreach (${{modelNamePluralLowerCase}} as ${{modelNameLowerCase}})
                                     <tr class="even:bg-gray-50" wire:key="{{ ${{modelNameLowerCase}}->id }}">
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-gray-900">{{ ++$i }}</td>
+                                        <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-semibold text-gray-900">{{ ++$i }}</td>
                                         {{tableBody}}
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
+                                        <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium text-gray-900">
                                             <a wire:navigate href="{{ route('{{modelRoute}}.show', ${{modelNameLowerCase}}->id) }}" class="text-gray-600 font-bold hover:text-gray-900 mr-2">{{ __('Show') }}</a>
                                             <a wire:navigate href="{{ route('{{modelRoute}}.edit', ${{modelNameLowerCase}}->id) }}" class="text-indigo-600 font-bold hover:text-indigo-900  mr-2">{{ __('Edit') }}</a>
                                             <button
