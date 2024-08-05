@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class {{modelName}} extends Model
 {
     {{softDeletes}}
+    public $timestamps = {{timestampColumns}};
     protected $perPage = 20;
 
     /**
