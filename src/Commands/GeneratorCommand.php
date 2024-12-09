@@ -382,29 +382,34 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function buildLayout(): void
     {
-        if (! (view()->exists($this->layout))) {
-
-            $this->info('Creating Layout ...');
-
-            $uiPackage = match ($this->options['stack']) {
-                'tailwind', 'livewire', 'react', 'vue' => 'laravel/breeze',
-                default => 'laravel/ui'
-            };
-
-            if (! $this->requireComposerPackages([$uiPackage], true)) {
-                throw new Exception("Unable to install $uiPackage. Please install it manually");
-            }
-
-            $uiCommand = match ($this->options['stack']) {
-                'tailwind' => 'php artisan breeze:install blade',
-                'livewire' => 'php artisan breeze:install livewire',
-                'react' => 'php artisan breeze:install react',
-                'vue' => 'php artisan breeze:install vue',
-                default => 'php artisan ui bootstrap --auth'
-            };
-
-            $this->runCommands([$uiCommand]);
+        if ($this->layout === false || $this->layout === null) {
+            return;
         }
+
+        if (view()->exists($this->layout)) {
+            return;
+        }
+
+        $this->info('Creating Layout ...');
+
+        $uiPackage = match ($this->options['stack']) {
+            'tailwind', 'livewire', 'react', 'vue' => 'laravel/breeze',
+            default => 'laravel/ui'
+        };
+
+        if (! $this->requireComposerPackages([$uiPackage], true)) {
+            throw new Exception("Unable to install $uiPackage. Please install it manually");
+        }
+
+        $uiCommand = match ($this->options['stack']) {
+            'tailwind' => 'php artisan breeze:install blade',
+            'livewire' => 'php artisan breeze:install livewire',
+            'react' => 'php artisan breeze:install react',
+            'vue' => 'php artisan breeze:install vue',
+            default => 'php artisan ui bootstrap --auth'
+        };
+
+        $this->runCommands([$uiCommand]);
     }
 
     /**

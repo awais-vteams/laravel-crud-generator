@@ -38,6 +38,7 @@ return [
     | This value is the name of your application layout. This value is used when creating
     | views for crud. Default will be the "layouts.app".
     |
+    | layout = false or layout = null will not create the layout files.
     */
 
     'layout' => 'layouts.app',
