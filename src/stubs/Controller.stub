@@ -46,20 +46,16 @@ class {{modelName}}Controller extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function show({{modelName}} ${{modelNameLowerCase}}): View
     {
-        ${{modelNameLowerCase}} = {{modelName}}::find($id);
-
         return view('{{modelView}}.show', compact('{{modelNameLowerCase}}'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
+    public function edit({{modelName}} ${{modelNameLowerCase}}): View
     {
-        ${{modelNameLowerCase}} = {{modelName}}::find($id);
-
         return view('{{modelView}}.edit', compact('{{modelNameLowerCase}}'));
     }
 
@@ -74,9 +70,9 @@ class {{modelName}}Controller extends Controller
             ->with('success', '{{modelName}} updated successfully');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy({{modelName}} ${{modelNameLowerCase}}): RedirectResponse
     {
-        {{modelName}}::find($id)->delete();
+        ${{modelNameLowerCase}}->delete();
 
         return Redirect::route('{{modelRoute}}.index')
             ->with('success', '{{modelName}} deleted successfully');
