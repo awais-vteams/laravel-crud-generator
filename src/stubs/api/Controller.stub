@@ -6,6 +6,7 @@ use {{modelNamespace}}\{{modelName}};
 use Illuminate\Http\Request;
 use {{requestNamespace}}\{{modelName}}Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use {{controllerNamespace}}\Controller;
 use {{resourceNamespace}}\{{modelName}}Resource;
 
