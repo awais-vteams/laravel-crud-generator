@@ -24,29 +24,34 @@ class {{modelName}}Controller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store({{modelName}}Request $request): {{modelName}}
+    public function store({{modelName}}Request $request): {{modelName}}Resource
     {
-        return {{modelName}}::create($request->validated());
+        ${{modelNameLowerCase}} = {{modelName}}::create($request->validated());
+
+        return new {{modelName}}Resource(${{modelNameLowerCase}});
     }
 
     /**
      * Display the specified resource.
      */
-    public function show({{modelName}} ${{modelNameLowerCase}}): {{modelName}}
+    public function show({{modelName}} ${{modelNameLowerCase}}): {{modelName}}Resource
     {
-        return ${{modelNameLowerCase}};
+        return new {{modelName}}Resource(${{modelNameLowerCase}});
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update({{modelName}}Request $request, {{modelName}} ${{modelNameLowerCase}}): {{modelName}}
+    public function update({{modelName}}Request $request, {{modelName}} ${{modelNameLowerCase}}): {{modelName}}Resource
     {
         ${{modelNameLowerCase}}->update($request->validated());
 
-        return ${{modelNameLowerCase}};
+        return new {{modelName}}Resource(${{modelNameLowerCase}});
     }
 
+    /**
+     * Delete the specified resource.
+     */
     public function destroy({{modelName}} ${{modelNameLowerCase}}): Response
     {
         ${{modelNameLowerCase}}->delete();
