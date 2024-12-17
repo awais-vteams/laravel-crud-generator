@@ -24,29 +24,29 @@ class {{modelName}}Controller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store({{modelName}}Request $request): {{modelName}}Resource
+    public function store({{modelName}}Request $request): JsonResponse
     {
         ${{modelNameLowerCase}} = {{modelName}}::create($request->validated());
 
-        return new {{modelName}}Resource(${{modelNameLowerCase}});
+        return response()->json(new {{modelName}}Resource(${{modelNameLowerCase}}));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show({{modelName}} ${{modelNameLowerCase}}): {{modelName}}Resource
+    public function show({{modelName}} ${{modelNameLowerCase}}): JsonResponse
     {
-        return new {{modelName}}Resource(${{modelNameLowerCase}});
+        return response()->json(new {{modelName}}Resource(${{modelNameLowerCase}}));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update({{modelName}}Request $request, {{modelName}} ${{modelNameLowerCase}}): {{modelName}}Resource
+    public function update({{modelName}}Request $request, {{modelName}} ${{modelNameLowerCase}}): JsonResponse
     {
         ${{modelNameLowerCase}}->update($request->validated());
 
-        return new {{modelName}}Resource(${{modelNameLowerCase}});
+        return response()->json(new {{modelName}}Resource(${{modelNameLowerCase}}));
     }
 
     /**
