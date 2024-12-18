@@ -6,6 +6,7 @@ use {{modelNamespace}}\{{modelName}};
 use Illuminate\Http\Request;
 use {{requestNamespace}}\{{modelName}}Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use {{controllerNamespace}}\Controller;
 use {{resourceNamespace}}\{{modelName}}Resource;
 
@@ -24,29 +25,34 @@ class {{modelName}}Controller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store({{modelName}}Request $request): {{modelName}}
+    public function store({{modelName}}Request $request): JsonResponse
     {
-        return {{modelName}}::create($request->validated());
+        ${{modelNameLowerCase}} = {{modelName}}::create($request->validated());
+
+        return response()->json(new {{modelName}}Resource(${{modelNameLowerCase}}));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show({{modelName}} ${{modelNameLowerCase}}): {{modelName}}
+    public function show({{modelName}} ${{modelNameLowerCase}}): JsonResponse
     {
-        return ${{modelNameLowerCase}};
+        return response()->json(new {{modelName}}Resource(${{modelNameLowerCase}}));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update({{modelName}}Request $request, {{modelName}} ${{modelNameLowerCase}}): {{modelName}}
+    public function update({{modelName}}Request $request, {{modelName}} ${{modelNameLowerCase}}): JsonResponse
     {
         ${{modelNameLowerCase}}->update($request->validated());
 
-        return ${{modelNameLowerCase}};
+        return response()->json(new {{modelName}}Resource(${{modelNameLowerCase}}));
     }
 
+    /**
+     * Delete the specified resource.
+     */
     public function destroy({{modelName}} ${{modelNameLowerCase}}): Response
     {
         ${{modelNameLowerCase}}->delete();
