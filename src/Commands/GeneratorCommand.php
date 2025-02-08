@@ -320,8 +320,9 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     {
         $replace = array_merge($this->buildReplacements(), [
             '{{title}}' => $title,
-            '{{column}}' => $column,
-            '{{column_snake}}' => Str::snake($column),
+            '{{column}}' => $column['name'],
+            '{{column_snake}}' => Str::snake($column['name']),
+            '{{column_type}}' => $this->getHtmlInputType($column['type_name']),
         ]);
 
         return str_replace(
@@ -432,17 +433,38 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     protected function getFilteredColumns(): array
     {
         $unwanted = $this->unwantedColumns;
-        $columns = [];
+        $columns = $this->getColumns();
 
-        foreach ($this->getColumns() as $column) {
-            $columns[] = $column['name'];
-        }
-
-        return array_filter($columns, function ($value) use ($unwanted) {
-            return ! in_array($value, $unwanted);
+        return array_filter($columns, function ($column) use ($unwanted) {
+            return ! in_array($column['name'], $unwanted);
         });
     }
+    protected function getHtmlInputType(string $columnType): string
+    {
+        $mapping = [
+            'string' => 'text',
+            'text' => 'textarea',
+            'longtext' => 'textarea',
+            'integer' => 'number',
+            'smallint' => 'number',
+            'bigint' => 'number',
+            'decimal' => 'number',
+            'float' => 'number',
+            'datetime' => 'datetime-local',
+            'timestamp' => 'datetime-local',
+            'date' => 'date',
+            'time' => 'time',
+            'boolean' => 'checkbox',
+            'blob' => 'file',
+            'bytea' => 'file',
+            'varbinary' => 'file',
+            'binary' => 'file',
+            'enum' => 'select',
+            // Add other mappings as necessary
+        ];
 
+        return $mapping[$columnType] ?? 'text';
+    }
     /**
      * Make model attributes/replacements.
      *
@@ -505,7 +527,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
             // Add quotes to the unwanted columns for fillable
             array_walk($filterColumns, function (&$value) {
-                $value = "'".$value."'";
+                $value = "'".$value['name']."'";
             });
 
             // CSV format
@@ -516,6 +538,8 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
         [$relations, $properties] = (new ModelGenerator($this->table, $properties, $this->modelNamespace))->getEloquentRelations();
 
+        $timestampColumns = ($this->requireTimestamp()) ? 'true' : 'false';
+
         return [
             '{{fillable}}' => $fillable(),
             '{{rules}}' => $rules(),
@@ -525,7 +549,17 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             '{{softDeletes}}' => $softDeletes,
             '{{livewireFormProperties}}' => $livewireFormProperties,
             '{{livewireFormSetValues}}' => $livewireFormSetValues,
+            '{{timestampColumns}}' => $timestampColumns,
         ];
+    }
+    /**
+     * Get the desired class name from the input.
+     *
+     * @return bool
+     */
+    protected function requireTimestamp(): bool
+    {
+        return Schema::hasColumn($this->table, 'created_at') && Schema::hasColumn($this->table, 'updated_at');
     }
 
     /**
