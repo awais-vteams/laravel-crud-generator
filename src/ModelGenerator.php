@@ -84,6 +84,20 @@ class ModelGenerator
         ];
     }
 
+    /**
+     * Extract the table name from a fully qualified table name (e.g., database.table).
+     * @param string $foreignTable
+     * @return string
+     */
+    protected function extractTableName($foreignTable)
+    {
+        $dotPosition = strpos($foreignTable, '.');
+        if ($dotPosition !== false) {
+            return substr($foreignTable, $dotPosition + 1); // Extract table name only
+        }
+        return $foreignTable; // No dot found, return the original name
+    }
+
     protected function getBelongsTo()
     {
         $relations = Schema::getForeignKeys($this->table);
@@ -95,10 +109,12 @@ class ModelGenerator
                 continue;
             }
 
+            $foreignTable = $this->extractTableName($table);
+
             $eloquent[] = [
                 'name' => 'belongsTo',
-                'relation_name' => Str::camel(Str::singular($relation['foreign_table'])),
-                'class' => Str::studly(Str::singular($relation['foreign_table'])),
+                'relation_name' => Str::camel(Str::singular($foreignTable)),
+                'class' => Str::studly(Str::singular($foreignTable)),
                 'foreign_key' => $relation['columns'][0],
                 'owner_key' => $relation['foreign_columns'][0],
             ];
@@ -116,6 +132,7 @@ class ModelGenerator
             $relations = Schema::getForeignKeys($table);
             $indexes = collect(Schema::getIndexes($table));
 
+
             foreach ($relations as $relation) {
                 if ($relation['foreign_table'] != $this->table) {
                     continue;
@@ -126,11 +143,12 @@ class ModelGenerator
                 }
 
                 $isUniqueColumn = $this->getUniqueIndex($indexes, $relation['columns'][0]);
+                $foreignTable = $this->extractTableName($table);
 
                 $eloquent[] = [
                     'name' => $isUniqueColumn ? 'hasOne' : 'hasMany',
-                    'relation_name' => Str::camel($isUniqueColumn ? Str::singular($table) : Str::plural($table)),
-                    'class' => Str::studly(Str::singular($table)),
+                    'relation_name' => Str::camel($isUniqueColumn ? Str::singular($foreignTable) : Str::plural($foreignTable)),
+                    'class' => Str::studly(Str::singular($foreignTable)),
                     'foreign_key' => $relation['foreign_columns'][0],
                     'owner_key' => $relation['columns'][0],
                 ];
