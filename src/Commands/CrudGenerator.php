@@ -260,10 +260,10 @@ class CrudGenerator extends GeneratorCommand
         $form = "\n";
 
         foreach ($this->getFilteredColumns() as $column) {
-            $title = Str::title(str_replace('_', ' ', $column));
+            $title = Str::title(str_replace('_', ' ', $column['name']));
 
             $tableHead .= $this->getHead($title);
-            $tableBody .= $this->getBody($column);
+            $tableBody .= $this->getBody($column['name']);
             $viewRows .= $this->getField($title, $column, 'view-field');
             $form .= $this->getField($title, $column);
         }
