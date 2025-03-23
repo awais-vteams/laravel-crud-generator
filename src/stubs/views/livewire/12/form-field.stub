@@ -1,0 +1,3 @@
+    <div>
+        <flux:input wire:model="form.{{column}}" :label="__('{{title}}')" type="text"  autocomplete="form.{{column}}" placeholder="{{title}}"/>
+    </div>

@@ -4,7 +4,6 @@ namespace {{livewireNamespace}}\{{modelNamePluralUpperCase}};
 
 use {{livewireNamespace}}\Forms\{{modelName}}Form;
 use {{modelNamespace}}\{{modelName}};
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class Edit extends Component
@@ -23,7 +22,6 @@ class Edit extends Component
         return $this->redirectRoute('{{modelRoute}}.index', navigate: true);
     }
 
-    #[Layout('{{layout}}')]
     public function render()
     {
         return view('livewire.{{modelView}}.edit');

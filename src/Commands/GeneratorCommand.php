@@ -89,6 +89,14 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     }
 
     /**
+     * @return bool
+     */
+    public function isLaravel12(): bool
+    {
+        return str_starts_with(app()->version(), '12');
+    }
+
+    /**
      * Generate the controller.
      *
      * @return $this
@@ -128,10 +136,10 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     /**
      * Write the file/Class.
      *
-     * @param $path
-     * @param $content
+     * @param  string  $path
+     * @param  string  $content
      */
-    protected function write($path, $content): void
+    protected function write(string $path, string $content): void
     {
         $this->makeDirectory($path);
 
@@ -175,61 +183,61 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     }
 
     /**
-     * @param $name
+     * @param  string  $name
      *
      * @return string
      */
-    protected function _getControllerPath($name): string
+    protected function _getControllerPath(string $name): string
     {
         return app_path($this->_getNamespacePath($this->controllerNamespace)."{$name}Controller.php");
     }
 
     /**
-     * @param $name
+     * @param  string  $name
      *
      * @return string
      */
-    protected function _getApiControllerPath($name): string
+    protected function _getApiControllerPath(string $name): string
     {
         return app_path($this->_getNamespacePath($this->apiControllerNamespace)."{$name}Controller.php");
     }
 
     /**
-     * @param $name
+     * @param  string  $name
      *
      * @return string
      */
-    protected function _getResourcePath($name): string
+    protected function _getResourcePath(string $name): string
     {
         return app_path($this->_getNamespacePath($this->resourceNamespace)."{$name}Resource.php");
     }
 
     /**
-     * @param $name
+     * @param  string  $name
      *
      * @return string
      */
-    protected function _getLivewirePath($name): string
+    protected function _getLivewirePath(string $name): string
     {
         return app_path($this->_getNamespacePath($this->livewireNamespace)."{$name}.php");
     }
 
     /**
-     * @param $name
+     * @param  string  $name
      *
      * @return string
      */
-    protected function _getRequestPath($name): string
+    protected function _getRequestPath(string $name): string
     {
         return app_path($this->_getNamespacePath($this->requestNamespace)."{$name}Request.php");
     }
 
     /**
-     * @param $name
+     * @param  string  $name
      *
      * @return string
      */
-    protected function _getModelPath($name): string
+    protected function _getModelPath(string $name): string
     {
         return $this->makeDirectory(app_path($this->_getNamespacePath($this->modelNamespace)."$name.php"));
     }
@@ -237,11 +245,11 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     /**
      * Get the path from namespace.
      *
-     * @param $namespace
+     * @param  string  $namespace
      *
      * @return string
      */
-    private function _getNamespacePath($namespace): string
+    private function _getNamespacePath(string $namespace): string
     {
         $str = Str::start(Str::finish(Str::after($namespace, 'App'), '\\'), '\\');
 
@@ -259,11 +267,11 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     }
 
     /**
-     * @param $view
+     * @param  string  $view
      *
      * @return string
      */
-    protected function _getViewPath($view): string
+    protected function _getViewPath(string $view): string
     {
         $name = Str::kebab($this->name);
         $path = match ($this->options['stack']) {
@@ -300,7 +308,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         ];
     }
 
-    protected function _getRoute()
+    protected function _getRoute(): string
     {
         return $this->options['route'] ?? Str::kebab(Str::plural($this->name));
     }
@@ -308,15 +316,14 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     /**
      * Build the form fields for form.
      *
-     * @param $title
-     * @param $column
+     * @param  string  $title
+     * @param  string  $column
      * @param  string  $type
      *
      * @return string
      * @throws FileNotFoundException
-     *
      */
-    protected function getField($title, $column, string $type = 'form-field'): string
+    protected function getField(string $title, string $column, string $type = 'form-field'): string
     {
         $replace = array_merge($this->buildReplacements(), [
             '{{title}}' => $title,
@@ -324,17 +331,22 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             '{{column_snake}}' => Str::snake($column),
         ]);
 
+        $path = match ($this->options['stack']) {
+            'livewire' => $this->isLaravel12() ?  "views/{$this->options['stack']}/12/$type" :  "views/{$this->options['stack']}/default/$type",
+            default => "views/{$this->options['stack']}/$type"
+        };
+
         return str_replace(
-            array_keys($replace), array_values($replace), $this->getStub("views/{$this->options['stack']}/$type")
+            array_keys($replace), array_values($replace), $this->getStub($path)
         );
     }
 
     /**
-     * @param $title
+     * @param  string  $title
      *
      * @return string
      */
-    protected function getHead($title): string
+    protected function getHead(string $title): string
     {
         $replace = array_merge($this->buildReplacements(), [
             '{{title}}' => $title,
@@ -382,18 +394,19 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function buildLayout(): void
     {
-        if ($this->layout === false || $this->layout === null) {
+        if ($this->layout === false) {
             return;
         }
 
-        if (view()->exists($this->layout)) {
+        if (view()->exists($this->layout) || view()->exists('components.'.$this->layout)) {
             return;
         }
 
         $this->info('Creating Layout ...');
 
         $uiPackage = match ($this->options['stack']) {
-            'tailwind', 'livewire', 'react', 'vue' => 'laravel/breeze',
+            'tailwind', 'react', 'vue' => 'laravel/breeze',
+            'livewire' => $this->isLaravel12() ? 'laravel/livewire-starter-kit' : 'laravel/breeze',
             default => 'laravel/ui'
         };
 
@@ -408,6 +421,11 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             'vue' => 'php artisan breeze:install vue',
             default => 'php artisan ui bootstrap --auth'
         };
+
+        // Do not run command for v12.*
+        if ($this->isLaravel12()) {
+            return;
+        }
 
         $this->runCommands([$uiCommand]);
     }

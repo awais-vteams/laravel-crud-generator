@@ -36,19 +36,19 @@ class ModelGenerator
      *
      * @return array
      */
-    public function getEloquentRelations()
+    public function getEloquentRelations(): array
     {
         return [$this->functions, $this->properties];
     }
 
-    private function _init()
+    private function _init(): void
     {
         foreach ($this->_getTableRelations() as $relation) {
             $this->functions .= $this->_getFunction($relation);
         }
     }
 
-    private function _getFunction(array $relation)
+    private function _getFunction(array $relation): string
     {
         switch ($relation['name']) {
             case 'hasOne':
@@ -76,7 +76,7 @@ class ModelGenerator
      *
      * @return array
      */
-    private function _getTableRelations()
+    private function _getTableRelations(): array
     {
         return [
             ...$this->getBelongsTo(),
@@ -86,19 +86,21 @@ class ModelGenerator
 
     /**
      * Extract the table name from a fully qualified table name (e.g., database.table).
-     * @param string $foreignTable
+     * @param  string  $foreignTable
      * @return string
      */
-    protected function extractTableName($foreignTable)
+    protected function extractTableName(string $foreignTable): string
     {
         $dotPosition = strpos($foreignTable, '.');
+
         if ($dotPosition !== false) {
             return substr($foreignTable, $dotPosition + 1); // Extract table name only
         }
+
         return $foreignTable; // No dot found, return the original name
     }
 
-    protected function getBelongsTo()
+    protected function getBelongsTo(): array
     {
         $relations = Schema::getForeignKeys($this->table);
 
@@ -123,7 +125,7 @@ class ModelGenerator
         return $eloquent;
     }
 
-    protected function getOtherRelations()
+    protected function getOtherRelations(): array
     {
         $tables = Schema::getTableListing();
         $eloquent = [];
@@ -131,7 +133,6 @@ class ModelGenerator
         foreach ($tables as $table) {
             $relations = Schema::getForeignKeys($table);
             $indexes = collect(Schema::getIndexes($table));
-
 
             foreach ($relations as $relation) {
                 if ($relation['foreign_table'] != $this->table) {
@@ -158,7 +159,7 @@ class ModelGenerator
         return $eloquent;
     }
 
-    private function getUniqueIndex($indexes, $column)
+    private function getUniqueIndex($indexes, $column): bool
     {
         $isUnique = false;
 
