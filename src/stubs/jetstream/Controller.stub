@@ -1,0 +1,113 @@
+<?php
+
+namespace {{controllerNamespace}};
+
+use {{modelNamespace}}\{{modelName}};
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+
+class {{modelName}}Controller extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Inertia\Response
+     */
+    public function index(Request $request)
+    {
+        return Inertia::render('{{modelNamePluralUpperCase}}/Index', [
+            'filters' => $request->only('search'),
+            '{{modelNamePluralLowerCase}}' => {{modelName}}::query()
+                ->when($request->filled('search'), function($query, $search) {
+                    $query->where('name', 'like', "%{$request->search}%");
+                })
+                ->paginate()
+                ->withQueryString()
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Inertia\Response
+     */
+    public function create()
+    {
+        return Inertia::render('{{modelNamePluralUpperCase}}/Create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            // validation rules here
+        ]);
+
+        {{modelName}}::create($validated);
+
+        return Redirect::route('{{modelRoute}}.index')->with('success', '{{modelTitle}} created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \{{modelNamespace}}\{{modelName}}  ${{modelNameLowerCase}}
+     * @return \Inertia\Response
+     */
+    public function show({{modelName}} ${{modelNameLowerCase}})
+    {
+        return Inertia::render('{{modelNamePluralUpperCase}}/Show', [
+            '{{modelNameLowerCase}}' => ${{modelNameLowerCase}}
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \{{modelNamespace}}\{{modelName}}  ${{modelNameLowerCase}}
+     * @return \Inertia\Response
+     */
+    public function edit({{modelName}} ${{modelNameLowerCase}})
+    {
+        return Inertia::render('{{modelNamePluralUpperCase}}/Edit', [
+            '{{modelNameLowerCase}}' => ${{modelNameLowerCase}}
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \{{modelNamespace}}\{{modelName}}  ${{modelNameLowerCase}}
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, {{modelName}} ${{modelNameLowerCase}})
+    {
+        $validated = $request->validate([
+            // validation rules here
+        ]);
+
+        ${{modelNameLowerCase}}->update($validated);
+
+        return Redirect::route('{{modelRoute}}.index')->with('success', '{{modelTitle}} updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \{{modelNamespace}}\{{modelName}}  ${{modelNameLowerCase}}
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy({{modelName}} ${{modelNameLowerCase}})
+    {
+        ${{modelNameLowerCase}}->delete();
+
+        return Redirect::route('{{modelRoute}}.index')->with('success', '{{modelTitle}} deleted successfully.');
+    }
+}

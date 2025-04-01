@@ -1,0 +1,18 @@
+<div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="{{column}}">
+        {{title}}
+    </label>
+    <input
+        id="{{column}}"
+        v-model="form.{{column}}"
+        type="text"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        :class="{ 'border-red-500': form.errors.{{column}} }"
+    >
+    <div v-if="form.errors.{{column}}" class="text-red-500 text-xs italic">{{ form.errors.{{column}} }}</div>
+</div>
+
+<div class="mb-4">
+    <h3 class="text-gray-700 font-bold">{{title}}:</h3>
+    <p class="text-gray-600">{{ {{modelNameLowerCase}}.{{column}} }}</p>
+</div>
