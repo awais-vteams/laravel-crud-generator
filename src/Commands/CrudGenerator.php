@@ -76,7 +76,7 @@ class CrudGenerator extends GeneratorCommand
                     'tailwind' => 'Blade with Tailwind css',
                     'livewire' => 'Livewire with Tailwind css',
                     'api' => 'API only',
-                    'Jetstream'=> 'Jetstream inertia with Tailwind css',
+                    'jetstream'=> 'Jetstream inertia with Tailwind css',
                 ],
                 scroll: 5,
             ),
@@ -218,50 +218,50 @@ class CrudGenerator extends GeneratorCommand
         protected function buildJetstream(): void
     {
         $this->info('Creating Jetstream Inertia Components ...');
-    
+
         $folder = ucfirst(Str::plural($this->name));
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
-        
+
         // Create Inertia component directory
         $componentPath = resource_path("js/Pages/{$folder}");
         if (!$this->files->isDirectory($componentPath)) {
             $this->files->makeDirectory($componentPath, 0755, true);
         }
-        
+
         // Generate the Inertia components
         foreach (['Index', 'Create', 'Edit', 'Show'] as $component) {
             $templatePath = $this->getStub("views/jetstream/{$component}", false);
-            
+
             if ($this->files->exists($templatePath)) {
                 $content = str_replace(
-                    array_keys($replace), 
-                    array_values($replace), 
+                    array_keys($replace),
+                    array_values($replace),
                     $this->getStub("views/jetstream/{$component}")
                 );
-                
+
                 $this->write("{$componentPath}/{$component}.vue", $content);
             } else {
                 $this->warn("Stub for {$component} not found. Skipping...");
             }
         }
-        
+
         // Create Controller
         $controllerPath = $this->_getControllerPath($this->name);
-        
+
         if ($this->files->exists($controllerPath) && $this->ask('Already exist Controller. Do you want overwrite (y/n)?', 'y') == 'n') {
             return;
         }
-        
+
         $this->info('Creating Controller for Jetstream...');
-        
+
         $controllerTemplate = str_replace(
-            array_keys($replace), 
-            array_values($replace), 
+            array_keys($replace),
+            array_values($replace),
             $this->getStub('jetstream/Controller')
         );
-        
+
         $this->write($controllerPath, $controllerTemplate);
-        
+
         // Create Model
         $this->buildModel();
     }
