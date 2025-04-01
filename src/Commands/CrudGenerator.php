@@ -328,7 +328,9 @@ class CrudGenerator extends GeneratorCommand
 
             $tableHead .= $this->getHead($title);
             $tableBody .= $this->getBody($column);
-            $viewRows .= $this->getField($title, $column, 'view-field');
+            if($this->options['stack'] != 'jetstram'){
+                $viewRows .= $this->getField($title, $column, 'view-field');
+            }
             $form .= $this->getField($title, $column);
         }
 
@@ -340,6 +342,10 @@ class CrudGenerator extends GeneratorCommand
         ]);
 
         $this->buildLayout();
+
+        if ($this->options['stack'] === 'jetstream') {
+            return $this;
+        }
 
         foreach (['index', 'create', 'edit', 'form', 'show'] as $view) {
             $path = match ($this->options['stack']) {

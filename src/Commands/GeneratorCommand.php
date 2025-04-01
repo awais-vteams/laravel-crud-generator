@@ -426,9 +426,9 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         };
 
         // Do not run command for v12.*
-        if ($this->isLaravel12()) {
-            return;
-        }
+        // if ($this->isLaravel12()) {
+        //     return;
+        // }
 
         $this->runCommands([$uiCommand]);
     }
