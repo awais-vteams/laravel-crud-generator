@@ -1,0 +1,62 @@
+<template>
+    <app-layout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{modelTitle}} Details
+            </h2>
+        </template>
+
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="mb-6">
+                    <inertia-link :href="route('{{modelRoute}}.index')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded">
+                        Back to List
+                    </inertia-link>
+                </div>
+
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Details will go here -->
+                                {{detailFields}}
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-end mt-4">
+                            <Link :href="route('{{modelRoute}}.edit', {{modelNameLowerCase}}.id)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded mr-2">
+                                Edit
+                            </Link>
+                            <button @click="destroy" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-layout>
+</template>
+
+<script>
+import { defineComponent } from 'vue'
+import AppLayout from '@/Layouts/AppLayout.vue'
+import { Link } from '@inertiajs/vue3'
+
+export default defineComponent({
+    components: {
+        AppLayout,
+        Link
+    },
+    props: {
+        {{modelNameLowerCase}}: Object
+    },
+    methods: {
+        destroy() {
+            if (confirm(`Are you sure you want to delete this {{modelTitle}}?`)) {
+                this.$inertia.delete(route('{{modelRoute}}.destroy', this.{{modelNameLowerCase}}.id))
+            }
+        }
+    }
+})
+</script>
