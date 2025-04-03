@@ -417,7 +417,7 @@ export default {
         updateValue(e) {
             clearTimeout(this.timeout);
             this.timeout = setTimeout(() => {
-                this.$emit('update:modelValue', e.target.value);
+                this.\$emit('update:modelValue', e.target.value);
             }, 300); // 300ms debounce
         }
     }
@@ -425,7 +425,6 @@ export default {
 </script>
 VUE;
 }
-
     /**
      * @return $this
      * @throws FileNotFoundException
