@@ -24,9 +24,9 @@
                         </div>
                         
                         <div class="flex items-center justify-end mt-4">
-                            <inertia-link :href="route('{{modelRoute}}.edit', {{modelNameLowerCase}}.id)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded mr-2">
+                            <Link :href="route('{{modelRoute}}.edit', {{modelNameLowerCase}}.id)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded mr-2">
                                 Edit
-                            </inertia-link>
+                            </Link>
                             <button @click="destroy" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded">
                                 Delete
                             </button>
@@ -41,10 +41,12 @@
 <script>
 import { defineComponent } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
+import { Link } from '@inertiajs/vue3'
 
 export default defineComponent({
     components: {
-        AppLayout
+        AppLayout,
+        Link
     },
     props: {
         {{modelNameLowerCase}}: Object

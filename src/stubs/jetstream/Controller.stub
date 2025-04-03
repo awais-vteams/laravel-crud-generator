@@ -19,7 +19,7 @@ class {{modelName}}Controller extends Controller
         return Inertia::render('{{modelNamePluralUpperCase}}/Index', [
             'filters' => $request->only('search'),
             '{{modelNamePluralLowerCase}}' => {{modelName}}::query()
-                ->when($request->filled('search'), function($query, $search) {
+                ->when($request->filled('search'), function($query, $search) use ($request) {
                     $query->where('name', 'like', "%{$request->search}%");
                 })
                 ->paginate()

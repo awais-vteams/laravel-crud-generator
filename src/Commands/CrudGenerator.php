@@ -229,6 +229,8 @@ class CrudGenerator extends GeneratorCommand
         $detailFields = '';
         $tableHead = '';
         $tableBody = '';
+
+        $lowerModelName = strtolower($this->name);
     
         foreach ($this->getFilteredColumns() as $column) {
             $title = Str::title(str_replace('_', ' ', $column));
@@ -243,14 +245,14 @@ class CrudGenerator extends GeneratorCommand
     
             $tableBody .= <<<HTML
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ {$this->name}.$column }}
+                                            {{ {$lowerModelName}.$column }}
                                         </td>
                                         
     HTML;
     
             $formFields .= $this->getJetstreamFormField($title, $column);
             $formData .= "                $column: '',\n";
-            $formEditData .= "                $column: this.{$this->name}.$column,\n";
+            $formEditData .= "                $column: this.{$lowerModelName}.$column,\n";
             $detailFields .= $this->getJetstreamDetailField($title, $column);
         }
     
@@ -305,7 +307,7 @@ class CrudGenerator extends GeneratorCommand
         $this->write($controllerPath, $controllerTemplate);
     
         // Create Model
-        $this->buildModel();
+        // $this->buildModel();
     }
 
     protected function createSharedComponents(): void
@@ -352,7 +354,7 @@ protected function getPaginationComponent(): string
                     :class="{ 'opacity-50': link.url === null }"
                     v-html="link.label"
                 />
-                <inertia-link
+                <Link
                     v-else
                     class="mr-1 mb-1 px-4 py-2 text-sm border rounded hover:bg-indigo-100"
                     :class="{
@@ -368,7 +370,11 @@ protected function getPaginationComponent(): string
 </template>
 
 <script>
+import { Link } from '@inertiajs/vue3'
 export default {
+ components: {
+        Link
+    },
     props: {
         links: Array
     }
@@ -570,10 +576,11 @@ VUE;
 
     protected function getJetstreamDetailField(string $title, string $column): string
     {
+        $lowerModelName=strtolower($this->name);
         return <<<HTML
         <div class="mb-4">
             <h3 class="text-gray-700 font-bold">$title:</h3>
-            <p class="text-gray-600">{{ {$this->name}.$column }}</p>
+            <p class="text-gray-600">{{ {$lowerModelName}.$column }}</p>
         </div>
         
     HTML;

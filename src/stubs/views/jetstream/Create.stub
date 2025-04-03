@@ -15,9 +15,9 @@
                             {{formFields}}
 
                             <div class="flex items-center justify-end mt-4">
-                                <inertia-link :href="route('{{modelRoute}}.index')" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black font-bold rounded mr-2">
+                                <Link :href="route('{{modelRoute}}.index')" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black font-bold rounded mr-2">
                                     Cancel
-                                </inertia-link>
+                                </Link>
                                 <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded">
                                     Create
                                 </button>
@@ -33,10 +33,12 @@
 <script>
 import { defineComponent } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
+import { Link } from '@inertiajs/vue3'
 
 export default defineComponent({
     components: {
-        AppLayout
+        AppLayout,
+        Link
     },
     data() {
         return {
