@@ -311,126 +311,116 @@ class CrudGenerator extends GeneratorCommand
     }
 
     protected function createSharedComponents(): void
-{
-    $componentsPath = resource_path('js/Components');
-    
-    // Check if Components directory exists, create if not
-    if (!$this->files->isDirectory($componentsPath)) {
-        $this->files->makeDirectory($componentsPath, 0755, true);
-    }
-    
-    // Create Pagination component
-    $paginationPath = $componentsPath.'/Pagination.vue';
-    if (!$this->files->exists($paginationPath)) {
-        $this->info('Creating Pagination component...');
-        $paginationContent = $this->getPaginationComponent();
-        $this->write($paginationPath, $paginationContent);
-    }
-    
-    // Create SearchFilter component
-    $searchFilterPath = $componentsPath.'/SearchFilter.vue';
-    if (!$this->files->exists($searchFilterPath)) {
-        $this->info('Creating SearchFilter component...');
-        $searchFilterContent = $this->getSearchFilterComponent();
-        $this->write($searchFilterPath, $searchFilterContent);
-    }
-}
-
-/**
- * Get content for the Pagination component.
- *
- * @return string
- */
-protected function getPaginationComponent(): string
-{
-    return <<<VUE
-<template>
-    <div v-if="links.length > 3">
-        <div class="flex flex-wrap -mb-1">
-            <template v-for="(link, key) in links" :key="key">
-                <div 
-                    v-if="link.url === null" 
-                    class="mr-1 mb-1 px-4 py-2 text-sm text-gray-500 border rounded"
-                    :class="{ 'opacity-50': link.url === null }"
-                    v-html="link.label"
-                />
-                <Link
-                    v-else
-                    class="mr-1 mb-1 px-4 py-2 text-sm border rounded hover:bg-indigo-100"
-                    :class="{
-                        'bg-indigo-500 text-white': link.active,
-                        'text-gray-700': !link.active
-                    }"
-                    :href="link.url"
-                    v-html="link.label"
-                />
-            </template>
-        </div>
-    </div>
-</template>
-
-<script>
-import { Link } from '@inertiajs/vue3'
-export default {
- components: {
-        Link
-    },
-    props: {
-        links: Array
-    }
-}
-</script>
-VUE;
-}
-
-/**
- * Get content for the SearchFilter component.
- *
- * @return string
- */
-protected function getSearchFilterComponent(): string
-{
-    return <<<VUE
-<template>
-    <div class="relative flex items-center">
-        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-        </div>
-        <input
-            type="text"
-            class="py-2 pl-10 pr-4 w-full text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
-            placeholder="Search..."
-            :value="modelValue"
-            @input="updateValue"
-        />
-    </div>
-</template>
-
-<script>
-export default {
-    props: {
-        modelValue: String
-    },
-    emits: ['update:modelValue'],
-    data() {
-        return {
-            timeout: null
+    {
+        $componentsPath = resource_path('js/Components');
+        
+        // Check if Components directory exists, create if not
+        if (!$this->files->isDirectory($componentsPath)) {
+            $this->files->makeDirectory($componentsPath, 0755, true);
         }
-    },
-    methods: {
-        updateValue(e) {
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                this.\$emit('update:modelValue', e.target.value);
-            }, 300); // 300ms debounce
+        
+        // Create Pagination component
+        $paginationPath = $componentsPath.'/Pagination.vue';
+        if (!$this->files->exists($paginationPath)) {
+            $this->info('Creating Pagination component...');
+            $paginationContent = $this->getPaginationComponent();
+            $this->write($paginationPath, $paginationContent);
+        }
+        
+        // Create SearchFilter component
+        $searchFilterPath = $componentsPath.'/SearchFilter.vue';
+        if (!$this->files->exists($searchFilterPath)) {
+            $this->info('Creating SearchFilter component...');
+            $searchFilterContent = $this->getSearchFilterComponent();
+            $this->write($searchFilterPath, $searchFilterContent);
         }
     }
-}
-</script>
-VUE;
-}
+
+    protected function getPaginationComponent(): string
+    {
+        return <<<VUE
+    <template>
+        <div v-if="links.length > 3">
+            <div class="flex flex-wrap -mb-1">
+                <template v-for="(link, key) in links" :key="key">
+                    <div 
+                        v-if="link.url === null" 
+                        class="mr-1 mb-1 px-4 py-2 text-sm text-gray-500 border rounded"
+                        :class="{ 'opacity-50': link.url === null }"
+                        v-html="link.label"
+                    />
+                    <Link
+                        v-else
+                        class="mr-1 mb-1 px-4 py-2 text-sm border rounded hover:bg-indigo-100"
+                        :class="{
+                            'bg-indigo-500 text-white': link.active,
+                            'text-gray-700': !link.active
+                        }"
+                        :href="link.url"
+                        v-html="link.label"
+                    />
+                </template>
+            </div>
+        </div>
+    </template>
+
+    <script>
+    import { Link } from '@inertiajs/vue3'
+    export default {
+    components: {
+            Link
+        },
+        props: {
+            links: Array
+        }
+    }
+    </script>
+    VUE;
+    }
+
+    protected function getSearchFilterComponent(): string
+    {
+        return <<<VUE
+    <template>
+        <div class="relative flex items-center">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+            <input
+                type="text"
+                class="py-2 pl-10 pr-4 w-full text-sm text-gray-700 placeholder-gray-400 bg-white border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+                placeholder="Search..."
+                :value="modelValue"
+                @input="updateValue"
+            />
+        </div>
+    </template>
+
+    <script>
+    export default {
+        props: {
+            modelValue: String
+        },
+        emits: ['update:modelValue'],
+        data() {
+            return {
+                timeout: null
+            }
+        },
+        methods: {
+            updateValue(e) {
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    this.\$emit('update:modelValue', e.target.value);
+                }, 300); // 300ms debounce
+            }
+        }
+    }
+    </script>
+    VUE;
+    }
     /**
      * @return $this
      * @throws FileNotFoundException
