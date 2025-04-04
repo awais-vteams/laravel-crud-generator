@@ -111,7 +111,7 @@ class ModelGenerator
                 continue;
             }
 
-            $foreignTable = $this->extractTableName($table);
+            $foreignTable = $this->extractTableName($relation['foreign_table']);
 
             $eloquent[] = [
                 'name' => 'belongsTo',
