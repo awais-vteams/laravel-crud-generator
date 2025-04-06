@@ -46,7 +46,7 @@ class {{modelName}}Controller extends Controller
      */
     public function store({{modelName}}Request $request)
     {
-        $validated = $request->validate();
+        $validated = $request->validated();
 
         {{modelName}}::create($validated);
 
@@ -88,7 +88,7 @@ class {{modelName}}Controller extends Controller
      */
     public function update({{modelName}}Request $request, {{modelName}} ${{modelNameLowerCase}})
     {
-        $validated = $request->validate();
+        $validated = $request->validated();
 
         ${{modelNameLowerCase}}->update($validated);
 
