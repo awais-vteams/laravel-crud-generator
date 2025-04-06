@@ -494,6 +494,7 @@ class CrudGenerator extends GeneratorCommand
                 $viewRows .= $this->getField($title, $column, 'view-field');
                 $form .= $this->getField($title, $column);
             } else {
+                dump($type);
                 // Generate Vue-specific form fields for Jetstream
                 $formFields .= $this->getJetstreamFormField($title, $column,$type);
                 $formData .= "\t\t\t\t$column: '',\n";
