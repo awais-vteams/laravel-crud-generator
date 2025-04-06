@@ -1,11 +1,11 @@
 {
-    "name": "andoajpr/crud-generator",
-    "description": "Laravel CRUD Generator -forked from ibex-crud-generator- with added support for Jetstreams.",
+    "name": "ibex/crud-generator",
+    "description": "Laravel CRUD Generator",
     "license": "MIT",
     "authors": [
         {
-            "name": "Ando RAZAFINANDRASANA",
-            "email": "andoajprs@gmail.com"
+            "name": "M Awais",
+            "email": "asargodha@gmail.com"
         }
     ],
     "keywords": [
@@ -17,8 +17,7 @@
         "bootstrap css",
         "tailwind css",
         "alpine js",
-        "livewire",
-        "jetstream"
+        "livewire"
     ],
     "require": {
         "php": "^8.2",
