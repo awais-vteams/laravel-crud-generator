@@ -232,7 +232,7 @@ class CrudGenerator extends GeneratorCommand
 
         $lowerModelName = strtolower($this->name);
     
-        foreach ($this->getFilteredColumns() as $column) {
+        foreach ($this->getColumnsWithType() as $column => $type) {
             $title = Str::title(str_replace('_', ' ', $column));
             
             // Generate Vue components specific fields
@@ -250,7 +250,7 @@ class CrudGenerator extends GeneratorCommand
                                         
     HTML;
     
-            $formFields .= $this->getJetstreamFormField($title, $column);
+            $formFields .= $this->getJetstreamFormField($title, $column,$type);
             $formData .= "                $column: '',\n";
             $formEditData .= "                $column: this.{$lowerModelName}.$column,\n";
             $detailFields .= $this->getJetstreamDetailField($title, $column);
@@ -494,8 +494,6 @@ class CrudGenerator extends GeneratorCommand
                 $viewRows .= $this->getField($title, $column, 'view-field');
                 $form .= $this->getField($title, $column);
             } else {
-                dump($type);
-                // Generate Vue-specific form fields for Jetstream
                 $formFields .= $this->getJetstreamFormField($title, $column,$type);
                 $formData .= "\t\t\t\t$column: '',\n";
                 $formEditData .= "\t\t\t\t$column: this.{$this->name}.$column,\n";
@@ -564,9 +562,7 @@ class CrudGenerator extends GeneratorCommand
     protected function getJetstreamFormField(string $title, string $column, string $type_column=""): string
     {
         $inputType = $this->mapColumnTypeToInputType($type_column);
-
-        dump($inputType);
-
+        
         return <<<HTML
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="$column">
