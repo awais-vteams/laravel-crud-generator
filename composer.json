@@ -1,11 +1,11 @@
 {
-    "name": "ibex/crud-generator",
-    "description": "Laravel CRUD Generator",
+    "name": "ando/crud-generator",
+    "description": "Laravel CRUD Generator -forked from ibex-crud-generator- with added support for Jetstreams.",
     "license": "MIT",
     "authors": [
         {
-            "name": "M Awais",
-            "email": "asargodha@gmail.com"
+            "name": "Ando RAZAFINANDRASANA",
+            "email": "andoajprs@gmail.com"
         }
     ],
     "keywords": [
@@ -36,6 +36,6 @@
             ]
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
