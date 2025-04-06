@@ -414,6 +414,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
         if (\Composer\InstalledVersions::isInstalled($uiPackage)) {
             $this->info("$uiPackage is already installed, skipping installation.");
+            return ;
         } else {
             if (! $this->requireComposerPackages([$uiPackage], true)) {
                 throw new Exception("Unable to install $uiPackage. Please install it manually");
