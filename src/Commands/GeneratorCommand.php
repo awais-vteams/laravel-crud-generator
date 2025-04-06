@@ -447,6 +447,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     {
         if (empty($this->tableColumns)) {
             $this->tableColumns = Schema::getColumns($this->table);
+            dd($this->tableColumns);
         }
 
         return $this->tableColumns;

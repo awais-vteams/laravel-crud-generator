@@ -4,6 +4,7 @@ namespace {{controllerNamespace}};
 
 use {{modelNamespace}}\{{modelName}};
 use Illuminate\Http\Request;
+use {{requestNamespace}}\{{modelName}}Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -43,11 +44,9 @@ class {{modelName}}Controller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store({{modelName}}Request $request)
     {
-        $validated = $request->validate([
-            // validation rules here
-        ]);
+        $validated = $request->validate();
 
         {{modelName}}::create($validated);
 
@@ -87,11 +86,9 @@ class {{modelName}}Controller extends Controller
      * @param  \{{modelNamespace}}\{{modelName}}  ${{modelNameLowerCase}}
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, {{modelName}} ${{modelNameLowerCase}})
+    public function update({{modelName}}Request $request, {{modelName}} ${{modelNameLowerCase}})
     {
-        $validated = $request->validate([
-            // validation rules here
-        ]);
+        $validated = $request->validate();
 
         ${{modelNameLowerCase}}->update($validated);
 

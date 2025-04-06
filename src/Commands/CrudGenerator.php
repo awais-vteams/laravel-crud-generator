@@ -307,7 +307,7 @@ class CrudGenerator extends GeneratorCommand
         $this->write($controllerPath, $controllerTemplate);
     
         // Create Model
-        // $this->buildModel();
+        $this->buildModel();
     }
 
     protected function createSharedComponents(): void

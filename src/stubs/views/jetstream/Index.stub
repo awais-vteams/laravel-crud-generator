@@ -27,6 +27,9 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
+                                <tr v-if="{{modelNamePluralLowerCase}}.data.length === 0">
+                                    <td colspan="100%">No data</td>
+                                </tr>
                                 <tr v-for="{{modelNameLowerCase}} in {{modelNamePluralLowerCase}}.data" :key="{{modelNameLowerCase}}.id">
                                     {{tableBody}}
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
