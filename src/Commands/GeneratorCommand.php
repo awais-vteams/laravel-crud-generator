@@ -478,9 +478,9 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             $columns[$column['name']] = $column['type_name'];
         }
 
-        return array_filter($columns, function ($value) use ($unwanted) {
-            return ! in_array($value, $unwanted);
-        });
+        return array_filter($columns, function ($type, $name) use ($unwanted) {
+            return ! in_array($name, $unwanted);
+        }, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
