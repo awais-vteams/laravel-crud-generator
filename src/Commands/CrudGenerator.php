@@ -565,6 +565,8 @@ class CrudGenerator extends GeneratorCommand
     {
         $inputType = $this->mapColumnTypeToInputType($type_column);
 
+        dump($inputType);
+
         return <<<HTML
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="$column">
