@@ -412,8 +412,12 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             default => 'laravel/ui'
         };
 
-        if (! $this->requireComposerPackages([$uiPackage], true)) {
-            throw new Exception("Unable to install $uiPackage. Please install it manually");
+        if (\Composer\InstalledVersions::isInstalled($uiPackage)) {
+            $this->info("$uiPackage is already installed, skipping installation.");
+        } else {
+            if (! $this->requireComposerPackages([$uiPackage], true)) {
+                throw new Exception("Unable to install $uiPackage. Please install it manually");
+            }
         }
 
         $uiCommand = match ($this->options['stack']) {
