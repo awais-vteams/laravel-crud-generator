@@ -1,5 +1,5 @@
 {
-    "name": "ando/crud-generator",
+    "name": "andoajpr/crud-generator",
     "description": "Laravel CRUD Generator -forked from ibex-crud-generator- with added support for Jetstreams.",
     "license": "MIT",
     "authors": [
