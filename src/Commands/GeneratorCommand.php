@@ -447,7 +447,6 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     {
         if (empty($this->tableColumns)) {
             $this->tableColumns = Schema::getColumns($this->table);
-            dd($this->tableColumns);
         }
 
         return $this->tableColumns;
@@ -463,6 +462,20 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
         foreach ($this->getColumns() as $column) {
             $columns[] = $column['name'];
+        }
+
+        return array_filter($columns, function ($value) use ($unwanted) {
+            return ! in_array($value, $unwanted);
+        });
+    }
+
+    protected function getColumnsWithType(): array
+    {
+        $unwanted = $this->unwantedColumns;
+        $columns = [];
+
+        foreach ($this->getColumns() as $column) {
+            $columns[$column['name']] = $column['type_name'];
         }
 
         return array_filter($columns, function ($value) use ($unwanted) {

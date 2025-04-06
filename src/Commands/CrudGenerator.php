@@ -484,7 +484,8 @@ class CrudGenerator extends GeneratorCommand
         $formEditData = "\n";
         $detailFields = "\n";
 
-        foreach ($this->getFilteredColumns() as $column) {
+        foreach ($this->getColumnsWithType() as $column => $type) {
+            
             $title = Str::title(str_replace('_', ' ', $column));
 
             $tableHead .= $this->getHead($title);
@@ -494,7 +495,7 @@ class CrudGenerator extends GeneratorCommand
                 $form .= $this->getField($title, $column);
             } else {
                 // Generate Vue-specific form fields for Jetstream
-                $formFields .= $this->getJetstreamFormField($title, $column);
+                $formFields .= $this->getJetstreamFormField($title, $column,$type);
                 $formData .= "\t\t\t\t$column: '',\n";
                 $formEditData .= "\t\t\t\t$column: this.{$this->name}.$column,\n";
                 $detailFields .= $this->getJetstreamDetailField($title, $column);
@@ -544,8 +545,25 @@ class CrudGenerator extends GeneratorCommand
         return Str::studly(Str::singular($this->table));
     }
 
-    protected function getJetstreamFormField(string $title, string $column): string
+    protected function mapColumnTypeToInputType(string $type): string
     {
+        return match ($type) {
+            'integer', 'bigint', 'smallint', 'tinyint' => 'number',
+            'float', 'double', 'decimal' => 'number',
+            'boolean' => 'checkbox',
+            'date' => 'date',
+            'datetime', 'timestamp' => 'datetime-local',
+            'time' => 'time',
+            'email' => 'email',
+            'text', 'string' => 'text',
+            default => 'text',
+        };
+    }
+
+    protected function getJetstreamFormField(string $title, string $column, string $type_column): string
+    {
+        $inputType = $this->mapColumnTypeToInputType($type_column);
+
         return <<<HTML
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="$column">
@@ -554,14 +572,13 @@ class CrudGenerator extends GeneratorCommand
             <input
                 id="$column"
                 v-model="form.$column"
-                type="text"
+                type="$inputType"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 :class="{ 'border-red-500': form.errors.$column }"
             >
             <div v-if="form.errors.$column" class="text-red-500 text-xs italic">{{ form.errors.$column }}</div>
         </div>
-        
-    HTML;
+        HTML;
     }
 
     protected function getJetstreamDetailField(string $title, string $column): string
