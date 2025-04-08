@@ -231,6 +231,7 @@ class CrudGenerator extends GeneratorCommand
         $tableBody = '';
 
         $lowerModelName = strtolower($this->name);
+        $capitalizeModelName = lcfirst($this->name);
     
         foreach ($this->getColumnsWithType() as $column => $type) {
             $title = Str::title(str_replace('_', ' ', $column));
@@ -245,7 +246,7 @@ class CrudGenerator extends GeneratorCommand
     
             $tableBody .= <<<HTML
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ {$this->name}.$column }}
+                                            {{ {$$capitalizeModelName}.$column }}
                                         </td>
                                         
     HTML;
