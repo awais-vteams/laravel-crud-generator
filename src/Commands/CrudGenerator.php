@@ -558,14 +558,15 @@ class CrudGenerator extends GeneratorCommand
     {
         dump($type);
         return match ($type) {
-            'integer', 'bigint', 'smallint', 'tinyint' => 'number',
+            'int','integer', 'bigint', 'smallint', 'tinyint' => 'number',
             'float', 'double', 'decimal' => 'number',
             'boolean' => 'checkbox',
             'date' => 'date',
             'datetime', 'timestamp' => 'datetime-local',
             'time' => 'time',
             'email' => 'email',
-            'text', 'string' => 'text',
+            'varchar','text', 'string' => 'text',
+            'json'=> 'textarea',
             default => 'text',
         };
     }
