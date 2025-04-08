@@ -21,7 +21,7 @@ class {{modelName}}Controller extends Controller
             'filters' => $request->only('search'),
             '{{modelNamePluralLowerCase}}' => {{modelName}}::query()
                 ->when($request->filled('search'), function($query, $search) use ($request) {
-                   {{querySearch}}
+                   {{querySearch}};
                 })
                 ->paginate()
                 ->withQueryString()
