@@ -229,9 +229,11 @@ class CrudGenerator extends GeneratorCommand
         $detailFields = '';
         $tableHead = '';
         $tableBody = '';
+        $querySearch = '';
 
         $lowerModelName = strtolower($this->name);
         $capitalizeModelName = lcfirst($this->name);
+        $isFirstColumn = true;
     
         foreach ($this->getColumnsWithType() as $column => $type) {
             $title = Str::title(str_replace('_', ' ', $column));
@@ -255,6 +257,12 @@ class CrudGenerator extends GeneratorCommand
             $formData .= "                $column: '',\n";
             $formEditData .= "                $column: this.{$capitalizeModelName}.$column,\n";
             $detailFields .= $this->getJetstreamDetailField($title, $column);
+            if ($isFirstColumn) {
+                $querySearch .= "\$query->where('{$column}', 'like', \"%{\$request->search}%\")\n";
+                $isFirstColumn = false;
+            } else {
+                $querySearch .= "            ->orWhere('{$column}', 'like', \"%{\$request->search}%\")\n";
+            }
         }
     
         // Add to replacements
@@ -264,6 +272,7 @@ class CrudGenerator extends GeneratorCommand
         $replace['{{formData}}'] = $formData;
         $replace['{{formEditData}}'] = $formEditData;
         $replace['{{detailFields}}'] = $detailFields;
+        $replace['{{querySearch}}'] = $querySearch;
     
         // Create Inertia component directory
         $componentPath = resource_path("js/Pages/{$folder}");
