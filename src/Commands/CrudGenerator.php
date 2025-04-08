@@ -245,7 +245,7 @@ class CrudGenerator extends GeneratorCommand
     
             $tableBody .= <<<HTML
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ {$lowerModelName}.$column }}
+                                            {{ {$this->name}.$column }}
                                         </td>
                                         
     HTML;
