@@ -556,6 +556,7 @@ class CrudGenerator extends GeneratorCommand
 
     protected function mapColumnTypeToInputType(string $type): string
     {
+        dump($type);
         return match ($type) {
             'integer', 'bigint', 'smallint', 'tinyint' => 'number',
             'float', 'double', 'decimal' => 'number',
