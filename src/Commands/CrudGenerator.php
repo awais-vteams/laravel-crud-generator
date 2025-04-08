@@ -253,7 +253,7 @@ class CrudGenerator extends GeneratorCommand
     
             $formFields .= $this->getJetstreamFormField($title, $column,$type);
             $formData .= "                $column: '',\n";
-            $formEditData .= "                $column: this.{$lowerModelName}.$column,\n";
+            $formEditData .= "                $column: this.{$capitalizeModelName}.$column,\n";
             $detailFields .= $this->getJetstreamDetailField($title, $column);
         }
     
@@ -583,11 +583,11 @@ class CrudGenerator extends GeneratorCommand
 
     protected function getJetstreamDetailField(string $title, string $column): string
     {
-        $lowerModelName=strtolower($this->name);
+        $capitalizeModelName = lcfirst($this->name);
         return <<<HTML
         <div class="mb-4">
             <h3 class="text-gray-700 font-bold">$title:</h3>
-            <p class="text-gray-600">{{ {$lowerModelName}.$column }}</p>
+            <p class="text-gray-600">{{ {$capitalizeModelName}.$column }}</p>
         </div>
         
     HTML;
