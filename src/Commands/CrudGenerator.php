@@ -561,7 +561,7 @@ class CrudGenerator extends GeneratorCommand
 
     protected function getJetstreamFormField(string $title, string $column, string $type_column=""): string
     {
-        $inputType = $this->mapColumnTypeToInputType($type_column);
+        $inputType = $this->mapColumnTypeToInputType(strtolower($type_column));
         
         return <<<HTML
         <div class="mb-4">
