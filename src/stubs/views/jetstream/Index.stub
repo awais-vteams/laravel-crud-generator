@@ -42,14 +42,14 @@
 
                                         <Link
                                             :href="route('{{modelRoute}}.edit', {{modelNameLowerCase}}.id)"
-                                            class="inline-flex items-center px-3 py-1.5 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 rounded-md text-sm font-medium transition"
+                                            class="inline-flex items-center px-3 py-1.5 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 rounded-md text-sm font-medium transition ml-2"
                                         >
                                             Edit
                                         </Link>
 
                                         <button
                                             @click="destroy({{modelNameLowerCase}})"
-                                            class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-md text-sm font-medium transition"
+                                            class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-md text-sm font-medium transition ml-2"
                                         >
                                             Delete
                                         </button>
