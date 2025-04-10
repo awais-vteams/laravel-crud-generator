@@ -565,8 +565,8 @@ class CrudGenerator extends GeneratorCommand
             'datetime', 'timestamp' => 'datetime-local',
             'time' => 'time',
             'email' => 'email',
-            'varchar','text', 'string' => 'text',
-            'json'=> 'textarea',
+            'varchar', 'string' => 'text',
+            'text', 'json'=> 'textarea',
             default => 'text',
         };
     }
