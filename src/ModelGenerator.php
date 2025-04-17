@@ -86,7 +86,9 @@ class ModelGenerator
 
     /**
      * Extract the table name from a fully qualified table name (e.g., database.table).
+     * 
      * @param string $foreignTable
+     * 
      * @return string
      */
     protected function extractTableName(string $foreignTable): string
@@ -166,9 +168,10 @@ class ModelGenerator
                     continue;
                 }
             }
+
             return $eloquent;
         } catch (\Exception $e) {
-            \Log::error("Error in getOtherRelations: ".$e->getMessage());
+            \Log::error('Error in getOtherRelations: '.$e->getMessage());
             return [];
         }
     }
