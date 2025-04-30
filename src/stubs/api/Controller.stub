@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use {{requestNamespace}}\{{modelName}}Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
-use {{controllerNamespace}}\Controller;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use {{resourceNamespace}}\{{modelName}}Resource;
 
-class {{modelName}}Controller extends Controller
+class {{modelName}}Controller extends BaseController
 {
     /**
      * Display a listing of the resource.
