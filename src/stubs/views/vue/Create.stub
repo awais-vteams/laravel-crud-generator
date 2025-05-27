@@ -1,0 +1,63 @@
+<script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
+import HeadingSmall from '@/components/HeadingSmall.vue';
+import { type BreadcrumbItem } from '@/types';
+import InputError from '@/components/InputError.vue';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { Button } from '@/components/ui/button';
+import { Link,useForm } from '@inertiajs/vue3';
+import { Plus } from 'lucide-vue-next';
+
+
+const breadcrumbItems: BreadcrumbItem[] = [
+    {
+        title: '{{modelTitlePlural}}',
+        href: '/{{modelRoute}}',
+    },
+    {
+        title: 'Create',
+        href: '/create',
+    },
+];
+const props = defineProps({
+    {{modelNameLowerCase}}: Object,
+});
+const form = useForm({
+    {{formCreate}}
+});
+
+const submit = () => {
+    form.post(route('{{modelRoute}}.store'), {
+        preserveScroll: true,
+    });
+
+};
+</script>
+
+
+<template>
+    <AppLayout :breadcrumbs="breadcrumbItems">
+
+        <Head title="{{modelTitlePlural}}" />
+        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+
+            <div
+                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:min-h-min p-4 max-w-1/2">
+                <form @submit.prevent="submit" class="space-y-6">
+                    <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                        {{form}}
+                    </div>
+                     <div class="flex items-center px-4">
+                        <Button :disabled="form.processing">Save</Button>
+                        <Transition enter-active-class="transition ease-in-out" enter-from-class="opacity-0"
+                            leave-active-class="transition ease-in-out" leave-to-class="opacity-0">
+                            <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">Saved.</p>
+                        </Transition>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </AppLayout>
+
+
+</template>

@@ -1,0 +1,96 @@
+<script setup lang="ts">
+    import { Head, router } from '@inertiajs/vue3';
+    import HeadingSmall from '@/components/HeadingSmall.vue';
+    import { type BreadcrumbItem } from '@/types';
+
+    import AppLayout from '@/layouts/AppLayout.vue';
+    import Pagination from '@/components/Pagination.vue';
+    import { Button } from '@/components/ui/button';
+    import { Link } from '@inertiajs/vue3';
+    import { Edit, Eye, Plus, Trash } from 'lucide-vue-next';
+
+
+    const breadcrumbItems: BreadcrumbItem[] = [
+        {
+            title: '{{modelTitlePlural}}',
+            href: '/{{modelRoute}}',
+        },
+    ];
+
+    defineProps({
+        {{modelNamePluralLowerCase}}: Object,
+    });
+    const deleteRecord = (id: any) => {
+        if (confirm('Are you sure you want to delete this article?')) {
+            router.delete(route('{{modelNamePluralLowerCase}}.destroy', id), {
+                preserveScroll: true,
+            });
+        }
+    };
+</script>
+
+<template>
+    <AppLayout :breadcrumbs="breadcrumbItems">
+
+        <Head title="{{modelTitlePlural}}" />
+        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+
+            <div
+                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:min-h-min p-4">
+
+                <div class="mb-4 flex items-center justify-between">
+
+                    <Link :href="route('{{modelRoute}}.create')">
+                    <Button class="cursor-pointer">
+                        <Plus /> Add New
+                    </Button>
+                    </Link>
+                </div>
+                <div class="w-full caption-bottom text-sm">
+
+                    <table data-slot="table-head" class="w-full caption-bottom text-sm">
+                        <thead>
+                            <tr>
+                                {{tableHeader}}
+                                <th data-slot="table-head"></th>
+                            </tr>
+                        </thead>
+                        <tbody data-slot="table-body" class="[&_tr:last-child]:border-0">
+                            <tr data-slot="table-row"
+                                class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors"
+                                v-for="{{modelNameLowerCase}} in {{modelNamePluralLowerCase}}?.data"
+                                :key="{{modelNameLowerCase}}.id">
+                                {{tableBody}}
+                                 <td
+                                    class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
+                                    <Link :href="route('{{modelNamePluralLowerCase}}.edit', [{{modelNameLowerCase}}.id, route().params])"
+                                        class="text-blue-500 hover:underline">
+                                    Edit
+                                    <Edit class="inline h-4 w-4 ml-0.5" />
+                                    </Link>
+                                    <Link :href="route('{{modelNamePluralLowerCase}}.show', [{{modelNameLowerCase}}.id, route().params])"
+                                        class="text-blue-500 hover:underline ml-2">
+                                    View
+                                    <Eye class="inline h-4 w-4 ml-0.5" />
+                                    </Link>
+                                    <button @click.prevent="deleteRecord({{modelNameLowerCase}}.id)"
+                                        class="text-red-500 hover:underline ml-2 cursor-pointer">
+                                        Delete
+                                        <Trash class="inline h-4 w-4 ml-0.5 " />
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+              
+                </div>
+                <div class="relative mt-4">
+                    <div class="absolute inset-y-0 right-0 ">
+                        <Pagination :pagination="{{modelNamePluralLowerCase}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </AppLayout>
+</template>

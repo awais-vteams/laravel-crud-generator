@@ -160,10 +160,10 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         $stub_path = config('crud.stub_path', 'default');
 
         if (blank($stub_path) || $stub_path == 'default') {
-            $stub_path = __DIR__.'/../stubs/';
+            $stub_path = __DIR__ . '/../stubs/';
         }
 
-        $path = Str::finish($stub_path, '/')."$type.stub";
+        $path = Str::finish($stub_path, '/') . "$type.stub";
 
         if (! $content) {
             return $path;
@@ -189,7 +189,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function _getControllerPath(string $name): string
     {
-        return app_path($this->_getNamespacePath($this->controllerNamespace)."{$name}Controller.php");
+        return app_path($this->_getNamespacePath($this->controllerNamespace) . "{$name}Controller.php");
     }
 
     /**
@@ -199,7 +199,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function _getApiControllerPath(string $name): string
     {
-        return app_path($this->_getNamespacePath($this->apiControllerNamespace)."{$name}Controller.php");
+        return app_path($this->_getNamespacePath($this->apiControllerNamespace) . "{$name}Controller.php");
     }
 
     /**
@@ -209,7 +209,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function _getResourcePath(string $name): string
     {
-        return app_path($this->_getNamespacePath($this->resourceNamespace)."{$name}Resource.php");
+        return app_path($this->_getNamespacePath($this->resourceNamespace) . "{$name}Resource.php");
     }
 
     /**
@@ -219,7 +219,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function _getLivewirePath(string $name): string
     {
-        return app_path($this->_getNamespacePath($this->livewireNamespace)."{$name}.php");
+        return app_path($this->_getNamespacePath($this->livewireNamespace) . "{$name}.php");
     }
 
     /**
@@ -229,7 +229,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function _getRequestPath(string $name): string
     {
-        return app_path($this->_getNamespacePath($this->requestNamespace)."{$name}Request.php");
+        return app_path($this->_getNamespacePath($this->requestNamespace) . "{$name}Request.php");
     }
 
     /**
@@ -239,7 +239,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function _getModelPath(string $name): string
     {
-        return $this->makeDirectory(app_path($this->_getNamespacePath($this->modelNamespace)."$name.php"));
+        return $this->makeDirectory(app_path($this->_getNamespacePath($this->modelNamespace) . "$name.php"));
     }
 
     /**
@@ -273,9 +273,11 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
      */
     protected function _getViewPath(string $view): string
     {
+
         $name = Str::kebab($this->name);
         $path = match ($this->options['stack']) {
             'livewire' => "/views/livewire/$name/$view.blade.php",
+            'vue' => "/js/pages/$name/$view.vue",
             default => "/views/$name/$view.blade.php"
         };
 
@@ -337,7 +339,9 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         };
 
         return str_replace(
-            array_keys($replace), array_values($replace), $this->getStub($path)
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub($path)
         );
     }
 
@@ -354,13 +358,14 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
         $attr = match ($this->options['stack']) {
             'tailwind', 'livewire' => 'scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"',
+            'vue' => 'data-slot="table-head" class="text-muted-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"',
             default => ''
         };
 
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(9).'<th '.$attr.'>{{title}}</th>'."\n"
+            $this->_getSpace(9) . '<th ' . $attr . '>{{title}}</th>' . "\n"
         );
     }
 
@@ -377,13 +382,20 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
         $attr = match ($this->options['stack']) {
             'tailwind', 'livewire' => 'class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"',
+            'vue' => 'data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"',
             default => ''
         };
-
+        if ($this->options['stack'] === 'vue') {
+            return str_replace(
+                array_keys($replace),
+                array_values($replace),
+                $this->_getSpace(10) . '<td ' . $attr . '>{{ {{modelNameLowerCase}}.{{column}} }}</td>' . "\n"
+            );
+        }
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $this->_getSpace(10).'<td '.$attr.'>{{ ${{modelNameLowerCase}}->{{column}} }}</td>'."\n"
+            $this->_getSpace(10) . '<td ' . $attr . '>{{ ${{modelNameLowerCase}}->{{column}} }}</td>' . "\n"
         );
     }
 
@@ -398,7 +410,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             return;
         }
 
-        if (view()->exists($this->layout) || view()->exists('components.'.$this->layout)) {
+        if (view()->exists($this->layout) || view()->exists('components.' . $this->layout)) {
             return;
         }
 
@@ -511,7 +523,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             $rulesArray = Arr::except($rulesArray, $this->unwantedColumns);
             // Make rulesArray
             foreach ($rulesArray as $col => $rule) {
-                $rules .= "\n\t\t\t'$col' => '".implode('|', $rule)."',";
+                $rules .= "\n\t\t\t'$col' => '" . implode('|', $rule) . "',";
             }
 
             return $rules;
@@ -523,7 +535,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
             // Add quotes to the unwanted columns for fillable
             array_walk($filterColumns, function (&$value) {
-                $value = "'".$value."'";
+                $value = "'" . $value . "'";
             });
 
             // CSV format
@@ -602,10 +614,10 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         );
 
         return (new Process($command, base_path(), ['COMPOSER_MEMORY_LIMIT' => '-1']))
-                ->setTimeout(null)
-                ->run(function ($type, $output) {
-                    $this->output->write($output);
-                }) === 0;
+            ->setTimeout(null)
+            ->run(function ($type, $output) {
+                $this->output->write($output);
+            }) === 0;
     }
 
     /**
@@ -622,12 +634,12 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             try {
                 $process->setTty(true);
             } catch (RuntimeException $e) {
-                $this->output->writeln('  <bg=yellow;fg=black> WARN </> '.$e->getMessage().PHP_EOL);
+                $this->output->writeln('  <bg=yellow;fg=black> WARN </> ' . $e->getMessage() . PHP_EOL);
             }
         }
 
         $process->run(function ($type, $line) {
-            $this->output->write('    '.$line);
+            $this->output->write('    ' . $line);
         });
     }
 }

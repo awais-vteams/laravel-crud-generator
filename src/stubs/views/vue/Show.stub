@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
+import { type BreadcrumbItem } from '@/types';
+import AppLayout from '@/layouts/AppLayout.vue';
+
+const breadcrumbItems: BreadcrumbItem[] = [
+    {
+        title: '{{modelTitlePlural}}',
+        href: '/{{modelRoute}}',
+    },
+    {
+        title: 'Show',
+        href: '/show',
+    },
+];
+const props = defineProps({
+    {{modelNameLowerCase}}: Object,
+})
+
+</script>
+
+<template>
+    <AppLayout :breadcrumbs="breadcrumbItems">
+        <Head title="{{modelTitlePlural}}" />
+        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <div
+                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:min-h-min p-4 max-w-1/2">
+                <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                    {{viewRows}}
+                </div>
+            </div>
+        </div>
+    </AppLayout>
+
+
+</template>

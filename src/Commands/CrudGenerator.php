@@ -53,6 +53,7 @@ class CrudGenerator extends GeneratorCommand
 
         // Build the class name from table name
         $this->name = $this->_buildClassName();
+        $getColumns = $this->getColumns();
 
         // Generate the crud
         $this->buildOptions()
@@ -76,6 +77,7 @@ class CrudGenerator extends GeneratorCommand
                     'tailwind' => 'Blade with Tailwind css',
                     'livewire' => 'Livewire with Tailwind css',
                     'api' => 'API only',
+                    'vue' => 'Vue with Tailwind css',
                 ],
                 scroll: 4,
             ),
@@ -109,15 +111,15 @@ class CrudGenerator extends GeneratorCommand
                 "Route::get('/{$this->_getRoute()}/update/{{$replacements['{{modelNameLowerCase}}']}}', \\$this->livewireNamespace\\{$replacements['{{modelNamePluralUpperCase}}']}\Edit::class)->name('{$this->_getRoute()}.edit');",
             ],
             'api' => [
-                "Route::apiResource('".$this->_getRoute()."', {$this->name}Controller::class);",
+                "Route::apiResource('" . $this->_getRoute() . "', {$this->name}Controller::class);",
             ],
             default => [
-                "Route::resource('".$this->_getRoute()."', {$this->name}Controller::class);",
+                "Route::resource('" . $this->_getRoute() . "', {$this->name}Controller::class);",
             ]
         };
 
         foreach ($lines as $line) {
-            $this->info('<bg=blue;fg=white>'.$line.'</>');
+            $this->info('<bg=blue;fg=white>' . $line . '</>');
         }
 
         $this->info('');
@@ -153,11 +155,14 @@ class CrudGenerator extends GeneratorCommand
 
         $stubFolder = match ($this->options['stack']) {
             'api' => 'api/',
+            'vue' => 'vue/',
             default => ''
         };
 
         $controllerTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub($stubFolder.'Controller')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub($stubFolder . 'Controller')
         );
 
         $this->write($controllerPath, $controllerTemplate);
@@ -166,7 +171,9 @@ class CrudGenerator extends GeneratorCommand
             $resourcePath = $this->_getResourcePath($this->name);
 
             $resourceTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub($stubFolder.'Resource')
+                array_keys($replace),
+                array_values($replace),
+                $this->getStub($stubFolder . 'Resource')
             );
 
             $this->write($resourcePath, $resourceTemplate);
@@ -183,20 +190,24 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         foreach (['Index', 'Show', 'Edit', 'Create'] as $component) {
-            $componentPath = $this->_getLivewirePath($folder.'/'.$component);
+            $componentPath = $this->_getLivewirePath($folder . '/' . $component);
 
             $componentTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub('livewire/'.$component)
+                array_keys($replace),
+                array_values($replace),
+                $this->getStub('livewire/' . $component)
             );
 
             $this->write($componentPath, $componentTemplate);
         }
 
         // Form
-        $formPath = $this->_getLivewirePath('Forms/'.$this->name.'Form');
+        $formPath = $this->_getLivewirePath('Forms/' . $this->name . 'Form');
 
         $componentTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('livewire/Form')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('livewire/Form')
         );
 
         $this->write($formPath, $componentTemplate);
@@ -221,7 +232,9 @@ class CrudGenerator extends GeneratorCommand
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
         $modelTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Model')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('Model')
         );
 
         $this->write($modelPath, $modelTemplate);
@@ -232,7 +245,9 @@ class CrudGenerator extends GeneratorCommand
         $this->info('Creating Request Class ...');
 
         $requestTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Request')
+            array_keys($replace),
+            array_values($replace),
+            $this->getStub('Request')
         );
 
         $this->write($requestPath, $requestTemplate);
@@ -258,7 +273,7 @@ class CrudGenerator extends GeneratorCommand
         $tableBody = "\n";
         $viewRows = "\n";
         $form = "\n";
-
+        $formCreate = "\n";
         foreach ($this->getFilteredColumns() as $column) {
             $title = Str::title(str_replace('_', ' ', $column));
 
@@ -266,16 +281,48 @@ class CrudGenerator extends GeneratorCommand
             $tableBody .= $this->getBody($column);
             $viewRows .= $this->getField($title, $column, 'view-field');
             $form .= $this->getField($title, $column);
+            $formCreate .= $column . ': props.' . Str::camel($this->name) . '?.' . $column . ',' . "\n";
         }
+
+
 
         $replace = array_merge($this->buildReplacements(), [
             '{{tableHeader}}' => $tableHead,
             '{{tableBody}}' => $tableBody,
             '{{viewRows}}' => $viewRows,
             '{{form}}' => $form,
+            '{{formCreate}}' => $formCreate,
         ]);
 
         $this->buildLayout();
+
+        if ($this->options['stack'] == 'vue') {
+
+            if (!$this->files->exists(resource_path("/js/components/Pagination.vue"))) {
+                $this->write(
+                    resource_path('/js/components/Pagination.vue'),
+                    $this->getStub('views/vue/Pagination')
+                );
+            }
+            foreach (['Index', 'Create', 'Edit', 'Show'] as $view) {
+                $path = match ($this->options['stack']) {
+                    'livewire' => $this->isLaravel12() ? "views/{$this->options['stack']}/12/$view" : "views/{$this->options['stack']}/default/$view",
+                    'vue' => "views/{$this->options['stack']}/$view",
+                    default => "views/{$this->options['stack']}/$view"
+                };
+
+                $viewTemplate = str_replace(
+                    array_keys($replace),
+                    array_values($replace),
+                    $this->getStub($path)
+                );
+
+                $this->write($this->_getViewPath($view), $viewTemplate);
+            }
+
+            return $this;
+        }
+
 
         foreach (['index', 'create', 'edit', 'form', 'show'] as $view) {
             $path = match ($this->options['stack']) {
@@ -284,7 +331,9 @@ class CrudGenerator extends GeneratorCommand
             };
 
             $viewTemplate = str_replace(
-                array_keys($replace), array_values($replace), $this->getStub($path)
+                array_keys($replace),
+                array_values($replace),
+                $this->getStub($path)
             );
 
             $this->write($this->_getViewPath($view), $viewTemplate);
