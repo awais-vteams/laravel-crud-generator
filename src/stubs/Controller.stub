@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use {{requestNamespace}}\{{modelName}}Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-
+use App\Http\Controllers\Controller as Controller;
 class {{modelName}}Controller extends Controller
 {
     /**
