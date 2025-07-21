@@ -43,7 +43,8 @@ php artisan make:crud {table_name}
 
 php artisan make:crud banks
 ```
-
+php artisan make:crud users api --module=Blog
+php artisan make:crud users bootstrap --module=Blog
 Add a route in `web.php`
 ```
 Route::resource('banks', BankController::class);
