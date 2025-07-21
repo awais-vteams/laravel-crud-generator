@@ -289,7 +289,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             '{{moduleName}}' => $this->options['module'],
             '{{modelTitle}}' => Str::title(Str::snake($this->name, ' ')),
             '{{modelTitlePlural}}' => Str::title(Str::snake(Str::plural($this->name), ' ')),
-            '{{modelNamespace}}' => str_replace('App\Http',"Http",$this->modelNamespace),
+            '{{modelNamespace}}' => str_replace('App\Models',"Models",$this->modelNamespace),
             '{{controllerNamespace}}' => str_replace('App\Http',"Http",$this->controllerNamespace),
             '{{apiControllerNamespace}}' => str_replace('App\Http',"Http",$this->apiControllerNamespace),
             '{{resourceNamespace}}' => str_replace('App\Http',"Http",$this->resourceNamespace),
