@@ -24,7 +24,7 @@ class CrudGenerator extends GeneratorCommand
     protected $signature = 'make:crud
                             {name : Table name}
                             {stack : The development stack that should be installed (bootstrap,tailwind,livewire,api)}
-                            {--route= : Custom route name}';
+                            {--module= : Module}';
 
     /**
      * The console command description.
@@ -142,7 +142,6 @@ class CrudGenerator extends GeneratorCommand
         $controllerPath = $this->options['stack'] == 'api'
             ? $this->_getApiControllerPath($this->name)
             : $this->_getControllerPath($this->name);
-
         if ($this->files->exists($controllerPath) && $this->ask('Already exist Controller. Do you want overwrite (y/n)?', 'y') == 'n') {
             return $this;
         }
@@ -164,7 +163,6 @@ class CrudGenerator extends GeneratorCommand
 
         if ($this->options['stack'] == 'api') {
             $resourcePath = $this->_getResourcePath($this->name);
-
             $resourceTemplate = str_replace(
                 array_keys($replace), array_values($replace), $this->getStub($stubFolder.'Resource')
             );
@@ -184,7 +182,6 @@ class CrudGenerator extends GeneratorCommand
 
         foreach (['Index', 'Show', 'Edit', 'Create'] as $component) {
             $componentPath = $this->_getLivewirePath($folder.'/'.$component);
-
             $componentTemplate = str_replace(
                 array_keys($replace), array_values($replace), $this->getStub('livewire/'.$component)
             );
@@ -194,7 +191,6 @@ class CrudGenerator extends GeneratorCommand
 
         // Form
         $formPath = $this->_getLivewirePath('Forms/'.$this->name.'Form');
-
         $componentTemplate = str_replace(
             array_keys($replace), array_values($replace), $this->getStub('livewire/Form')
         );
@@ -210,7 +206,6 @@ class CrudGenerator extends GeneratorCommand
     protected function buildModel(): static
     {
         $modelPath = $this->_getModelPath($this->name);
-
         if ($this->files->exists($modelPath) && $this->ask('Already exist Model. Do you want overwrite (y/n)?', 'y') == 'n') {
             return $this;
         }
@@ -228,7 +223,6 @@ class CrudGenerator extends GeneratorCommand
 
         // Make Request Class
         $requestPath = $this->_getRequestPath($this->name);
-
         $this->info('Creating Request Class ...');
 
         $requestTemplate = str_replace(
