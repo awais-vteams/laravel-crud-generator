@@ -3,6 +3,8 @@
 namespace {{modelNamespace}};
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Laravel\Scout\Searchable;
 {{softDeletesNamespace}}
 /**
  * Class {{modelName}}
@@ -13,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
 class {{modelName}} extends Model
 {
     {{softDeletes}}
+    use Searchable;
+    use HasUuids;
+    protected $keyType = 'string';
+    public $incrementing = false;
     protected $perPage = 20;
 
     /**
