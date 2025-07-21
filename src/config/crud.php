@@ -44,7 +44,7 @@ return [
     'layout' => 'layouts.app',
 
     'model' => [
-        'namespace' => '{{moduleName}}\App\Models',
+        'namespace' => 'Modules\{{moduleName}}\App\Models',
 
         /*
          * Do not make these columns $fillable in Model or views
@@ -63,19 +63,19 @@ return [
     ],
 
     'controller' => [
-        'namespace' => '{{moduleName}}\App\Http\Controllers',
-        'apiNamespace' => '{{moduleName}}\App\Http\Controllers\Api',
+        'namespace' => 'Modules\{{moduleName}}\App\Http\Controllers',
+        'apiNamespace' => 'Modules\{{moduleName}}\App\Http\Controllers\API',
     ],
 
     'resources' => [
-        'namespace' => '{{moduleName}}\App\Http\Resources',
+        'namespace' => 'Modules\{{moduleName}}\App\Http\Resources',
     ],
 
     'livewire' => [
-        'namespace' => '{{moduleName}}\App\Livewire',
+        'namespace' => 'Modules\{{moduleName}}\App\Livewire',
     ],
 
     'request' => [
-        'namespace' => '{{moduleName}}\App\Http\Requests',
+        'namespace' => 'Modules\{{moduleName}}\App\Http\Requests',
     ],
 ];
