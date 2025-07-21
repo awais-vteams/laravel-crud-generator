@@ -537,6 +537,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
         return [
             '{{fillable}}' => $fillable(),
+            '{{moduleName}}' => $this->options['module'],
             '{{rules}}' => $rules(),
             '{{relations}}' => $relations,
             '{{properties}}' => $properties,
