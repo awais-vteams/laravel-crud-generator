@@ -285,6 +285,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         return [
             '{{layout}}' => $this->layout,
             '{{modelName}}' => $this->name,
+            '\App'  => '',
             '{{moduleName}}' => $this->options['module'],
             '{{modelTitle}}' => Str::title(Str::snake($this->name, ' ')),
             '{{modelTitlePlural}}' => Str::title(Str::snake(Str::plural($this->name), ' ')),
