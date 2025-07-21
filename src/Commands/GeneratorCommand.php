@@ -78,14 +78,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         parent::__construct();
 
         $this->files = $files;
-        $this->unwantedColumns = config('crud.model.unwantedColumns', $this->unwantedColumns);
-        $this->modelNamespace = config('crud.model.namespace', $this->modelNamespace);
-        $this->controllerNamespace = config('crud.controller.namespace', $this->controllerNamespace);
-        $this->apiControllerNamespace = config('crud.controller.apiNamespace', $this->apiControllerNamespace);
-        $this->resourceNamespace = config('crud.resources.namespace', $this->resourceNamespace);
-        $this->livewireNamespace = config('crud.livewire.namespace', $this->livewireNamespace);
-        $this->requestNamespace = config('crud.request.namespace', $this->requestNamespace);
-        $this->layout = config('crud.layout', $this->layout);
+        
     }
 
     /**
@@ -568,6 +561,14 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         $this->options['route'] = null;
         $this->options['stack'] = $this->argument('stack');
         $this->options['module'] = $this->option('module');
+        $this->unwantedColumns = str_replace("{{moduleName}}",$this->option('module'),config('crud.model.unwantedColumns', $this->unwantedColumns));
+        $this->modelNamespace = str_replace("{{moduleName}}",$this->option('module'),config('crud.model.namespace', $this->modelNamespace));
+        $this->controllerNamespace = str_replace("{{moduleName}}",$this->option('module'),config('crud.controller.namespace', $this->controllerNamespace));
+        $this->apiControllerNamespace = str_replace("{{moduleName}}",$this->option('module'),config('crud.controller.apiNamespace', $this->apiControllerNamespace));
+        $this->resourceNamespace = str_replace("{{moduleName}}",$this->option('module'),config('crud.resources.namespace', $this->resourceNamespace));
+        $this->livewireNamespace = str_replace("{{moduleName}}",$this->option('module'),config('crud.livewire.namespace', $this->livewireNamespace));
+        $this->requestNamespace = str_replace("{{moduleName}}",$this->option('module'),config('crud.request.namespace', $this->requestNamespace));
+        $this->layout = config('crud.layout', $this->layout);
         return $this;
     }
 
