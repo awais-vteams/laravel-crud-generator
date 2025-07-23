@@ -8,8 +8,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | The stubs path directory to generate crud. You may configure your
-    | stubs paths here, allowing you to customize the own stubs of the
-    | model,controller or view. Or, you may simply stick with the CrudGenerator defaults!
+    | stubs paths here, allowing you to customize your stubs of the
+    | model,controller or view. Or, you may stick with the CrudGenerator defaults!
     |
     | Example: 'stub_path' => resource_path('stubs/')
     | Default: "default"
@@ -18,7 +18,7 @@ return [
     |       Model.stub
     |       Request.stub
     |       views/
-    |           bootstrap/
+    |           livewire/
     |               create.stub
     |               edit.stub
     |               form.stub
