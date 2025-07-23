@@ -163,13 +163,24 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             $stub_path = __DIR__.'/../stubs/';
         }
 
-        $path = Str::finish($stub_path, '/')."$type.stub";
+        $path = Str::finish($stub_path, '/').strtolower("$type.stub");
 
         if (! $content) {
             return $path;
         }
 
         return $this->files->get($path);
+    }
+
+    protected function isCustomStubFolder(): bool
+    {
+        $stub_path = config('crud.stub_path', 'default');
+
+        if (blank($stub_path) || $stub_path == 'default') {
+            return false;
+        }
+
+        return true;
     }
 
     /**
