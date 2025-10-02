@@ -1,0 +1,29 @@
+<?php
+
+namespace {{livewireNamespace}}\{{modelNamePluralUpperCase}};
+
+use {{livewireNamespace}}\Forms\{{modelName}}Form;
+use {{modelNamespace}}\{{modelName}};
+use Livewire\Component;
+
+class Edit extends Component
+{
+    public {{modelName}}Form $form;
+
+    public function mount({{modelName}} ${{modelNameLowerCase}})
+    {
+        $this->form->set{{modelName}}Model(${{modelNameLowerCase}});
+    }
+
+    public function save()
+    {
+        $this->form->update();
+
+        return $this->redirectRoute('{{modelRoute}}.index', navigate: true);
+    }
+
+    public function render()
+    {
+        return view('livewire.{{modelView}}.edit');
+    }
+}
