@@ -287,6 +287,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         $name = Str::kebab($this->name);
         $path = match ($this->options['stack']) {
             'livewire' => "/views/livewire/$name/$view.blade.php",
+            'jetstream' => "/js/Pages/" . Str::studly(Str::plural($this->name)) . "/$view.vue",
             default => "/views/$name/$view.blade.php"
         };
 
@@ -418,11 +419,17 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         $uiPackage = match ($this->options['stack']) {
             'tailwind', 'react', 'vue' => 'laravel/breeze',
             'livewire' => $this->isLaravel12() ? 'laravel/livewire-starter-kit' : 'laravel/breeze',
+            'jetstream' => 'laravel/jetstream',
             default => 'laravel/ui'
         };
 
-        if (! $this->requireComposerPackages([$uiPackage], true)) {
-            throw new Exception("Unable to install $uiPackage. Please install it manually");
+        if (\Composer\InstalledVersions::isInstalled($uiPackage)) {
+            $this->info("$uiPackage is already installed, skipping installation.");
+            return ;
+        } else {
+            if (! $this->requireComposerPackages([$uiPackage], true)) {
+                throw new Exception("Unable to install $uiPackage. Please install it manually");
+            }
         }
 
         $uiCommand = match ($this->options['stack']) {
@@ -430,13 +437,14 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             'livewire' => 'php artisan breeze:install livewire',
             'react' => 'php artisan breeze:install react',
             'vue' => 'php artisan breeze:install vue',
+            'jetstream' => 'php artisan jetstream:install inertia',
             default => 'php artisan ui bootstrap --auth'
         };
 
         // Do not run command for v12.*
-        if ($this->isLaravel12()) {
-            return;
-        }
+        // if ($this->isLaravel12()) {
+        //     return;
+        // }
 
         $this->runCommands([$uiCommand]);
     }
@@ -470,6 +478,20 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         return array_filter($columns, function ($value) use ($unwanted) {
             return ! in_array($value, $unwanted);
         });
+    }
+
+    protected function getColumnsWithType(): array
+    {
+        $unwanted = $this->unwantedColumns;
+        $columns = [];
+
+        foreach ($this->getColumns() as $column) {
+            $columns[$column['name']] = $column['type_name'];
+        }
+
+        return array_filter($columns, function ($type, $name) use ($unwanted) {
+            return ! in_array($name, $unwanted);
+        }, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
