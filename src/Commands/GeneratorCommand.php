@@ -351,7 +351,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         ]);
 
         $path = match ($this->options['stack']) {
-            'livewire' => $this->isLaravel12Plus() ?  "views/{$this->options['stack']}/12/$type" :  "views/{$this->options['stack']}/default/$type",
+            'livewire' => $this->isLaravel12Plus() ? "views/{$this->options['stack']}/12/$type" : "views/{$this->options['stack']}/default/$type",
             default => "views/{$this->options['stack']}/$type"
         };
 
