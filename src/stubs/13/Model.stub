@@ -1,0 +1,33 @@
+<?php
+
+namespace {{modelNamespace}};
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+{{softDeletesNamespace}}
+/**
+ * Class {{modelName}}
+ {{properties}}
+ * @package App
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
+#[Fillable([{{fillable}}])]
+class {{modelName}} extends Model
+{
+    {{softDeletes}}
+    protected $perPage = 20;
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+{{casts}}
+        ];
+    }
+
+{{relations}}
+}
