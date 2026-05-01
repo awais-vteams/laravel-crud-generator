@@ -152,7 +152,7 @@ class CrudGenerator extends GeneratorCommand
         $replace = $this->buildReplacements();
 
         $stubFolder = match ($this->options['stack']) {
-            'api' => 'api/',
+            'api' => $this->isLaravel13Plus() ? 'api/13/' : 'api/',
             default => ''
         };
 
@@ -220,8 +220,10 @@ class CrudGenerator extends GeneratorCommand
         // Make the models attributes and replacement
         $replace = array_merge($this->buildReplacements(), $this->modelReplacements());
 
+        $modelStub = $this->isLaravel13Plus() ? '13/Model' : 'Model';
+
         $modelTemplate = str_replace(
-            array_keys($replace), array_values($replace), $this->getStub('Model')
+            array_keys($replace), array_values($replace), $this->getStub($modelStub)
         );
 
         $this->write($modelPath, $modelTemplate);
