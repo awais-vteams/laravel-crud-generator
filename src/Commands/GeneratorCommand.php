@@ -91,9 +91,17 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
     /**
      * @return bool
      */
-    public function isLaravel12(): bool
+    public function isLaravel12Plus(): bool
     {
-        return str_starts_with(app()->version(), '12');
+        return version_compare(app()->version(), '12.0.0', '>=');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLaravel13Plus(): bool
+    {
+        return version_compare(app()->version(), '13.0.0', '>=');
     }
 
     /**
@@ -343,7 +351,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         ]);
 
         $path = match ($this->options['stack']) {
-            'livewire' => $this->isLaravel12() ?  "views/{$this->options['stack']}/12/$type" :  "views/{$this->options['stack']}/default/$type",
+            'livewire' => $this->isLaravel12Plus() ?  "views/{$this->options['stack']}/12/$type" :  "views/{$this->options['stack']}/default/$type",
             default => "views/{$this->options['stack']}/$type"
         };
 
@@ -417,7 +425,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
 
         $uiPackage = match ($this->options['stack']) {
             'tailwind', 'react', 'vue' => 'laravel/breeze',
-            'livewire' => $this->isLaravel12() ? 'laravel/livewire-starter-kit' : 'laravel/breeze',
+            'livewire' => $this->isLaravel12Plus() ? 'laravel/livewire-starter-kit' : 'laravel/breeze',
             default => 'laravel/ui'
         };
 
@@ -434,7 +442,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         };
 
         // Do not run command for v12.*
-        if ($this->isLaravel12()) {
+        if ($this->isLaravel12Plus()) {
             return;
         }
 
@@ -483,6 +491,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         $livewireFormProperties = '';
         $livewireFormSetValues = '';
         $rulesArray = [];
+        $castsArray = [];
         $softDeletesNamespace = $softDeletes = '';
         $modelName = Str::camel($this->name);
 
@@ -498,8 +507,13 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
                 $rulesArray[$column['name']] = ['required'];
             }
 
-            if ($column['type_name'] == 'bool') {
+            if ($column['type_name'] == 'bool' || $column['type_name'] == 'boolean') {
                 $rulesArray[$column['name']][] = 'boolean';
+                $castsArray[$column['name']] = 'boolean';
+            } elseif ($column['type_name'] == 'date' || $column['type_name'] == 'datetime' || $column['type_name'] == 'timestamp') {
+                $castsArray[$column['name']] = 'datetime';
+            } elseif ($column['type_name'] == 'json') {
+                $castsArray[$column['name']] = 'array';
             }
 
             if ($column['type_name'] == 'uuid') {
@@ -528,6 +542,15 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
             return $rules;
         };
 
+        $casts = function () use ($castsArray) {
+            $castsStr = '';
+            foreach ($castsArray as $col => $type) {
+                $castsStr .= "\n\t\t\t'$col' => '$type',";
+            }
+
+            return $castsStr;
+        };
+
         $fillable = function () {
 
             $filterColumns = $this->getFilteredColumns();
@@ -548,6 +571,7 @@ abstract class GeneratorCommand extends Command implements PromptsForMissingInpu
         return [
             '{{fillable}}' => $fillable(),
             '{{rules}}' => $rules(),
+            '{{casts}}' => $casts(),
             '{{relations}}' => $relations,
             '{{properties}}' => $properties,
             '{{softDeletesNamespace}}' => $softDeletesNamespace,
