@@ -45,7 +45,7 @@ class CrudGenerator extends GeneratorCommand
         $this->table = $this->getNameInput();
 
         // If table not exist in DB return
-        if (! $this->tableExists()) {
+        if (!$this->tableExists()) {
             $this->error("`$this->table` table not exist");
 
             return false;
