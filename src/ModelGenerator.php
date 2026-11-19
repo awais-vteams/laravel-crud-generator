@@ -19,9 +19,9 @@ class ModelGenerator
     /**
      * ModelGenerator constructor.
      *
-     * @param  string  $table
-     * @param  string  $properties
-     * @param  string  $modelNamespace
+     * @param string $table
+     * @param string $properties
+     * @param string $modelNamespace
      */
     public function __construct(string $table, string $properties, string $modelNamespace)
     {
@@ -86,7 +86,9 @@ class ModelGenerator
 
     /**
      * Extract the table name from a fully qualified table name (e.g., database.table).
-     * @param  string  $foreignTable
+     *
+     * @param string $foreignTable
+     *
      * @return string
      */
     protected function extractTableName(string $foreignTable): string
@@ -114,11 +116,11 @@ class ModelGenerator
             $foreignTable = $this->extractTableName($relation['foreign_table']);
 
             $eloquent[] = [
-                'name' => 'belongsTo',
+                'name'          => 'belongsTo',
                 'relation_name' => Str::camel(Str::singular($foreignTable)),
-                'class' => Str::studly(Str::singular($foreignTable)),
-                'foreign_key' => $relation['columns'][0],
-                'owner_key' => $relation['foreign_columns'][0],
+                'class'         => Str::studly(Str::singular($foreignTable)),
+                'foreign_key'   => $relation['columns'][0],
+                'owner_key'     => $relation['foreign_columns'][0],
             ];
         }
 
@@ -127,36 +129,52 @@ class ModelGenerator
 
     protected function getOtherRelations(): array
     {
-        $tables = Schema::getTableListing();
-        $eloquent = [];
+        try {
+            $tables = Schema::getTableListing();
+            $eloquent = [];
 
-        foreach ($tables as $table) {
-            $relations = Schema::getForeignKeys($table);
-            $indexes = collect(Schema::getIndexes($table));
+            $startTime = microtime(true);
+            $timeout = 10;
 
-            foreach ($relations as $relation) {
-                if ($relation['foreign_table'] != $this->table) {
-                    continue;
+            foreach ($tables as $table) {
+                // Check for timeout
+                if (microtime(true) - $startTime > $timeout) {
+                    break;
                 }
 
-                if (count($relation['foreign_columns']) != 1 || count($relation['columns']) != 1) {
+                try {
+                    $relations = Schema::getForeignKeys($table);
+                    $indexes = collect(Schema::getIndexes($table));
+
+                    foreach ($relations as $relation) {
+                        if ($relation['foreign_table'] != $this->table) {
+                            continue;
+                        }
+                        if (count($relation['foreign_columns']) != 1 || count($relation['columns']) != 1) {
+                            continue;
+                        }
+                        $isUniqueColumn = $this->getUniqueIndex($indexes, $relation['columns'][0]);
+                        $foreignTable = $this->extractTableName($table);
+                        $eloquent[] = [
+                            'name'          => $isUniqueColumn ? 'hasOne' : 'hasMany',
+                            'relation_name' => Str::camel($isUniqueColumn ? Str::singular($foreignTable) : Str::plural($foreignTable)),
+                            'class'         => Str::studly(Str::singular($foreignTable)),
+                            'foreign_key'   => $relation['foreign_columns'][0],
+                            'owner_key'     => $relation['columns'][0],
+                        ];
+                    }
+                } catch (\Exception $e) {
+                    \Log::error("Error processing table $table: ".$e->getMessage());
                     continue;
                 }
-
-                $isUniqueColumn = $this->getUniqueIndex($indexes, $relation['columns'][0]);
-                $foreignTable = $this->extractTableName($table);
-
-                $eloquent[] = [
-                    'name' => $isUniqueColumn ? 'hasOne' : 'hasMany',
-                    'relation_name' => Str::camel($isUniqueColumn ? Str::singular($foreignTable) : Str::plural($foreignTable)),
-                    'class' => Str::studly(Str::singular($foreignTable)),
-                    'foreign_key' => $relation['foreign_columns'][0],
-                    'owner_key' => $relation['columns'][0],
-                ];
             }
-        }
 
-        return $eloquent;
+            return $eloquent;
+        } catch (\Exception $e) {
+            \Log::error('Error in getOtherRelations: '.$e->getMessage());
+
+            return [];
+        }
     }
 
     private function getUniqueIndex($indexes, $column): bool
